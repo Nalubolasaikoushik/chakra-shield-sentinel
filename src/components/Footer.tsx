@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code } from 'lucide-react';
+import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code, MapPin } from 'lucide-react';
 import { Link } from "react-router-dom";
 import AshokChakra from './AshokChakra';
 
