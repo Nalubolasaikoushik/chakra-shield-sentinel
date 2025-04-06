@@ -1,42 +1,73 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search, Shield, Database, FileText, BellRing, Cpu, Brain } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import AshokChakra from '../AshokChakra';
 
 const Hero = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="min-h-[70vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
+    <div className="min-h-[85vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
+      {/* Floating Chakra Pattern Background */}
+      <div className="absolute inset-0 overflow-hidden opacity-5">
+        <div className="absolute top-[10%] left-[5%] w-32 h-32">
+          <AshokChakra size="lg" spinning={true} />
+        </div>
+        <div className="absolute top-[30%] right-[15%] w-24 h-24">
+          <AshokChakra size="md" spinning={true} />
+        </div>
+        <div className="absolute bottom-[20%] left-[20%] w-16 h-16">
+          <AshokChakra size="sm" spinning={true} />
+        </div>
+        <div className="absolute bottom-[10%] right-[10%] w-20 h-20">
+          <AshokChakra size="md" spinning={true} />
+        </div>
+      </div>
+      
       {/* Hero main content */}
-      <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row items-center justify-between">
+      <div className="container mx-auto px-4 py-16 md:py-24 flex flex-col lg:flex-row items-center justify-between relative z-10">
         <div className="z-10 max-w-2xl mb-12 lg:mb-0">
-          <div className="flex items-center mb-4">
-            <div className="h-10 w-3 bg-india-saffron mr-3"></div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-india-navyBlue">
+          <div className="flex items-center mb-6">
+            <div className="h-12 w-4 bg-india-saffron mr-4"></div>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-india-navyBlue slide-in-left">
               AI-Powered Detection of Fake Social Media Accounts
             </h1>
           </div>
           
-          <p className="text-lg md:text-xl mb-6 text-gray-700">
+          <p className="text-lg md:text-xl mb-8 text-gray-700 slide-in-left" style={{ animationDelay: "0.2s" }}>
             ChakraShield uses advanced artificial intelligence to protect digital India from fraudulent social media activities. Government-grade security for our nation's online integrity.
           </p>
           
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 slide-in-left" style={{ animationDelay: "0.3s" }}>
             <Link to="/scan">
-              <Button className="bg-india-saffron hover:bg-india-saffron/90 text-white">
+              <Button className="gradient-button">
+                <Search className="mr-2 h-4 w-4" />
                 Scan Profile
               </Button>
             </Link>
             <Link to="/about">
-              <Button variant="outline" className="border-india-navyBlue text-india-navyBlue">
+              <Button variant="outline" className="border-india-navyBlue text-india-navyBlue hover:bg-india-navyBlue/10">
                 Learn More
               </Button>
             </Link>
           </div>
           
           {/* Trust indicators */}
-          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
+          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center space-y-3 md:space-y-0 md:space-x-6 text-sm slide-in-left" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center">
               <Shield className="h-5 w-5 mr-2 text-india-navyBlue" />
               <span>Govt. Secured</span>
@@ -52,21 +83,34 @@ const Hero = () => {
           </div>
         </div>
         
-        <div className="relative">
-          <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] bg-white p-6 rounded-full shadow-xl">
+        <div className="relative slide-in-right" style={{ animationDelay: "0.3s" }}>
+          <div 
+            className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] bg-white p-6 rounded-full shadow-xl floating"
+            style={{ 
+              transform: `translateY(${scrollPosition * 0.1}px)`,
+              transition: 'transform 0.1s ease-out'
+            }}
+          >
             <div className="absolute inset-0 rounded-full overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-b from-india-saffron via-white to-india-green opacity-10"></div>
             </div>
             <div className="relative h-full w-full flex items-center justify-center">
               <AshokChakra size="lg" spinning={true} className="opacity-15" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <Shield className="h-16 w-16 md:h-24 md:w-24 text-india-navyBlue" />
+                <Shield className="h-16 w-16 md:h-24 md:w-24 text-india-navyBlue pulse-alert" />
               </div>
             </div>
           </div>
           
           {/* Floating features */}
-          <div className="absolute -left-12 md:-left-16 top-1/4 bg-white p-3 rounded-lg shadow-lg flex items-center max-w-[160px]">
+          <div 
+            className="absolute -left-12 md:-left-16 top-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-left"
+            style={{ 
+              animationDelay: "0.5s",
+              transform: `translateY(${scrollPosition * -0.05}px)`,
+              transition: 'transform 0.1s ease-out'
+            }}
+          >
             <div className="bg-red-100 p-2 rounded-full mr-3 flex-shrink-0">
               <BellRing className="h-5 w-5 text-red-500" />
             </div>
@@ -76,7 +120,14 @@ const Hero = () => {
             </div>
           </div>
           
-          <div className="absolute -right-12 md:-right-12 bottom-1/4 bg-white p-3 rounded-lg shadow-lg flex items-center max-w-[160px]">
+          <div 
+            className="absolute -right-12 md:-right-12 bottom-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-right"
+            style={{ 
+              animationDelay: "0.6s",
+              transform: `translateY(${scrollPosition * -0.08}px)`,
+              transition: 'transform 0.1s ease-out'
+            }}
+          >
             <div className="bg-blue-100 p-2 rounded-full mr-3 flex-shrink-0">
               <Search className="h-5 w-5 text-blue-500" />
             </div>
@@ -89,19 +140,19 @@ const Hero = () => {
       </div>
       
       {/* Digital India Initiatives */}
-      <div className="bg-white py-8">
+      <div className="bg-white py-12">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-india-navyBlue flex items-center justify-center">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-india-navyBlue flex items-center justify-center slide-in-up">
               <span>Digital India Initiatives</span>
             </h2>
-            <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
+            <p className="text-gray-600 mt-3 max-w-2xl mx-auto slide-in-up" style={{ animationDelay: "0.1s" }}>
               Empowering citizens through technology and making India a digitally empowered society
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow transform hover:-translate-y-1 duration-300">
+            <div className="glass-card p-6 slide-in-up" style={{ animationDelay: "0.2s" }}>
               <Shield className="h-10 w-10 text-india-saffron mb-4" />
               <h3 className="text-lg font-semibold mb-2">Cyber Suraksha</h3>
               <p className="text-gray-600 text-sm">
@@ -109,7 +160,7 @@ const Hero = () => {
               </p>
             </div>
             
-            <div className="bg-gray-50 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow transform hover:-translate-y-1 duration-300">
+            <div className="glass-card p-6 slide-in-up" style={{ animationDelay: "0.3s" }}>
               <Database className="h-10 w-10 text-india-green mb-4" />
               <h3 className="text-lg font-semibold mb-2">DigiLocker</h3>
               <p className="text-gray-600 text-sm">
@@ -117,7 +168,7 @@ const Hero = () => {
               </p>
             </div>
             
-            <div className="bg-gray-50 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow transform hover:-translate-y-1 duration-300">
+            <div className="glass-card p-6 slide-in-up" style={{ animationDelay: "0.4s" }}>
               <BellRing className="h-10 w-10 text-india-navyBlue mb-4" />
               <h3 className="text-lg font-semibold mb-2">UMANG</h3>
               <p className="text-gray-600 text-sm">
@@ -126,10 +177,10 @@ const Hero = () => {
             </div>
           </div>
           
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-india-navyBlue/5 rounded-lg p-6 shadow-sm border-l-4 border-india-saffron">
-              <div className="flex items-start">
-                <Brain className="h-10 w-10 text-india-saffron mr-4 flex-shrink-0" />
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="glass-card border-l-4 border-india-saffron slide-in-left" style={{ animationDelay: "0.5s" }}>
+              <div className="flex flex-col md:flex-row items-start p-6">
+                <Brain className="h-10 w-10 text-india-saffron mr-4 flex-shrink-0 mb-4 md:mb-0" />
                 <div>
                   <h3 className="text-lg font-semibold mb-2">AI-Powered Governance</h3>
                   <p className="text-gray-600">
@@ -145,9 +196,9 @@ const Hero = () => {
               </div>
             </div>
             
-            <div className="bg-india-navyBlue/5 rounded-lg p-6 shadow-sm border-l-4 border-india-green">
-              <div className="flex items-start">
-                <Cpu className="h-10 w-10 text-india-green mr-4 flex-shrink-0" />
+            <div className="glass-card border-l-4 border-india-green slide-in-right" style={{ animationDelay: "0.5s" }}>
+              <div className="flex flex-col md:flex-row items-start p-6">
+                <Cpu className="h-10 w-10 text-india-green mr-4 flex-shrink-0 mb-4 md:mb-0" />
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Technological Impact</h3>
                   <p className="text-gray-600">

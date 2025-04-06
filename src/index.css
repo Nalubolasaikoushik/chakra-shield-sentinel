@@ -38,19 +38,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -123,4 +116,142 @@
     content: '';
     @apply absolute -right-8 -bottom-8 w-24 h-24 bg-[url('/public/lovable-uploads/6b65ab93-76a6-4042-8a08-74e62c5a8722.png')] bg-contain bg-no-repeat opacity-10;
   }
+
+  /* Enhanced UI components */
+  .gradient-button {
+    @apply relative overflow-hidden bg-gradient-to-r from-india-saffron to-india-navyBlue text-white 
+           font-medium rounded-full px-6 py-2.5 transform transition-all duration-300 
+           shadow-md hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 
+           focus:ring-india-saffron focus:ring-opacity-50;
+  }
+
+  .gradient-button::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-india-saffron via-india-navyBlue to-india-green 
+           opacity-0 transition-opacity duration-300;
+  }
+
+  .gradient-button:hover::before {
+    @apply opacity-20;
+  }
+
+  .glass-card {
+    @apply backdrop-blur-md bg-white/60 dark:bg-black/30 border border-white/20 dark:border-white/10 
+           rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl;
+  }
+
+  .animated-border {
+    @apply relative after:absolute after:inset-0 after:rounded-xl after:p-[2px] after:bg-gradient-to-r 
+           after:from-india-saffron after:via-india-white after:to-india-green after:content-[''] 
+           after:-z-10 after:animate-border-rotate overflow-hidden;
+  }
+
+  .floating {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2.5s infinite;
+  }
+
+  .pulse-alert {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.6s forwards;
+  }
+
+  .slide-in-right {
+    transform: translateX(50px);
+    opacity: 0;
+    animation: slideInRight 0.5s forwards;
+  }
+
+  .slide-in-left {
+    transform: translateX(-50px);
+    opacity: 0;
+    animation: slideInLeft 0.5s forwards;
+  }
+
+  .slide-in-up {
+    transform: translateY(50px);
+    opacity: 0;
+    animation: slideInUp 0.5s forwards;
+  }
+
+  .parallax-scroll {
+    transform: translateY(var(--scroll-offset, 0));
+    transition: transform 0.1s ease-out;
+  }
+
+  .tricolor-text {
+    @apply relative;
+    background: linear-gradient(90deg, #FF9933 33%, #FFFFFF 33% 66%, #138808 66%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    position: relative;
+  }
 }
+
+/* Enhanced Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes border-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mobile responsiveness utilities */
+@layer utilities {
+  .mobile-container {
+    @apply px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
+
