@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Upload, Share2, AlertCircle, CheckCircle, Loader, Download, FileText, ExternalLink } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
+import AshokChakra from '../AshokChakra';
 
 const ProfileScanner = () => {
   const [url, setUrl] = useState('');
@@ -26,7 +26,6 @@ const ProfileScanner = () => {
       return;
     }
     
-    // Start the scanning simulation
     setScanning(true);
     setScanComplete(false);
     setProgress(0);
@@ -37,7 +36,6 @@ const ProfileScanner = () => {
           clearInterval(interval);
           setScanning(false);
           setScanComplete(true);
-          // Generate a random risk score between 30 and 95 for demo purposes
           setRiskScore(Math.floor(Math.random() * 65) + 30);
           return 100;
         }
@@ -242,8 +240,5 @@ const ProfileScanner = () => {
     </div>
   );
 };
-
-// Import for Ashoka Chakra
-import AshokChakra from '../AshokChakra';
 
 export default ProfileScanner;
