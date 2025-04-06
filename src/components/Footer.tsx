@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code } from 'lucide-react';
+import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code, Tool } from 'lucide-react';
 import { Link } from "react-router-dom";
 import AshokChakra from './AshokChakra';
 
@@ -43,6 +44,7 @@ const Footer = () => {
               <li><Link to="/blockchain" className="hover:text-india-saffron transition-colors">Blockchain Registry</Link></li>
               <li><Link to="/reports" className="hover:text-india-saffron transition-colors">Reports</Link></li>
               <li><Link to="/alerts" className="hover:text-india-saffron transition-colors">Alerts</Link></li>
+              <li><Link to="/tools" className="hover:text-india-saffron transition-colors">Security Tools</Link></li>
             </ul>
           </div>
 
@@ -53,6 +55,7 @@ const Footer = () => {
               <li><Link to="/agencies" className="hover:text-india-saffron transition-colors">For Agencies</Link></li>
               <li><Link to="/api" className="hover:text-india-saffron transition-colors">API Integration</Link></li>
               <li><Link to="/research" className="hover:text-india-saffron transition-colors">Research Papers</Link></li>
+              <li><Link to="/contact" className="hover:text-india-saffron transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 
@@ -82,6 +85,31 @@ const Footer = () => {
                 <span>cybersoc@cert-in.org.in</span>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Digital India Initiatives Section */}
+        <div className="py-6 my-6 border-t border-b border-white/10">
+          <h3 className="text-xl font-bold mb-4 text-center text-india-saffron">Digital India Initiatives</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+            <div className="bg-white/5 p-4 rounded-lg">
+              <h4 className="font-semibold mb-2 text-white">Cyber Suraksha Program</h4>
+              <p className="text-gray-300">A comprehensive cybersecurity awareness initiative to educate citizens about online safety practices and protection against cyber threats.</p>
+            </div>
+            <div className="bg-white/5 p-4 rounded-lg">
+              <h4 className="font-semibold mb-2 text-white">DigiLocker</h4>
+              <p className="text-gray-300">Platform for issuance and verification of documents & certificates digitally, eliminating the need for physical documents.</p>
+            </div>
+            <div className="bg-white/5 p-4 rounded-lg">
+              <h4 className="font-semibold mb-2 text-white">UMANG App</h4>
+              <p className="text-gray-300">Unified Mobile Application for New-age Governance providing access to various government services through a single platform.</p>
+            </div>
+          </div>
+          <div className="text-center mt-6">
+            <Link to="/digital-india" className="inline-flex items-center text-india-saffron hover:underline">
+              Learn more about Digital India initiatives
+              <ExternalLink className="h-4 w-4 ml-1" />
+            </Link>
           </div>
         </div>
 
