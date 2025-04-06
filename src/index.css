@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 221 83% 22%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -25,7 +25,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 36 100% 50%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -35,7 +35,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -92,7 +92,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
 
@@ -119,7 +119,7 @@
 
   /* Enhanced UI components */
   .gradient-button {
-    @apply relative overflow-hidden bg-gradient-to-r from-india-saffron to-india-navyBlue text-white 
+    @apply relative overflow-hidden bg-gradient-to-r from-india-saffron to-india-accent2 text-white 
            font-medium rounded-full px-6 py-2.5 transform transition-all duration-300 
            shadow-md hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 
            focus:ring-india-saffron focus:ring-opacity-50;
@@ -127,7 +127,7 @@
 
   .gradient-button::before {
     content: '';
-    @apply absolute inset-0 bg-gradient-to-r from-india-saffron via-india-navyBlue to-india-green 
+    @apply absolute inset-0 bg-gradient-to-r from-india-saffron via-india-accent2 to-india-green 
            opacity-0 transition-opacity duration-300;
   }
 

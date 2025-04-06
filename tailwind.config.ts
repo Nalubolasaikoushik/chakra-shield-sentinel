@@ -63,13 +63,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Indian flag inspired colors
+				// Enhanced Indian flag inspired colors
 				india: {
-					saffron: '#FF9933',
+					saffron: '#FF8C00', // More vibrant saffron
 					white: '#FFFFFF',
-					green: '#138808',
-					navyBlue: '#000080',
-					ashoka: '#0000b3'
+					green: '#008F39', // Richer green
+					navyBlue: '#0C2461', // Deeper navy blue
+					ashoka: '#1E3799', // Deeper blue for Ashoka chakra
+					accent1: '#FFA000', // Accent colors for UI elements
+					accent2: '#1A237E',
+					accent3: '#2C3E50',
+					lightBg: '#F8FAFC', // Light background
+					darkBg: '#1A202C'  // Dark background
 				}
 			},
 			borderRadius: {
@@ -101,20 +106,32 @@ export default {
 				'border-rotate': {
 					'0%': { transform: 'rotate(0deg)' },
 					'100%': { transform: 'rotate(360deg)' }
+				},
+				'pulse-glow': {
+					'0%, 100%': { 
+						opacity: 1,
+						boxShadow: '0 0 5px rgba(255, 140, 0, 0.5)'
+					},
+					'50%': { 
+						opacity: 0.8,
+						boxShadow: '0 0 20px rgba(255, 140, 0, 0.8)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'spin-slow': 'spin-slow 8s linear infinite',
-				'border-rotate': 'border-rotate 3s linear infinite'
+				'border-rotate': 'border-rotate 3s linear infinite',
+				'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
 			},
 			fontFamily: {
-				sans: ['Noto Sans', 'sans-serif'],
+				sans: ['Poppins', 'sans-serif'],
 				devanagari: ['Noto Sans Devanagari', 'sans-serif']
 			},
 			backgroundImage: {
-				'india-gradient': 'linear-gradient(to bottom, #FF9933 33%, #FFFFFF 33%, #FFFFFF 66%, #138808 66%)'
+				'india-gradient': 'linear-gradient(to bottom, #FF8C00 33%, #FFFFFF 33%, #FFFFFF 66%, #008F39 66%)',
+				'hero-pattern': 'radial-gradient(circle at 30% 107%, #0C2461 5%, #1E3799 45%, #273c75 60%, #0c2461 90%)'
 			}
 		}
 	},
