@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Shield, Menu, Globe, X } from 'lucide-react';
+import { Shield, Menu, Globe, X, MapPin } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu,
@@ -25,9 +25,15 @@ const translations = {
     about: "About",
     contact: "Contact",
     tools: "Tools",
+    translation: "Translation",
     login: "Login",
     register: "Register",
-    languageChanged: "Language has been set to English"
+    languageChanged: "Language has been set to English",
+    headerTitle: "Cyber Security System",
+    developerInfo: "Developed by Saikoushik Nalubola",
+    digitalIndia: "A Digital India Initiative",
+    securityTools: "Security Tools",
+    ourMission: "Our mission is to protect digital infrastructure"
   },
   "हिंदी": {
     home: "होम",
@@ -39,9 +45,15 @@ const translations = {
     about: "परिचय",
     contact: "संपर्क",
     tools: "उपकरण",
+    translation: "अनुवाद",
     login: "लॉगिन",
     register: "रजिस्टर",
-    languageChanged: "भाषा हिंदी पर सेट की गई है"
+    languageChanged: "भाषा हिंदी पर सेट की गई है",
+    headerTitle: "साइबर सुरक्षा प्रणाली",
+    developerInfo: "सईकौशिक नालुबोला द्वारा विकसित",
+    digitalIndia: "एक डिजिटल इंडिया पहल",
+    securityTools: "सुरक्षा उपकरण",
+    ourMission: "हमारा मिशन डिजिटल इंफ्रास्ट्रक्चर की रक्षा करना है"
   },
   "தமிழ்": {
     home: "முகப்பு",
@@ -53,23 +65,15 @@ const translations = {
     about: "எங்களை பற்றி",
     contact: "தொடர்பு",
     tools: "கருவிகள்",
+    translation: "மொழிபெயர்ப்பு",
     login: "உள்நுழைய",
     register: "பதிவு செய்யவும்",
-    languageChanged: "மொழி தமிழில் அமைக்கப்பட்டுள்ளது"
-  },
-  "বাংলা": {
-    home: "হোম",
-    scan: "প্রোফাইল স্ক্যান",
-    dashboard: "ড্যাশবোর্ড",
-    blockchain: "ব্লকচেইন রেজিস্ট্রি",
-    reports: "রিপোর্ট",
-    alerts: "সতর্কতা",
-    about: "সম্পর্কে",
-    contact: "যোগাযোগ",
-    tools: "সরঞ্জাম",
-    login: "লগইন",
-    register: "নিবন্ধন",
-    languageChanged: "ভাষা বাংলা সেট করা হয়েছে"
+    languageChanged: "மொழி தமிழில் அமைக்கப்பட்டுள்ளது",
+    headerTitle: "சைபர் பாதுகாப்பு அமைப்பு",
+    developerInfo: "சாய்கௌஷிக் நலுபோலாவால் உருவாக்கப்பட்டது",
+    digitalIndia: "ஒரு டிஜிட்டல் இந்தியா முன்முயற்சி",
+    securityTools: "பாதுகாப்பு கருவிகள்",
+    ourMission: "எங்கள் நோக்கம் டிஜிட்டல் உள்கட்டமைப்பைப் பாதுகாப்பது"
   },
   "తెలుగు": {
     home: "హోమ్",
@@ -81,9 +85,95 @@ const translations = {
     about: "గురించి",
     contact: "సంప్రదించండి",
     tools: "పనిముట్లు",
+    translation: "అనువాదం",
     login: "లాగిన్",
     register: "నమోదు",
-    languageChanged: "భాష తెలుగులో సెట్ చేయబడింది"
+    languageChanged: "భాష తెలుగులో సెట్ చేయబడింది",
+    headerTitle: "సైబర్ భద్రతా వ్యవస్థ",
+    developerInfo: "సాయికౌశిక్ నలుబోల ద్వారా అభివృద్ధి చేయబడింది",
+    digitalIndia: "డిజిటల్ ఇండియా చొరవ",
+    securityTools: "భద్రతా సాధనాలు",
+    ourMission: "మా లక్ష్యం డిజిటల్ మౌలిక సదుపాయాలను రక్షించడం"
+  },
+  "বাংলা": {
+    home: "হোম",
+    scan: "প্রোফাইল স্ক্যান",
+    dashboard: "ড্যাশবোর্ড",
+    blockchain: "ব্লকচেইন রেজিস্ট্রি",
+    reports: "রিপোর্ট",
+    alerts: "সতর্কতা",
+    about: "সম্পর্কে",
+    contact: "যোগাযোগ",
+    tools: "সরঞ্জাম",
+    translation: "অনুবাদ",
+    login: "লগইন",
+    register: "নিবন্ধন",
+    languageChanged: "ভাষা বাংলা সেট করা হয়েছে",
+    headerTitle: "সাইবার নিরাপত্তা সিস্টেম",
+    developerInfo: "সাইকৌশিক নালুবোলা দ্বারা বিকশিত",
+    digitalIndia: "একটি ডিজিটাল ইন্ডিয়া উদ্যোগ",
+    securityTools: "নিরাপত্তা টুলস",
+    ourMission: "আমাদের মিশন ডিজিটাল অবকাঠামো রক্ষা করা"
+  },
+  "മലയാളം": {
+    home: "ഹോം",
+    scan: "പ്രൊഫൈൽ സ്കാൻ",
+    dashboard: "ഡാഷ്ബോർഡ്",
+    blockchain: "ബ്ലോക്ക്ചെയിൻ രജിസ്ട്രി",
+    reports: "റിപ്പോർട്ടുകൾ",
+    alerts: "അലേർട്ടുകൾ",
+    about: "ഞങ്ങളെക്കുറിച്ച്",
+    contact: "ബന്ധപ്പെടുക",
+    tools: "ഉപകരണങ്ങൾ",
+    translation: "വിവർത്തനം",
+    login: "ലോഗിൻ",
+    register: "രജിസ്റ്റർ",
+    languageChanged: "ഭാഷ മലയാളത്തിലേക്ക് സജ്ജമാക്കിയിരിക്കുന്നു",
+    headerTitle: "സൈബർ സുരക്ഷാ സംവിധാനം",
+    developerInfo: "സായ്കൗഷിക് നാലുബോല വികസിപ്പിച്ചത്",
+    digitalIndia: "ഒരു ഡിജിറ്റൽ ഇന്ത്യ സംരംഭം",
+    securityTools: "സുരക്ഷാ ഉപകരണങ്ങൾ",
+    ourMission: "ഡിജിറ്റൽ ഇൻഫ്രാസ്ട്രക്ചർ സംരക്ഷിക്കുക എന്നതാണ് ഞങ്ങളുടെ ദൗത്യം"
+  },
+  "ಕನ್ನಡ": {
+    home: "ಮುಖಪುಟ",
+    scan: "ಪ್ರೊಫೈಲ್ ಸ್ಕ್ಯಾನ್",
+    dashboard: "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    blockchain: "ಬ್ಲಾಕ್‌ಚೈನ್ ರಿಜಿಸ್ಟ್ರಿ",
+    reports: "ವರದಿಗಳು",
+    alerts: "ಎಚ್ಚರಿಕೆಗಳು",
+    about: "ನಮ್ಮ ಬಗ್ಗೆ",
+    contact: "ಸಂಪರ್ಕಿಸಿ",
+    tools: "ಪರಿಕರಗಳು",
+    translation: "ಅನುವಾದ",
+    login: "ಲಾಗಿನ್",
+    register: "ನೋಂದಣಿ",
+    languageChanged: "ಭಾಷೆಯನ್ನು ಕನ್ನಡಕ್ಕೆ ಹೊಂದಿಸಲಾಗಿದೆ",
+    headerTitle: "ಸೈಬರ್ ಭದ್ರತಾ ವ್ಯವಸ್ಥೆ",
+    developerInfo: "ಸಾಯಿಕೌಶಿಕ್ ನಲುಬೋಲಾ ಅವರಿಂದ ಅಭಿವೃದ್ಧಿಪಡಿಸಲಾಗಿದೆ",
+    digitalIndia: "ಡಿಜಿಟಲ್ ಇಂಡಿಯಾ ಉಪಕ್ರಮ",
+    securityTools: "ಭದ್ರತಾ ಪರಿಕರಗಳು",
+    ourMission: "ಡಿಜಿಟಲ್ ಮೂಲಸೌಕರ್ಯವನ್ನು ರಕ್ಷಿಸುವುದು ನಮ್ಮ ಗುರಿ"
+  },
+  "ଓଡ଼ିଆ": {
+    home: "ମୁଖ୍ୟପୃଷ୍ଠା",
+    scan: "ପ୍ରୋଫାଇଲ୍ ସ୍କାନ୍",
+    dashboard: "ଡ୍ୟାସବୋର୍ଡ",
+    blockchain: "ବ୍ଲକଚେନ୍ ରେଜିଷ୍ଟ୍ରି",
+    reports: "ରିପୋର୍ଟ",
+    alerts: "ଆଲର୍ଟ",
+    about: "ଆମ ବିଷୟରେ",
+    contact: "ଯୋଗାଯୋଗ",
+    tools: "ଉପକରଣ",
+    translation: "ଅନୁବାଦ",
+    login: "ଲଗଇନ୍",
+    register: "ପଞ୍ଜୀକରଣ",
+    languageChanged: "ଭାଷା ଓଡ଼ିଆରେ ସେଟ୍ କରାଯାଇଛି",
+    headerTitle: "ସାଇବର ସୁରକ୍ଷା ସିଷ୍ଟମ୍",
+    developerInfo: "ସାଇକୌଶିକ୍ ନାଲୁବୋଲା ଦ୍ୱାରା ବିକଶିତ",
+    digitalIndia: "ଏକ ଡିଜିଟାଲ୍ ଇଣ୍ଡିଆ ପ୍ରୟାସ",
+    securityTools: "ସୁରକ୍ଷା ଉପକରଣ",
+    ourMission: "ଆମର ଲକ୍ଷ୍ୟ ଡିଜିଟାଲ୍ ଇନଫ୍ରାଷ୍ଟ୍ରକଚର୍ ସୁରକ୍ଷା କରିବା"
   }
 };
 
@@ -114,7 +204,11 @@ const Header = () => {
       duration: 3000,
     });
     
-    // Simulated language change for demo purposes
+    // Broadcast language change event for other components to listen
+    const event = new CustomEvent('languageChange', { detail: { language, translations: translations[language as keyof typeof translations] } });
+    window.dispatchEvent(event);
+    
+    // Log language change
     console.log(`Language changed to: ${language}`);
   };
 
@@ -141,7 +235,7 @@ const Header = () => {
                 <AshokChakra size="sm" spinning={true} />
               </div>
               <p className="text-xs md:text-sm font-devanagari text-white/90">
-                साइबर सुरक्षा प्रणाली
+                {currentLanguage === "English" ? "साइबर सुरक्षा प्रणाली" : text.headerTitle}
               </p>
             </div>
           </Link>
@@ -159,14 +253,11 @@ const Header = () => {
               <DropdownMenuItem onClick={() => handleLanguageChange("English")}>English</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLanguageChange("हिंदी")} className="font-devanagari">हिंदी</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLanguageChange("தமிழ்")}>தமிழ்</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleLanguageChange("বাংলা")}>বাংলা</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLanguageChange("తెలుగు")}>తెలుగు</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleLanguageChange("বাংলা")}>বাংলা</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLanguageChange("മലയാളം")}>മലയാളം</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLanguageChange("ಕನ್ನಡ")}>ಕನ್ನಡ</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleLanguageChange("ગુજરાતી")}>ગુજરાતી</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLanguageChange("ଓଡ଼ିଆ")}>ଓଡ଼ିଆ</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleLanguageChange("অসমীয়া")}>অসমীয়া</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleLanguageChange("ਪੰਜਾਬੀ")}>ਪੰਜਾਬੀ</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -200,6 +291,7 @@ const Header = () => {
           <Link to="/reports" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.reports}</Link>
           <Link to="/alerts" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.alerts}</Link>
           <Link to="/tools" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.tools}</Link>
+          <Link to="/translation" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.translation}</Link>
           <Link to="/contact" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.contact}</Link>
           <Link to="/about" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.about}</Link>
         </nav>
@@ -221,6 +313,7 @@ const Header = () => {
             <Link to="/reports" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.reports}</Link>
             <Link to="/alerts" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.alerts}</Link>
             <Link to="/tools" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.tools}</Link>
+            <Link to="/translation" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.translation}</Link>
             <Link to="/contact" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.contact}</Link>
             <Link to="/about" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.about}</Link>
             {showAuthButtons && (
