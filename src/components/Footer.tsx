@@ -1,9 +1,13 @@
+
 import React from 'react';
-import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code, MapPin, Github } from 'lucide-react';
+import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code, MapPin, Github, Linkedin } from 'lucide-react';
 import { Link } from "react-router-dom";
 import AshokChakra from './AshokChakra';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Footer = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <footer className="bg-india-accent2 text-white">
       <div className="container mx-auto px-4 py-8">
@@ -36,8 +40,8 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Links Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        {/* Links Section - Improved for mobile */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
           <div className="slide-in-left" style={{ animationDelay: "0.1s" }}>
             <h4 className="font-semibold mb-3 text-india-saffron">Platform</h4>
             <ul className="space-y-2 text-sm">
@@ -90,32 +94,32 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Digital India Initiatives Section */}
+        {/* Digital India Initiatives Section - Mobile optimized */}
         <div className="py-6 my-6 border-t border-b border-white/10">
           <h3 className="text-xl font-bold mb-4 text-center text-india-saffron">Digital India Initiatives</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 text-sm">
             <div className="bg-white/5 p-4 rounded-lg hover:bg-white/10 transition-colors">
               <h4 className="font-semibold mb-2 text-white">Cyber Suraksha Program</h4>
-              <p className="text-gray-300">A comprehensive cybersecurity awareness initiative to educate citizens about online safety practices and protection against cyber threats.</p>
+              <p className="text-gray-300 text-xs sm:text-sm">A comprehensive cybersecurity awareness initiative to educate citizens about online safety practices and protection against cyber threats.</p>
             </div>
             <div className="bg-white/5 p-4 rounded-lg hover:bg-white/10 transition-colors">
               <h4 className="font-semibold mb-2 text-white">DigiLocker</h4>
-              <p className="text-gray-300">Platform for issuance and verification of documents & certificates digitally, eliminating the need for physical documents.</p>
+              <p className="text-gray-300 text-xs sm:text-sm">Platform for issuance and verification of documents & certificates digitally, eliminating the need for physical documents.</p>
             </div>
             <div className="bg-white/5 p-4 rounded-lg hover:bg-white/10 transition-colors">
               <h4 className="font-semibold mb-2 text-white">UMANG App</h4>
-              <p className="text-gray-300">Unified Mobile Application for New-age Governance providing access to various government services through a single platform.</p>
+              <p className="text-gray-300 text-xs sm:text-sm">Unified Mobile Application for New-age Governance providing access to various government services through a single platform.</p>
             </div>
           </div>
-          <div className="text-center mt-6">
-            <Link to="/digital-india" className="inline-flex items-center text-india-saffron hover:underline">
+          <div className="text-center mt-4 md:mt-6">
+            <Link to="/digital-india" className="inline-flex items-center text-india-saffron hover:underline text-sm">
               Learn more about Digital India initiatives
-              <ExternalLink className="h-4 w-4 ml-1" />
+              <ExternalLink className="h-3 w-3 ml-1" />
             </Link>
           </div>
         </div>
 
-        {/* Developer Credit Section - Enhanced with updated GitHub link */}
+        {/* Enhanced Developer Credit Section */}
         <div className="py-6 my-6 border-t border-b border-white/10">
           <div className="flex flex-col items-center">
             <div className="mb-4 text-center">
@@ -123,45 +127,63 @@ const Footer = () => {
               <p className="text-sm text-gray-300 mb-4">Under the Digital India Initiative</p>
             </div>
             
-            <div className="animated-border">
-              <div className="bg-gradient-to-r from-india-accent3/60 to-india-accent2 p-6 rounded-lg shadow-xl hover:shadow-india-saffron/20 transition-all duration-300 max-w-md transform hover:-translate-y-1">
-                <div className="flex items-center justify-center mb-4">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-india-saffron/20 rounded-full animate-pulse-glow"></div>
-                    <Code className="h-10 w-10 text-india-saffron relative z-10" />
-                  </div>
+            <div className="animated-border max-w-xs sm:max-w-md relative overflow-hidden">
+              <div className="bg-gradient-to-br from-india-accent3/80 to-india-accent2 p-6 rounded-lg shadow-xl hover:shadow-india-saffron/20 transition-all duration-500 transform hover:-translate-y-1">
+                {/* Add a decorative background pattern */}
+                <div className="absolute inset-0 opacity-10">
+                  <AshokChakra size="lg" spinning={true} />
                 </div>
-                <h4 className="text-center text-2xl font-bold text-white mb-2 tricolor-text">Saikoushik Nalubola</h4>
-                <p className="text-center text-gray-300 text-sm mb-4">Lead Developer & Cybersecurity Expert</p>
-                <div className="flex justify-center space-x-3">
-                  <a 
-                    href="https://www.linkedin.com/in/saikoushiknalubola/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="bg-white/10 hover:bg-white/20 transition-colors duration-300 px-4 py-2 rounded-full text-sm text-white flex items-center"
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                    LinkedIn
-                  </a>
-                  <a 
-                    href="https://github.com/saikoushiknalubola" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="bg-white/10 hover:bg-white/20 transition-colors duration-300 px-4 py-2 rounded-full text-sm text-white flex items-center"
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    GitHub
-                  </a>
+                
+                <div className="flex flex-col items-center justify-center relative z-10">
+                  {/* Profile image with glow effect */}
+                  <div className="relative mb-4 group">
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-india-saffron via-white to-india-green opacity-0 group-hover:opacity-70 blur-lg transition-opacity duration-700"></div>
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-india-saffron/80 to-india-green/80 flex items-center justify-center relative overflow-hidden border-2 border-white/30">
+                      <Code className="h-12 w-12 text-white" />
+                    </div>
+                  </div>
+                  
+                  <h4 className="text-center text-2xl font-bold text-white mb-2 tricolor-text">Saikoushik Nalubola</h4>
+                  <p className="text-center text-gray-300 text-sm mb-4">Lead Developer & Cybersecurity Expert</p>
+                  
+                  {/* Enhanced social links with hover effects */}
+                  <div className="flex justify-center space-x-3">
+                    <a 
+                      href="https://www.linkedin.com/in/saikoushiknalubola/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="group bg-white/10 hover:bg-india-saffron/80 transition-colors duration-300 px-4 py-2 rounded-full text-sm text-white flex items-center"
+                    >
+                      <Linkedin className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                      LinkedIn
+                    </a>
+                    <a 
+                      href="https://github.com/saikoushiknalubola" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="group bg-white/10 hover:bg-india-green/80 transition-colors duration-300 px-4 py-2 rounded-full text-sm text-white flex items-center"
+                    >
+                      <Github className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                      GitHub
+                    </a>
+                  </div>
+                  
+                  {/* Decorative tricolor line */}
+                  <div className="w-full h-1 mt-6 rounded overflow-hidden">
+                    <div className="flex h-full">
+                      <div className="w-1/3 bg-india-saffron"></div>
+                      <div className="w-1/3 bg-white"></div>
+                      <div className="w-1/3 bg-india-green"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer Bottom */}
-        <div className="pt-6 border-t border-white/10 text-sm text-center md:flex md:justify-between md:items-center">
+        {/* Footer Bottom - Mobile optimized */}
+        <div className="pt-6 border-t border-white/10 text-xs md:text-sm text-center md:flex md:justify-between md:items-center">
           <p>© 2025 ChakraShield - All rights reserved</p>
           <div className="mt-4 md:mt-0 flex flex-wrap justify-center md:justify-end gap-4">
             <Link to="/terms" className="hover:text-india-saffron transition-colors">Terms</Link>
