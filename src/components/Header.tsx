@@ -1,19 +1,20 @@
-
 import React, { useState, useEffect } from 'react';
-import { Shield, Menu, Globe, X, MapPin } from 'lucide-react';
+import { Shield, Menu, Globe, X, MapPin, AlertTriangle, FileText, Tool, Users, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Link, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import AshokChakra from './AshokChakra';
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// Add translations for different languages
 const translations = {
   "English": {
     home: "Home",
@@ -33,7 +34,12 @@ const translations = {
     developerInfo: "Developed by Saikoushik Nalubola",
     digitalIndia: "A Digital India Initiative",
     securityTools: "Security Tools",
-    ourMission: "Our mission is to protect digital infrastructure"
+    ourMission: "Our mission is to protect digital infrastructure",
+    features: "Features",
+    disclaimer: "Disclaimer",
+    legal: "Legal",
+    help: "Help",
+    resources: "Resources"
   },
   "हिंदी": {
     home: "होम",
@@ -73,7 +79,7 @@ const translations = {
     developerInfo: "சாய்கௌஷிக் நலுபோலாவால் உருவாக்கப்பட்டது",
     digitalIndia: "ஒரு டிஜிட்டல் இந்தியா முன்முயற்சி",
     securityTools: "பாதுகாப்பு கருவிகள்",
-    ourMission: "எங்கள் நோக்கம் டிஜிட்டல் உள்கட்டமைப்பைப் பாதுகாப்பது"
+    ourMission: "எங்கள் நோக்கம் டிஜிட்டல் உள்கட்டமைப் பாதுகாப்பது"
   },
   "తెలుగు": {
     home: "హోమ్",
@@ -87,13 +93,13 @@ const translations = {
     tools: "పనిముట్లు",
     translation: "అనువాదం",
     login: "లాగిన్",
-    register: "నమోదు",
+    register: "నోందణి",
     languageChanged: "భాష తెలుగులో సెట్ చేయబడింది",
     headerTitle: "సైబర్ భద్రతా వ్యవస్థ",
-    developerInfo: "సాయికౌశిక్ నలుబోల ద్వారా అభివృద్ధి చేయబడింది",
+    developerInfo: "సాయికౌశిక్ నాలుబోల ద్వారా అభివృద్ధి చేయబడింది",
     digitalIndia: "డిజిటల్ ఇండియా చొరవ",
     securityTools: "భద్రతా సాధనాలు",
-    ourMission: "మా లక్ష్యం డిజిటల్ మౌలిక సదుపాయాలను రక్షించడం"
+    ourMission: "మా లక్ష్యం డిజిటల్ మూলಸౌకర్�వను రక్షించడం"
   },
   "বাংলা": {
     home: "হোম",
@@ -111,7 +117,7 @@ const translations = {
     languageChanged: "ভাষা বাংলা সেট করা হয়েছে",
     headerTitle: "সাইবার নিরাপত্তা সিস্টেম",
     developerInfo: "সাইকৌশিক নালুবোলা দ্বারা বিকশিত",
-    digitalIndia: "একটি ডিজিটাল ইন্ডিয়া উদ্যোগ",
+    digitalIndia: "একটি ডিজিটাল ইন্ত্য উদ্যোগ",
     securityTools: "নিরাপত্তা টুলস",
     ourMission: "আমাদের মিশন ডিজিটাল অবকাঠামো রক্ষা করা"
   },
@@ -119,7 +125,7 @@ const translations = {
     home: "ഹോം",
     scan: "പ്രൊഫൈൽ സ്കാൻ",
     dashboard: "ഡാഷ്ബോർഡ്",
-    blockchain: "ബ്ലോക്ക്ചെയിൻ രജിസ്ട്രി",
+    blockchain: "ബ്ലോക്ക്ചെയിൻ രജിസ്റ്റരി",
     reports: "റിപ്പോർട്ടുകൾ",
     alerts: "അലേർട്ടുകൾ",
     about: "ഞങ്ങളെക്കുറിച്ച്",
@@ -130,8 +136,8 @@ const translations = {
     register: "രജിസ്റ്റർ",
     languageChanged: "ഭാഷ മലയാളത്തിലേക്ക് സജ്ജമാക്കിയിരിക്കുന്നു",
     headerTitle: "സൈബർ സുരക്ഷാ സംവിധാനം",
-    developerInfo: "സായ്കൗഷിക് നാലുബോല വികസിപ്പിച്ചത്",
-    digitalIndia: "ഒരു ഡിജിറ്റൽ ഇന്ത്യ സംരംഭം",
+    developerInfo: "സായ്കൗഷിക್ ನಾಲುಬೋಲ വികസിപ്പിച്ചത്",
+    digitalIndia: "ഒരു ഡിജിറ്റൽ ഇംണ്യ സംരംഭം",
     securityTools: "സുരക്ഷാ ഉപകരണങ്ങൾ",
     ourMission: "ഡിജിറ്റൽ ഇൻഫ്രാസ്ട്രക്ചർ സംരക്ഷിക്കുക എന്നതാണ് ഞങ്ങളുടെ ദൗത്യം"
   },
@@ -144,7 +150,7 @@ const translations = {
     alerts: "ಎಚ್ಚರಿಕೆಗಳು",
     about: "ನಮ್ಮ ಬಗ್ಗೆ",
     contact: "ಸಂಪರ್ಕಿಸಿ",
-    tools: "ಪರಿಕರಗಳು",
+    tools: "ಪರಿಕ��ಗಳು",
     translation: "ಅನುವಾದ",
     login: "ಲಾಗಿನ್",
     register: "ನೋಂದಣಿ",
@@ -170,7 +176,7 @@ const translations = {
     register: "ପଞ୍ଜୀକରଣ",
     languageChanged: "ଭାଷା ଓଡ଼ିଆରେ ସେଟ୍ କରାଯାଇଛି",
     headerTitle: "ସାଇବର ସୁରକ୍ଷା ସିଷ୍ଟମ୍",
-    developerInfo: "ସାଇକୌଶିକ୍ ନାଲୁବୋଲା ଦ୍ୱାରା ବିକଶିତ",
+    developerInfo: "ସାଇକୌଶିକ୍ ନାଲୁବୋଲ ଦ୍ୱାରା ବିକଶିତ",
     digitalIndia: "ଏକ ଡିଜିଟାଲ୍ ଇଣ୍ଡିଆ ପ୍ରୟାସ",
     securityTools: "ସୁରକ୍ଷା ଉପକରଣ",
     ourMission: "ଆମର ଲକ୍ଷ୍ୟ ଡିଜିଟାଲ୍ ଇନଫ୍ରାଷ୍ଟ୍ରକଚର୍ ସୁରକ୍ଷା କରିବା"
@@ -189,13 +195,11 @@ const Header = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Don't show login/register buttons if we're already on those pages
   const showAuthButtons = !['/login', '/register'].includes(location.pathname);
 
   const handleLanguageChange = (language: string) => {
     setCurrentLanguage(language);
     
-    // Set the translations for the selected language
     setText(translations[language as keyof typeof translations] || translations.English);
     
     toast({
@@ -204,32 +208,28 @@ const Header = () => {
       duration: 3000,
     });
     
-    // Broadcast language change event for other components to listen
     const event = new CustomEvent('languageChange', { detail: { language, translations: translations[language as keyof typeof translations] } });
     window.dispatchEvent(event);
     
-    // Log language change
     console.log(`Language changed to: ${language}`);
   };
 
-  // Effect to initialize language
   useEffect(() => {
     setText(translations[currentLanguage as keyof typeof translations] || translations.English);
   }, [currentLanguage]);
 
   return (
     <header className="w-full bg-india-navyBlue text-white shadow-lg">
-      {/* Main header with logo and navigation */}
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
             <div className="mr-3 relative group">
               <div className="absolute inset-0 bg-india-saffron rounded-full opacity-20 animate-pulse group-hover:opacity-40 transition-opacity"></div>
-              <Shield className="h-9 w-9 text-india-saffron relative z-10 group-hover:scale-110 transition-transform" />
+              <Shield className="h-8 w-8 md:h-9 md:w-9 text-india-saffron relative z-10 group-hover:scale-110 transition-transform" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center">
-                <h1 className="text-xl md:text-2xl font-bold mr-2 bg-gradient-to-r from-india-saffron to-white bg-clip-text text-transparent">
+                <h1 className="text-lg md:text-2xl font-bold mr-1 md:mr-2 bg-gradient-to-r from-india-saffron to-white bg-clip-text text-transparent">
                   ChakraShield
                 </h1>
                 <AshokChakra size="sm" spinning={true} />
@@ -261,6 +261,37 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="bg-transparent border-white/20 text-white hover:bg-white/10 hidden md:flex">
+                <FileText className="mr-1 h-4 w-4" />
+                <span>{text.resources}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-white w-56">
+              <DropdownMenuLabel>Resources</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>Documentation</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <AlertTriangle className="mr-2 h-4 w-4" />
+                  <span>Guidelines</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Tool className="mr-2 h-4 w-4" />
+                  <span>API Reference</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Users className="mr-2 h-4 w-4" />
+                  <span>Community</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {showAuthButtons && (
             <>
               <Link to="/login">
@@ -281,23 +312,22 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Navigation strip with tricolor border */}
       <div className="relative bg-white/10 text-white before:absolute before:top-0 before:left-0 before:w-full before:h-0.5 before:bg-india-saffron after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-india-green">
         <nav className="container mx-auto flex overflow-x-auto scrollbar-none">
-          <Link to="/" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.home}</Link>
-          <Link to="/scan" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.scan}</Link>
-          <Link to="/dashboard" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.dashboard}</Link>
-          <Link to="/blockchain" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.blockchain}</Link>
-          <Link to="/reports" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.reports}</Link>
-          <Link to="/alerts" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.alerts}</Link>
-          <Link to="/tools" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.tools}</Link>
-          <Link to="/translation" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.translation}</Link>
-          <Link to="/contact" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.contact}</Link>
-          <Link to="/about" className="px-4 py-2 hover:bg-white/10 font-medium text-sm whitespace-nowrap transition-colors">{text.about}</Link>
+          <Link to="/" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.home}</Link>
+          <Link to="/scan" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.scan}</Link>
+          <Link to="/dashboard" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.dashboard}</Link>
+          <Link to="/blockchain" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.blockchain}</Link>
+          <Link to="/reports" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.reports}</Link>
+          <Link to="/alerts" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.alerts}</Link>
+          <Link to="/tools" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.tools}</Link>
+          <Link to="/translation" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.translation}</Link>
+          <Link to="/about" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.about}</Link>
+          <Link to="/contact" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.contact}</Link>
+          <Link to="/#disclaimer" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.disclaimer}</Link>
         </nav>
       </div>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && isMobile && (
         <div className="md:hidden fixed inset-0 z-50 bg-india-navyBlue bg-opacity-98 flex flex-col">
           <div className="flex justify-end p-4">
@@ -305,17 +335,31 @@ const Header = () => {
               <X className="h-6 w-6" />
             </Button>
           </div>
-          <div className="flex flex-col items-center py-8 space-y-6">
-            <Link to="/" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.home}</Link>
-            <Link to="/scan" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.scan}</Link>
-            <Link to="/dashboard" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.dashboard}</Link>
-            <Link to="/blockchain" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.blockchain}</Link>
-            <Link to="/reports" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.reports}</Link>
-            <Link to="/alerts" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.alerts}</Link>
-            <Link to="/tools" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.tools}</Link>
-            <Link to="/translation" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.translation}</Link>
-            <Link to="/contact" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.contact}</Link>
-            <Link to="/about" className="text-white text-xl font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.about}</Link>
+          <div className="flex flex-col items-center py-6 space-y-5">
+            <Link to="/" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.home}</Link>
+            <Link to="/scan" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.scan}</Link>
+            <Link to="/dashboard" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.dashboard}</Link>
+            <Link to="/blockchain" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.blockchain}</Link>
+            <Link to="/reports" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.reports}</Link>
+            <Link to="/alerts" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.alerts}</Link>
+            <Link to="/tools" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.tools}</Link>
+            <Link to="/translation" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.translation}</Link>
+            <Link to="/about" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.about}</Link>
+            <Link to="/contact" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.contact}</Link>
+            <Link to="/#disclaimer" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.disclaimer}</Link>
+            
+            <div className="border-t border-white/10 w-3/4 my-2"></div>
+            
+            <div className="text-white text-lg font-medium hover:text-india-saffron transition-colors">
+              {text.resources}
+            </div>
+            <div className="flex flex-col items-center space-y-4 text-sm text-white/80">
+              <Link to="/documentation" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Documentation</Link>
+              <Link to="/guidelines" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Guidelines</Link>
+              <Link to="/api" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>API Reference</Link>
+              <Link to="/community" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Community</Link>
+            </div>
+            
             {showAuthButtons && (
               <div className="pt-6 flex flex-col space-y-3">
                 <Link to="/login" onClick={toggleMobileMenu}>

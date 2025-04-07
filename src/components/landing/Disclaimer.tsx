@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { AlertTriangle, Info } from 'lucide-react';
+import { AlertTriangle, Info, Shield } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Disclaimer = () => {
@@ -20,9 +20,17 @@ const Disclaimer = () => {
                 The use of governmental symbols, logos, and representations is solely for illustrative purposes to demonstrate 
                 how this platform could potentially integrate with existing national digital initiatives.
               </p>
-              <p>
+              <p className="mb-3">
                 This project is protected under Constitutional right to freedom of speech and expression, academic and creative freedom, 
                 and fair use doctrine for educational and demonstrative purposes.
+              </p>
+              <p className="mb-3">
+                The AI models and algorithms used in ChakraShield are designed for educational and research purposes. They are not intended
+                to be used for surveillance or to infringe on the privacy rights of individuals.
+              </p>
+              <p>
+                ChakraShield does not collect, store, or process any personal data without explicit consent and adheres to best practices
+                for data protection and privacy.
               </p>
             </AlertDescription>
           </Alert>
@@ -44,6 +52,14 @@ const Disclaimer = () => {
               <p>
                 <span className="font-medium">Data Privacy:</span> In a production environment, ChakraShield would be designed to 
                 comply with all applicable Indian data protection laws and regulations.
+              </p>
+              <p>
+                <span className="font-medium">Ethical Framework:</span> All AI operations within ChakraShield are guided by a robust 
+                ethical framework that prioritizes transparency, fairness, and respect for privacy.
+              </p>
+              <p>
+                <span className="font-medium">Continuous Research:</span> The technology behind ChakraShield is constantly evolving through 
+                collaborative research with cybersecurity experts and academic institutions.
               </p>
               <p>
                 <span className="font-medium">Contact:</span> For inquiries, collaboration opportunities, or concerns, please 
