@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Scan from "./pages/Scan";
 import Dashboard from "./pages/Dashboard";
@@ -28,28 +28,26 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/scan" element={<Scan />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/blockchain" element={<Blockchain />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/alerts" element={<Alerts />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/terms" element={<Policies />} />
-          <Route path="/privacy" element={<Policies />} />
-          <Route path="/security" element={<Policies />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/tools" element={<Tools />} />
-          <Route path="/translation" element={<Translation />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/scan" element={<Scan />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/blockchain" element={<Blockchain />} />
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/alerts" element={<Alerts />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/terms" element={<Policies />} />
+        <Route path="/privacy" element={<Policies />} />
+        <Route path="/security" element={<Policies />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/tools" element={<Tools />} />
+        <Route path="/translation" element={<Translation />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </TooltipProvider>
   </QueryClientProvider>
 );
