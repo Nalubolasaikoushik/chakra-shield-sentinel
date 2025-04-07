@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Menu, Globe, X, MapPin, AlertTriangle, FileText, Tool, Users, Lock } from 'lucide-react';
+import { Shield, Menu, Globe, X, MapPin, AlertTriangle, FileText, Wrench, Users, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu,
@@ -59,7 +59,12 @@ const translations = {
     developerInfo: "सईकौशिक नालुबोला द्वारा विकसित",
     digitalIndia: "एक डिजिटल इंडिया पहल",
     securityTools: "सुरक्षा उपकरण",
-    ourMission: "हमारा मिशन डिजिटल इंफ्रास्ट्रक्चर की रक्षा करना है"
+    ourMission: "हमारा मिशन डिजिटल इंफ्रास्ट्रक्चर की रक्षा करना है",
+    features: "विशेषताएं",
+    disclaimer: "अस्वीकरण",
+    legal: "कानूनी",
+    help: "सहायता",
+    resources: "संसाधन"
   },
   "தமிழ்": {
     home: "முகப்பு",
@@ -79,7 +84,12 @@ const translations = {
     developerInfo: "சாய்கௌஷிக் நலுபோலாவால் உருவாக்கப்பட்டது",
     digitalIndia: "ஒரு டிஜிட்டல் இந்தியா முன்முயற்சி",
     securityTools: "பாதுகாப்பு கருவிகள்",
-    ourMission: "எங்கள் நோக்கம் டிஜிட்டல் உள்கட்டமைப் பாதுகாப்பது"
+    ourMission: "எங்கள் நோக்கம் டிஜிட்டல் உள்கட்டமைப் பாதுகாப்பது",
+    features: "அம்சங்கள்",
+    disclaimer: "மறுப்பு",
+    legal: "சட்டப்பூர்வ",
+    help: "உதவி",
+    resources: "வளங்கள்"
   },
   "తెలుగు": {
     home: "హోమ్",
@@ -99,7 +109,12 @@ const translations = {
     developerInfo: "సాయికౌశిక్ నాలుబోల ద్వారా అభివృద్ధి చేయబడింది",
     digitalIndia: "డిజిటల్ ఇండియా చొరవ",
     securityTools: "భద్రతా సాధనాలు",
-    ourMission: "మా లక్ష్యం డిజిటల్ మూলಸౌకర్�వను రక్షించడం"
+    ourMission: "మా లక్ష్యం డిజిటల్ మూলಸౌకర్�వను రక్షించడం",
+    features: "ఫీచర్లు",
+    disclaimer: "డిస్కెయిమర్",
+    legal: "చట్టపరమైన",
+    help: "సహాయం",
+    resources: "వనరులు"
   },
   "বাংলা": {
     home: "হোম",
@@ -119,7 +134,12 @@ const translations = {
     developerInfo: "সাইকৌশিক নালুবোলা দ্বারা বিকশিত",
     digitalIndia: "একটি ডিজিটাল ইন্ত্য উদ্যোগ",
     securityTools: "নিরাপত্তা টুলস",
-    ourMission: "আমাদের মিশন ডিজিটাল অবকাঠামো রক্ষা করা"
+    ourMission: "আমাদের মিশন ডিজিটাল অবকাঠামো রক্ষা করা",
+    features: "বৈশিষ্ট্য",
+    disclaimer: "অস্বীকৃতি",
+    legal: "আইনি",
+    help: "সাহায্য",
+    resources: "সম্পদ"
   },
   "മലയാളം": {
     home: "ഹോം",
@@ -136,10 +156,15 @@ const translations = {
     register: "രജിസ്റ്റർ",
     languageChanged: "ഭാഷ മലയാളത്തിലേക്ക് സജ്ജമാക്കിയിരിക്കുന്നു",
     headerTitle: "സൈബർ സുരക്ഷാ സംവിധാനം",
-    developerInfo: "സായ്കൗഷിക್ ನಾಲುಬೋಲ വികസിപ്പിച്ചത്",
+    developerInfo: "സായ്കൗഷിക് ನಾಲುಬೋಲ വികസിപ്പിച്ചത്",
     digitalIndia: "ഒരു ഡിജിറ്റൽ ഇംണ്യ സംരംഭം",
     securityTools: "സുരക്ഷാ ഉപകരണങ്ങൾ",
-    ourMission: "ഡിജിറ്റൽ ഇൻഫ്രാസ്ട്രക്ചർ സംരക്ഷിക്കുക എന്നതാണ് ഞങ്ങളുടെ ദൗത്യം"
+    ourMission: "ഡിജിറ്റൽ ഇൻഫ്രാസ്ട്രക്ചർ സംരക്ഷിക്കുക എന്നതാണ് ഞങ്ങളുടെ ദൗത്യം",
+    features: "സവിശേഷതകൾ",
+    disclaimer: "നിരാകരണം",
+    legal: "നിയമപരമായ",
+    help: "സഹായം",
+    resources: "വിഭവങ്ങൾ"
   },
   "ಕನ್ನಡ": {
     home: "ಮುಖಪುಟ",
@@ -159,7 +184,12 @@ const translations = {
     developerInfo: "ಸಾಯಿಕೌಶಿಕ್ ನಲುಬೋಲಾ ಅವರಿಂದ ಅಭಿವೃದ್ಧಿಪಡಿಸಲಾಗಿದೆ",
     digitalIndia: "ಡಿಜಿಟಲ್ ಇಂಡಿಯಾ ಉಪಕ್ರಮ",
     securityTools: "ಭದ್ರತಾ ಪರಿಕರಗಳು",
-    ourMission: "ಡಿಜಿಟಲ್ ಮೂಲಸೌಕರ್ಯವನ್ನು ರಕ್ಷಿಸುವುದು ನಮ್ಮ ಗುರಿ"
+    ourMission: "ಡಿಜಿಟಲ್ ಮೂಲಸೌಕರ್ಯವನ್ನು ರಕ್ಷಿಸುವುದು ನಮ್ಮ ಗುರಿ",
+    features: "ವೈಶಿಷ್ಟ್ಯಗಳು",
+    disclaimer: "ಹಕ್ಕುತ್ಯಾಗ",
+    legal: "ಕಾನೂನು",
+    help: "ಸಹಾಯ",
+    resources: "ಸಂಪನ್ಮೂಲಗಳು"
   },
   "ଓଡ଼ିଆ": {
     home: "ମୁଖ୍ୟପୃଷ୍ଠା",
@@ -179,7 +209,12 @@ const translations = {
     developerInfo: "ସାଇକୌଶିକ୍ ନାଲୁବୋଲ ଦ୍ୱାରା ବିକଶିତ",
     digitalIndia: "ଏକ ଡିଜିଟାଲ୍ ଇଣ୍ଡିଆ ପ୍ରୟାସ",
     securityTools: "ସୁରକ୍ଷା ଉପକରଣ",
-    ourMission: "ଆମର ଲକ୍ଷ୍ୟ ଡିଜିଟାଲ୍ ଇନଫ୍ରାଷ୍ଟ୍ରକଚର୍ ସୁରକ୍ଷା କରିବା"
+    ourMission: "ଆମର ଲକ୍ଷ୍ୟ ଡିଜିଟାଲ୍ ଇନଫ୍ରାଷ୍ଟ୍ରକଚର୍ ସୁରକ୍ଷା କରିବା",
+    features: "ବୈଶିଷ୍ଟ୍ୟଗୁଡିକ",
+    disclaimer: "ଅସ୍ୱୀକୃତି",
+    legal: "ଆଇନଗତ",
+    help: "ସାହାୟ୍ୟ",
+    resources: "ସମ୍ବଳ"
   }
 };
 
@@ -281,7 +316,7 @@ const Header = () => {
                   <span>Guidelines</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Tool className="mr-2 h-4 w-4" />
+                  <Wrench className="mr-2 h-4 w-4" />
                   <span>API Reference</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
