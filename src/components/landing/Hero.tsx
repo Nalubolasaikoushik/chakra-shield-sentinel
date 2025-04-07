@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Search, Shield, Database, FileText, BellRing, Cpu, Brain } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -22,22 +21,6 @@ const Hero = () => {
 
   return (
     <div className="min-h-[85vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
-      {/* Floating Chakra Pattern Background */}
-      <div className="absolute inset-0 overflow-hidden opacity-5">
-        <div className="absolute top-[10%] left-[5%] w-32 h-32">
-          <AshokChakra size="lg" spinning={true} />
-        </div>
-        <div className="absolute top-[30%] right-[15%] w-24 h-24">
-          <AshokChakra size="md" spinning={true} />
-        </div>
-        <div className="absolute bottom-[20%] left-[20%] w-16 h-16">
-          <AshokChakra size="sm" spinning={true} />
-        </div>
-        <div className="absolute bottom-[10%] right-[10%] w-20 h-20">
-          <AshokChakra size="md" spinning={true} />
-        </div>
-      </div>
-      
       {/* Hero main content */}
       <div className="container mx-auto px-4 py-16 md:py-24 flex flex-col lg:flex-row items-center justify-between relative z-10">
         <div className="z-10 max-w-2xl mb-12 lg:mb-0">
@@ -84,32 +67,22 @@ const Hero = () => {
         </div>
         
         <div className="relative slide-in-right" style={{ animationDelay: "0.3s" }}>
+          {/* Simplified shield graphic - removed floating animation */}
           <div 
-            className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] bg-white p-6 rounded-full shadow-xl floating"
-            style={{ 
-              transform: `translateY(${scrollPosition * 0.1}px)`,
-              transition: 'transform 0.1s ease-out'
-            }}
+            className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] bg-white p-6 rounded-full shadow-xl"
           >
             <div className="absolute inset-0 rounded-full overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-b from-india-saffron via-white to-india-green opacity-10"></div>
             </div>
             <div className="relative h-full w-full flex items-center justify-center">
-              <AshokChakra size="lg" spinning={true} className="opacity-15" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Shield className="h-16 w-16 md:h-24 md:w-24 text-india-navyBlue pulse-alert" />
-              </div>
+              <Shield className="h-16 w-16 md:h-24 md:w-24 text-india-navyBlue pulse-alert" />
             </div>
           </div>
           
-          {/* Floating features */}
+          {/* Simplified feature cards */}
           <div 
             className="absolute -left-12 md:-left-16 top-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-left"
-            style={{ 
-              animationDelay: "0.5s",
-              transform: `translateY(${scrollPosition * -0.05}px)`,
-              transition: 'transform 0.1s ease-out'
-            }}
+            style={{ animationDelay: "0.5s" }}
           >
             <div className="bg-red-100 p-2 rounded-full mr-3 flex-shrink-0">
               <BellRing className="h-5 w-5 text-red-500" />
@@ -122,11 +95,7 @@ const Hero = () => {
           
           <div 
             className="absolute -right-12 md:-right-12 bottom-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-right"
-            style={{ 
-              animationDelay: "0.6s",
-              transform: `translateY(${scrollPosition * -0.08}px)`,
-              transition: 'transform 0.1s ease-out'
-            }}
+            style={{ animationDelay: "0.6s" }}
           >
             <div className="bg-blue-100 p-2 rounded-full mr-3 flex-shrink-0">
               <Search className="h-5 w-5 text-blue-500" />

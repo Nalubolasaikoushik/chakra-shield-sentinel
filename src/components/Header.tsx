@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Shield, Menu, Globe, X, MapPin, AlertTriangle, FileText, Wrench, Users, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -347,22 +348,24 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Center aligned mobile menu with improved colors */}
       <div className="relative bg-white/10 text-white before:absolute before:top-0 before:left-0 before:w-full before:h-0.5 before:bg-india-saffron after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-india-green">
-        <nav className="container mx-auto flex overflow-x-auto scrollbar-none">
-          <Link to="/" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.home}</Link>
-          <Link to="/scan" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.scan}</Link>
-          <Link to="/dashboard" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.dashboard}</Link>
-          <Link to="/blockchain" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.blockchain}</Link>
-          <Link to="/reports" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.reports}</Link>
-          <Link to="/alerts" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.alerts}</Link>
-          <Link to="/tools" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.tools}</Link>
-          <Link to="/translation" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.translation}</Link>
-          <Link to="/about" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.about}</Link>
-          <Link to="/contact" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.contact}</Link>
-          <Link to="/#disclaimer" className="px-3 py-2 hover:bg-white/10 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.disclaimer}</Link>
+        <nav className="container mx-auto flex justify-center overflow-x-auto scrollbar-none">
+          <Link to="/" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.home}</Link>
+          <Link to="/scan" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.scan}</Link>
+          <Link to="/dashboard" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.dashboard}</Link>
+          <Link to="/blockchain" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.blockchain}</Link>
+          <Link to="/reports" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.reports}</Link>
+          <Link to="/alerts" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.alerts}</Link>
+          <Link to="/tools" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.tools}</Link>
+          <Link to="/translation" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.translation}</Link>
+          <Link to="/about" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.about}</Link>
+          <Link to="/contact" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.contact}</Link>
+          <Link to="/#disclaimer" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.disclaimer}</Link>
         </nav>
       </div>
 
+      {/* Improved mobile menu - centered content */}
       {mobileMenuOpen && isMobile && (
         <div className="md:hidden fixed inset-0 z-50 bg-india-navyBlue bg-opacity-98 flex flex-col">
           <div className="flex justify-end p-4">
@@ -370,7 +373,7 @@ const Header = () => {
               <X className="h-6 w-6" />
             </Button>
           </div>
-          <div className="flex flex-col items-center py-6 space-y-5">
+          <div className="flex flex-col items-center justify-center py-6 space-y-5">
             <Link to="/" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.home}</Link>
             <Link to="/scan" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.scan}</Link>
             <Link to="/dashboard" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.dashboard}</Link>
@@ -385,7 +388,7 @@ const Header = () => {
             
             <div className="border-t border-white/10 w-3/4 my-2"></div>
             
-            <div className="text-white text-lg font-medium hover:text-india-saffron transition-colors">
+            <div className="text-white text-lg font-medium text-india-saffron transition-colors">
               {text.resources}
             </div>
             <div className="flex flex-col items-center space-y-4 text-sm text-white/80">

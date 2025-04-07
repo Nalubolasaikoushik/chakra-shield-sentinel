@@ -31,39 +31,77 @@ const Index = () => {
         <div className="py-16 bg-gradient-to-b from-india-lightBg to-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-india-accent2 mb-4">Innovative Security Features</h2>
+              <h2 className="text-3xl font-bold text-india-accent2 mb-4" id="security-features">Innovative Security Features</h2>
               <p className="text-gray-600 max-w-3xl mx-auto">
                 ChakraShield combines cutting-edge AI with robust security frameworks to provide
                 comprehensive protection against emerging cyber threats targeting Indian digital infrastructure.
               </p>
             </div>
             
-            {/* Deepfake Detection */}
-            <DeepfakeDetection />
+            {/* Features organized in a clear structure */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+              {/* Core Detection Features */}
+              <div>
+                <h3 className="text-xl font-bold text-india-navyBlue mb-6 text-center">Core Detection</h3>
+                <div className="space-y-8">
+                  {/* Deepfake Detection */}
+                  <DeepfakeDetection />
+                  
+                  {/* Behavior Analysis */}
+                  <BehaviorAnalysis />
+                </div>
+              </div>
+              
+              {/* Security Infrastructure */}
+              <div>
+                <h3 className="text-xl font-bold text-india-navyBlue mb-6 text-center">Security Infrastructure</h3>
+                <div className="space-y-8">
+                  {/* Network Mapping */}
+                  <NetworkMapping />
+                  
+                  {/* Security Assessment */}
+                  <SecurityAssessment />
+                </div>
+              </div>
+            </div>
             
-            {/* Behavior Analysis */}
-            <BehaviorAnalysis />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              {/* Intelligence Features */}
+              <div>
+                <h3 className="text-lg font-bold text-india-navyBlue mb-4 text-center">Intelligence</h3>
+                {/* Threat Intelligence */}
+                <ThreatIntelligence />
+              </div>
+              
+              {/* Monitoring Features */}
+              <div>
+                <h3 className="text-lg font-bold text-india-navyBlue mb-4 text-center">Monitoring</h3>
+                {/* Alert System */}
+                <AlertSystem />
+              </div>
+              
+              {/* Management Features */}
+              <div>
+                <h3 className="text-lg font-bold text-india-navyBlue mb-4 text-center">Management</h3>
+                {/* Admin Dashboard */}
+                <AdminDashboard />
+              </div>
+            </div>
             
-            {/* Network Mapping */}
-            <NetworkMapping />
-            
-            {/* Security Assessment */}
-            <SecurityAssessment />
-            
-            {/* Threat Intelligence */}
-            <ThreatIntelligence />
-            
-            {/* Alert System */}
-            <AlertSystem />
-            
-            {/* Admin Dashboard */}
-            <AdminDashboard />
-            
-            {/* Cross-Platform Monitor */}
-            <CrossPlatformMonitor />
-            
-            {/* Multilingual Engine */}
-            <MultilingualEngine />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+              {/* Additional Features */}
+              <div>
+                <h3 className="text-lg font-bold text-india-navyBlue mb-4 text-center">Multi-platform Support</h3>
+                {/* Cross-Platform Monitor */}
+                <CrossPlatformMonitor />
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-bold text-india-navyBlue mb-4 text-center">Localization</h3>
+                {/* Multilingual Engine */}
+                <MultilingualEngine />
+              </div>
+            </div>
             
             {/* Final CTA Section */}
             <div className="mt-16 text-center">

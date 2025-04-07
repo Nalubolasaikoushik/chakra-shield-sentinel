@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code, MapPin, Github, Linkedin } from 'lucide-react';
 import { Link } from "react-router-dom";
@@ -119,7 +118,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Enhanced Developer Credit Section */}
+        {/* Enhanced Developer Credit Section - REMOVED CHAKRA ANIMATIONS */}
         <div className="py-4 md:py-6 my-4 md:my-6 border-t border-b border-white/10">
           <div className="flex flex-col items-center">
             <div className="mb-3 md:mb-4 text-center">
@@ -129,15 +128,11 @@ const Footer = () => {
             
             <div className="animated-border max-w-xs sm:max-w-md relative overflow-hidden">
               <div className="bg-gradient-to-br from-india-accent3/80 to-india-accent2 p-4 md:p-6 rounded-lg shadow-xl hover:shadow-india-saffron/20 transition-all duration-500 transform hover:-translate-y-1">
-                {/* Add a decorative background pattern */}
-                <div className="absolute inset-0 opacity-10">
-                  <AshokChakra size={isMobile ? "md" : "lg"} spinning={true} />
-                </div>
+                {/* Removed the decorative background pattern with AshokChakra */}
                 
                 <div className="flex flex-col items-center justify-center relative z-10">
-                  {/* Profile image with glow effect */}
+                  {/* Profile image with simplified effect */}
                   <div className="relative mb-3 md:mb-4 group">
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-india-saffron via-white to-india-green opacity-0 group-hover:opacity-70 blur-lg transition-opacity duration-700"></div>
                     <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-india-saffron/80 to-india-green/80 flex items-center justify-center relative overflow-hidden border-2 border-white/30">
                       <Code className="h-8 w-8 md:h-12 md:w-12 text-white" />
                     </div>
