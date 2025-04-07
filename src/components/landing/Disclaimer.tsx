@@ -5,13 +5,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Disclaimer = () => {
   return (
-    <div className="py-8 md:py-12 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <div className="py-6 md:py-10 bg-gray-50">
+      <div className="container mx-auto px-3 md:px-4">
         <div className="max-w-4xl mx-auto">
           <Alert className="bg-white border-india-accent2/20">
             <AlertTriangle className="h-5 w-5 text-india-accent2" />
-            <AlertTitle className="text-india-navyBlue font-semibold text-lg">Disclaimer</AlertTitle>
-            <AlertDescription className="text-gray-600 mt-2 text-sm md:text-base">
+            <AlertTitle className="text-india-navyBlue font-semibold text-base md:text-lg">Disclaimer</AlertTitle>
+            <AlertDescription className="text-gray-600 mt-2 text-xs md:text-sm">
               <p className="mb-3">
                 ChakraShield is an open-source project and initiative not affiliated with or endorsed by the Government of India or any of its agencies. 
                 The logos and symbols displayed are used for demonstration purposes only under fair use provisions.
@@ -27,12 +27,12 @@ const Disclaimer = () => {
             </AlertDescription>
           </Alert>
           
-          <div className="mt-6 md:mt-8 p-4 md:p-6 bg-white rounded-lg border border-gray-200">
-            <h3 className="text-lg md:text-xl font-semibold text-india-navyBlue flex items-center mb-3 md:mb-4">
-              <Info className="mr-2 h-5 w-5 text-india-accent2" />
+          <div className="mt-4 md:mt-6 p-3 md:p-5 bg-white rounded-lg border border-gray-200">
+            <h3 className="text-base md:text-lg font-semibold text-india-navyBlue flex items-center mb-2 md:mb-3">
+              <Info className="mr-2 h-4 w-4 md:h-5 md:w-5 text-india-accent2" />
               Additional Information
             </h3>
-            <div className="space-y-3 md:space-y-4 text-sm md:text-base text-gray-600">
+            <div className="space-y-2 md:space-y-3 text-xs md:text-sm text-gray-600">
               <p>
                 <span className="font-medium">Project Purpose:</span> ChakraShield is a conceptual cybersecurity platform designed 
                 to demonstrate how AI can be leveraged to detect and prevent fake social media accounts and disinformation.
