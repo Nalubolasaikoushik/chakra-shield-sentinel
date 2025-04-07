@@ -3,6 +3,8 @@ import React from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/landing/Hero';
 import Features from '@/components/landing/Features';
+import LogoCarousel from '@/components/landing/LogoCarousel';
+import Disclaimer from '@/components/landing/Disclaimer';
 import SecurityAssessment from '@/components/tools/SecurityAssessment';
 import ThreatIntelligence from '@/components/tools/ThreatIntelligence';
 import DeepfakeDetection from '@/components/tools/DeepfakeDetection';
@@ -21,6 +23,9 @@ const Index = () => {
       <main className="flex-grow">
         <Hero />
         <Features />
+        
+        {/* Logo Carousel */}
+        <LogoCarousel />
         
         {/* Core AI Security Features Section */}
         <div className="py-16 bg-gradient-to-b from-india-lightBg to-gray-50">
@@ -84,6 +89,9 @@ const Index = () => {
             </div>
           </div>
         </div>
+        
+        {/* Disclaimer Section */}
+        <Disclaimer />
       </main>
       <Footer />
     </div>
