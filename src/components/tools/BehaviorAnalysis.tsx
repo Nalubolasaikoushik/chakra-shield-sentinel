@@ -57,7 +57,7 @@ const BehaviorAnalysis = () => {
           
           // Generate mock results
           const behaviorScore = Math.floor(Math.random() * 100);
-          const alertLevel = behaviorScore > 70 ? 'high' : behaviorScore > 40 ? 'medium' : 'low';
+          const alertLevel: 'low' | 'medium' | 'high' = behaviorScore > 70 ? 'high' : behaviorScore > 40 ? 'medium' : 'low';
           
           const mockResults = {
             behaviorScore,

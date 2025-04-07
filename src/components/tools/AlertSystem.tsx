@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   Bell, 
@@ -12,7 +11,8 @@ import {
   Eye,
   AlertTriangle,
   CheckCircle2,
-  RefreshCw
+  RefreshCw,
+  LineChart
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
