@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Search, Shield, Database, FileText, BellRing, Cpu, Brain } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -67,7 +68,7 @@ const Hero = () => {
         </div>
         
         <div className="relative slide-in-right" style={{ animationDelay: "0.3s" }}>
-          {/* Simplified shield graphic - removed floating animation */}
+          {/* Shield graphic with Chakra animation inside */}
           <div 
             className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] bg-white p-6 rounded-full shadow-xl"
           >
@@ -76,6 +77,7 @@ const Hero = () => {
             </div>
             <div className="relative h-full w-full flex items-center justify-center">
               <Shield className="h-16 w-16 md:h-24 md:w-24 text-india-navyBlue pulse-alert" />
+              <AshokChakra size="lg" spinning={true} className="absolute" />
             </div>
           </div>
           

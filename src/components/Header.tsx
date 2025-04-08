@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Shield, Menu, Globe, X, MapPin, AlertTriangle, FileText, Wrench, Users, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -270,7 +271,7 @@ const Header = () => {
                 <h1 className="text-lg md:text-2xl font-bold mr-1 md:mr-2 bg-gradient-to-r from-india-saffron to-white bg-clip-text text-transparent">
                   ChakraShield
                 </h1>
-                <AshokChakra size="sm" spinning={true} />
+                <AshokChakra size="sm" spinning={false} />
               </div>
               <p className="text-xs md:text-sm font-devanagari text-white/90">
                 {currentLanguage === "English" ? "साइबर सुरक्षा प्रणाली" : text.headerTitle}
@@ -311,20 +312,28 @@ const Header = () => {
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem>
-                  <FileText className="mr-2 h-4 w-4" />
-                  <span>Documentation</span>
+                  <Link to="/resources" className="flex items-center w-full">
+                    <FileText className="mr-2 h-4 w-4" />
+                    <span>Documentation</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <AlertTriangle className="mr-2 h-4 w-4" />
-                  <span>Guidelines</span>
+                  <Link to="/resources?tab=guidelines" className="flex items-center w-full">
+                    <AlertTriangle className="mr-2 h-4 w-4" />
+                    <span>Guidelines</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Wrench className="mr-2 h-4 w-4" />
-                  <span>API Reference</span>
+                  <Link to="/resources?tab=api" className="flex items-center w-full">
+                    <Wrench className="mr-2 h-4 w-4" />
+                    <span>API Reference</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Users className="mr-2 h-4 w-4" />
-                  <span>Community</span>
+                  <Link to="/resources?tab=community" className="flex items-center w-full">
+                    <Users className="mr-2 h-4 w-4" />
+                    <span>Community</span>
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
@@ -398,13 +407,14 @@ const Header = () => {
           
           <Link to="/tools" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.tools}</Link>
           <Link to="/translation" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.translation}</Link>
+          <Link to="/resources" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">Resources</Link>
           <Link to="/about" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.about}</Link>
           <Link to="/contact" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.contact}</Link>
           <Link to="/#disclaimer" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.disclaimer}</Link>
         </nav>
       </div>
 
-      {/* Improved mobile menu - centered content with security features */}
+      {/* Mobile menu - centered content with security features */}
       {mobileMenuOpen && isMobile && (
         <div className="md:hidden fixed inset-0 z-50 bg-india-navyBlue bg-opacity-98 flex flex-col">
           <div className="flex justify-end p-4">
@@ -439,6 +449,7 @@ const Header = () => {
             
             <Link to="/tools" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.tools}</Link>
             <Link to="/translation" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.translation}</Link>
+            <Link to="/resources" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Resources</Link>
             <Link to="/about" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.about}</Link>
             <Link to="/contact" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.contact}</Link>
             <Link to="/#disclaimer" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.disclaimer}</Link>
@@ -449,10 +460,10 @@ const Header = () => {
               {text.resources}
             </div>
             <div className="flex flex-col items-center space-y-4 text-sm text-white/80">
-              <Link to="/documentation" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Documentation</Link>
-              <Link to="/guidelines" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Guidelines</Link>
-              <Link to="/api" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>API Reference</Link>
-              <Link to="/community" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Community</Link>
+              <Link to="/resources" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Documentation</Link>
+              <Link to="/resources?tab=guidelines" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Guidelines</Link>
+              <Link to="/resources?tab=api" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>API Reference</Link>
+              <Link to="/resources?tab=community" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Community</Link>
             </div>
             
             {showAuthButtons && (

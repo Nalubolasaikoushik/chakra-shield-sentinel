@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import Contact from "./pages/Contact";
 import Tools from "./pages/Tools";
 import Translation from "./pages/Translation";
+import Resources from "./pages/Resources";
 
 // Feature pages
 import SecurityAssessmentPage from "./pages/features/SecurityAssessmentPage";
@@ -56,6 +57,7 @@ const App = () => (
         <Route path="/contact" element={<Contact />} />
         <Route path="/tools" element={<Tools />} />
         <Route path="/translation" element={<Translation />} />
+        <Route path="/resources" element={<Resources />} />
         
         {/* Security Feature Pages */}
         <Route path="/features/security-assessment" element={<SecurityAssessmentPage />} />
