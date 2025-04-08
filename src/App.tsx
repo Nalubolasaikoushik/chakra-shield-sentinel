@@ -21,6 +21,17 @@ import Contact from "./pages/Contact";
 import Tools from "./pages/Tools";
 import Translation from "./pages/Translation";
 
+// Feature pages
+import SecurityAssessmentPage from "./pages/features/SecurityAssessmentPage";
+import ThreatIntelligencePage from "./pages/features/ThreatIntelligencePage";
+import DeepfakeDetectionPage from "./pages/features/DeepfakeDetectionPage";
+import BehaviorAnalysisPage from "./pages/features/BehaviorAnalysisPage";
+import NetworkMappingPage from "./pages/features/NetworkMappingPage";
+import AlertSystemPage from "./pages/features/AlertSystemPage";
+import AdminDashboardPage from "./pages/features/AdminDashboardPage";
+import CrossPlatformMonitorPage from "./pages/features/CrossPlatformMonitorPage";
+import MultilingualEnginePage from "./pages/features/MultilingualEnginePage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -45,6 +56,18 @@ const App = () => (
         <Route path="/contact" element={<Contact />} />
         <Route path="/tools" element={<Tools />} />
         <Route path="/translation" element={<Translation />} />
+        
+        {/* Security Feature Pages */}
+        <Route path="/features/security-assessment" element={<SecurityAssessmentPage />} />
+        <Route path="/features/threat-intelligence" element={<ThreatIntelligencePage />} />
+        <Route path="/features/deepfake-detection" element={<DeepfakeDetectionPage />} />
+        <Route path="/features/behavior-analysis" element={<BehaviorAnalysisPage />} />
+        <Route path="/features/network-mapping" element={<NetworkMappingPage />} />
+        <Route path="/features/alert-system" element={<AlertSystemPage />} />
+        <Route path="/features/admin-dashboard" element={<AdminDashboardPage />} />
+        <Route path="/features/cross-platform-monitor" element={<CrossPlatformMonitorPage />} />
+        <Route path="/features/multilingual-engine" element={<MultilingualEnginePage />} />
+        
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>

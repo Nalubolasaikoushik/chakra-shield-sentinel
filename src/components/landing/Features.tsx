@@ -16,42 +16,50 @@ import {
   Cpu,
   LineChart,
   Code,
-  Github
+  Github,
+  ArrowRight
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import AshokChakra from '../AshokChakra';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Features = () => {
   const features = [
     {
       icon: <Search className="h-10 w-10 text-india-saffron" />,
       title: "AI Profile Scanner",
-      description: "Upload or link profiles for deep image & text analysis to generate fake account risk scores with 99.7% accuracy"
+      description: "Upload or link profiles for deep image & text analysis to generate fake account risk scores with 99.7% accuracy",
+      link: "/scan"
     },
     {
       icon: <Brain className="h-10 w-10 text-india-saffron" />,
       title: "Deep Learning Models",
-      description: "Custom-trained neural networks analyze behavioral patterns, linguistic markers, and network connections to identify inauthentic accounts"
+      description: "Custom-trained neural networks analyze behavioral patterns, linguistic markers, and network connections to identify inauthentic accounts",
+      link: "/features/behavior-analysis"
     },
     {
       icon: <Database className="h-10 w-10 text-india-saffron" />,
       title: "Blockchain Registry",
-      description: "Tamper-proof ledger of verified fake accounts providing court-admissible evidence secured with advanced cryptography"
+      description: "Tamper-proof ledger of verified fake accounts providing court-admissible evidence secured with advanced cryptography",
+      link: "/blockchain"
     },
     {
       icon: <Bot className="h-10 w-10 text-india-saffron" />,
       title: "Bot Detection",
-      description: "Advanced heuristics and temporal analysis to identify automated behavior across coordinated networks of malicious accounts"
+      description: "Advanced heuristics and temporal analysis to identify automated behavior across coordinated networks of malicious accounts",
+      link: "/features/behavior-analysis"
     },
     {
       icon: <Network className="h-10 w-10 text-india-saffron" />,
       title: "Network Analysis",
-      description: "Graphical mapping of connections between accounts to identify organized inauthentic behavior and influence operations"
+      description: "Graphical mapping of connections between accounts to identify organized inauthentic behavior and influence operations",
+      link: "/features/network-mapping"
     },
     {
       icon: <Globe className="h-10 w-10 text-india-saffron" />,
       title: "Multilingual Processing",
-      description: "NLP technology that identifies malicious content across all 22 official Indian languages with local dialect understanding"
+      description: "NLP technology that identifies malicious content across all 22 official Indian languages with local dialect understanding",
+      link: "/features/multilingual-engine"
     },
   ];
 
@@ -59,17 +67,20 @@ const Features = () => {
     {
       icon: <Cpu className="h-6 w-6" />,
       title: "Real-time Processing",
-      description: "Edge computing technology enables processing of millions of social media posts per second with minimal latency"
+      description: "Edge computing technology enables processing of millions of social media posts per second with minimal latency",
+      link: "/features/cross-platform-monitor"
     },
     {
       icon: <Zap className="h-6 w-6" />,
       title: "Quantum-resistant Security",
-      description: "Future-proof encryption algorithms that can withstand attacks from quantum computers"
+      description: "Future-proof encryption algorithms that can withstand attacks from quantum computers",
+      link: "/features/security-assessment"
     },
     {
       icon: <LineChart className="h-6 w-6" />,
       title: "Predictive Analytics",
-      description: "Identifies emerging threat patterns before they manifest at scale across social platforms"
+      description: "Identifies emerging threat patterns before they manifest at scale across social platforms",
+      link: "/features/threat-intelligence"
     }
   ];
 
@@ -77,9 +88,6 @@ const Features = () => {
     <div className="py-16 px-4 bg-india-lightBg">
       <div className="container mx-auto">
         <div className="text-center mb-12 max-w-3xl mx-auto">
-          <div className="flex justify-center mb-4">
-            <AshokChakra size="sm" className="text-india-ashoka animate-spin-slow" />
-          </div>
           <h2 className="text-3xl font-bold text-india-accent2 mb-4">Cutting-Edge AI Security Features</h2>
           <p className="text-gray-600">
             ChakraShield leverages the latest in artificial intelligence and blockchain technology to provide comprehensive protection against 
@@ -89,7 +97,7 @@ const Features = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <Card key={index} className="card-with-chakra hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden bg-white">
+            <Card key={index} className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden bg-white">
               <CardHeader className="pb-2">
                 <div className="mb-2 bg-india-accent1/10 p-3 inline-block rounded-full">{feature.icon}</div>
                 <CardTitle className="text-xl text-india-accent2">{feature.title}</CardTitle>
@@ -97,6 +105,11 @@ const Features = () => {
               <CardContent>
                 <p className="text-gray-600">{feature.description}</p>
               </CardContent>
+              <CardFooter>
+                <Link to={feature.link} className="text-india-accent2 hover:text-india-accent3 inline-flex items-center text-sm font-medium">
+                  Learn more <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </CardFooter>
             </Card>
           ))}
         </div>
@@ -116,21 +129,32 @@ const Features = () => {
                     </div>
                   </div>
                   <h4 className="text-lg font-semibold text-india-accent2 mb-2">{feature.title}</h4>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <p className="text-gray-600 mb-4">{feature.description}</p>
+                  <Link to={feature.link} className="text-india-accent2 hover:text-india-accent3 inline-flex items-center text-sm font-medium">
+                    Explore <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
+        <div className="mt-16 text-center">
+          <Link to="/features/security-assessment">
+            <Button className="bg-india-accent2 hover:bg-india-accent3 text-white">
+              View All Security Features
+            </Button>
+          </Link>
+        </div>
+
         <div className="mt-16 bg-gradient-to-r from-india-accent2 to-india-accent3 p-6 rounded-lg shadow-md text-white">
           <div className="flex flex-col md:flex-row items-center">
             <div className="mb-6 md:mb-0 md:mr-10 flex-shrink-0">
               <div className="relative">
-                <div className="w-24 h-24 flex items-center justify-center bg-white/10 rounded-full animate-pulse-glow">
+                <div className="w-24 h-24 flex items-center justify-center bg-white/10 rounded-full">
                   <Lock className="h-12 w-12 text-white" />
                 </div>
-                <div className="absolute -top-2 -right-2 bg-india-saffron text-white p-1 rounded-full animate-pulse">
+                <div className="absolute -top-2 -right-2 bg-india-saffron text-white p-1 rounded-full">
                   <Key className="h-4 w-4" />
                 </div>
               </div>

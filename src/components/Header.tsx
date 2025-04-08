@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Shield, Menu, Globe, X, MapPin, AlertTriangle, FileText, Wrench, Users, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuLabel,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { Link, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -110,9 +112,9 @@ const translations = {
     developerInfo: "సాయికౌశిక్ నాలుబోల ద్వారా అభివృద్ధి చేయబడింది",
     digitalIndia: "డిజిటల్ ఇండియా చొరవ",
     securityTools: "భద్రతా సాధనాలు",
-    ourMission: "మా లక్ష్యం డిజిటల్ మూলಸౌకర్�వను రక్షించడం",
+    ourMission: "మా లక్ష్యం డిజిటల్ మూలసౌకర్యాలను రక్షించడం",
     features: "ఫీచర్లు",
-    disclaimer: "డిస్కెయిమర్",
+    disclaimer: "డిస్క్లెయిమర్",
     legal: "చట్టపరమైన",
     help: "సహాయం",
     resources: "వనరులు"
@@ -133,7 +135,7 @@ const translations = {
     languageChanged: "ভাষা বাংলা সেট করা হয়েছে",
     headerTitle: "সাইবার নিরাপত্তা সিস্টেম",
     developerInfo: "সাইকৌশিক নালুবোলা দ্বারা বিকশিত",
-    digitalIndia: "একটি ডিজিটাল ইন্ত্য উদ্যোগ",
+    digitalIndia: "একটি ডিজিটাল ইন্ডিয়া উদ্যোগ",
     securityTools: "নিরাপত্তা টুলস",
     ourMission: "আমাদের মিশন ডিজিটাল অবকাঠামো রক্ষা করা",
     features: "বৈশিষ্ট্য",
@@ -157,8 +159,8 @@ const translations = {
     register: "രജിസ്റ്റർ",
     languageChanged: "ഭാഷ മലയാളത്തിലേക്ക് സജ്ജമാക്കിയിരിക്കുന്നു",
     headerTitle: "സൈബർ സുരക്ഷാ സംവിധാനം",
-    developerInfo: "സായ്കൗഷിക് ನಾಲುಬೋಲ വികസിപ്പിച്ചത്",
-    digitalIndia: "ഒരു ഡിജിറ്റൽ ഇംണ്യ സംരംഭം",
+    developerInfo: "സായ്കൗഷിക് നലുബോള വികസിപ്പിച്ചത്",
+    digitalIndia: "ഒരു ഡിജിറ്റൽ ഇന്ത്യാ സംരംഭം",
     securityTools: "സുരക്ഷാ ഉപകരണങ്ങൾ",
     ourMission: "ഡിജിറ്റൽ ഇൻഫ്രാസ്ട്രക്ചർ സംരക്ഷിക്കുക എന്നതാണ് ഞങ്ങളുടെ ദൗത്യം",
     features: "സവിശേഷതകൾ",
@@ -176,7 +178,7 @@ const translations = {
     alerts: "ಎಚ್ಚರಿಕೆಗಳು",
     about: "ನಮ್ಮ ಬಗ್ಗೆ",
     contact: "ಸಂಪರ್ಕಿಸಿ",
-    tools: "ಪರಿಕ��ಗಳು",
+    tools: "ಪರಿಕರಗಳು",
     translation: "ಅನುವಾದ",
     login: "ಲಾಗಿನ್",
     register: "ನೋಂದಣಿ",
@@ -260,7 +262,7 @@ const Header = () => {
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
             <div className="mr-3 relative group">
-              <div className="absolute inset-0 bg-india-saffron rounded-full opacity-20 animate-pulse group-hover:opacity-40 transition-opacity"></div>
+              <div className="absolute inset-0 bg-india-saffron rounded-full opacity-20 group-hover:opacity-40 transition-opacity"></div>
               <Shield className="h-8 w-8 md:h-9 md:w-9 text-india-saffron relative z-10 group-hover:scale-110 transition-transform" />
             </div>
             <div className="flex flex-col">
@@ -348,7 +350,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Center aligned mobile menu with improved colors */}
+      {/* Center aligned navigation menu with security features dropdown */}
       <div className="relative bg-white/10 text-white before:absolute before:top-0 before:left-0 before:w-full before:h-0.5 before:bg-india-saffron after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-india-green">
         <nav className="container mx-auto flex justify-center overflow-x-auto scrollbar-none">
           <Link to="/" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.home}</Link>
@@ -357,6 +359,43 @@ const Header = () => {
           <Link to="/blockchain" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.blockchain}</Link>
           <Link to="/reports" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.reports}</Link>
           <Link to="/alerts" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.alerts}</Link>
+          
+          {/* Security Features Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors flex items-center">
+              Security Features
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-india-navyBlue text-white border-india-navyBlue">
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/security-assessment" className="w-full">Security Assessment</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/threat-intelligence" className="w-full">Threat Intelligence</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/deepfake-detection" className="w-full">Deepfake Detection</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/behavior-analysis" className="w-full">Behavior Analysis</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/network-mapping" className="w-full">Network Mapping</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/alert-system" className="w-full">Alert System</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/admin-dashboard" className="w-full">Admin Dashboard</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/cross-platform-monitor" className="w-full">Cross-Platform Monitor</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
+                <Link to="/features/multilingual-engine" className="w-full">Multilingual Engine</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
           <Link to="/tools" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.tools}</Link>
           <Link to="/translation" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.translation}</Link>
           <Link to="/about" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.about}</Link>
@@ -365,7 +404,7 @@ const Header = () => {
         </nav>
       </div>
 
-      {/* Improved mobile menu - centered content */}
+      {/* Improved mobile menu - centered content with security features */}
       {mobileMenuOpen && isMobile && (
         <div className="md:hidden fixed inset-0 z-50 bg-india-navyBlue bg-opacity-98 flex flex-col">
           <div className="flex justify-end p-4">
@@ -373,13 +412,31 @@ const Header = () => {
               <X className="h-6 w-6" />
             </Button>
           </div>
-          <div className="flex flex-col items-center justify-center py-6 space-y-5">
+          <div className="flex flex-col items-center justify-center py-6 space-y-5 max-h-[80vh] overflow-y-auto">
             <Link to="/" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.home}</Link>
             <Link to="/scan" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.scan}</Link>
             <Link to="/dashboard" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.dashboard}</Link>
             <Link to="/blockchain" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.blockchain}</Link>
             <Link to="/reports" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.reports}</Link>
             <Link to="/alerts" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.alerts}</Link>
+            
+            {/* Security Features Section in Mobile Menu */}
+            <div className="border-t border-white/10 w-3/4 my-2"></div>
+            <div className="text-white text-lg font-medium text-india-saffron">Security Features</div>
+            <div className="flex flex-col items-center space-y-4 text-sm text-white w-full px-8">
+              <Link to="/features/security-assessment" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Security Assessment</Link>
+              <Link to="/features/threat-intelligence" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Threat Intelligence</Link>
+              <Link to="/features/deepfake-detection" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Deepfake Detection</Link>
+              <Link to="/features/behavior-analysis" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Behavior Analysis</Link>
+              <Link to="/features/network-mapping" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Network Mapping</Link>
+              <Link to="/features/alert-system" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Alert System</Link>
+              <Link to="/features/admin-dashboard" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Admin Dashboard</Link>
+              <Link to="/features/cross-platform-monitor" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Cross-Platform Monitor</Link>
+              <Link to="/features/multilingual-engine" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Multilingual Engine</Link>
+            </div>
+            
+            <div className="border-t border-white/10 w-3/4 my-2"></div>
+            
             <Link to="/tools" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.tools}</Link>
             <Link to="/translation" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.translation}</Link>
             <Link to="/about" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{text.about}</Link>
