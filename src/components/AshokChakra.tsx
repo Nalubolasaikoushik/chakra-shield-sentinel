@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 
 interface AshokChakraProps {
   className?: string;
-  size?: number;
+  size?: number | 'sm' | 'md' | 'lg' | 'xl';
   animate?: boolean;
   strokeWidth?: number;
   color?: string;
@@ -17,6 +17,21 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
   color = "#0F52BA" 
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
+  
+  // Convert string sizes to numbers
+  const getNumericSize = (): number => {
+    if (typeof size === 'number') return size;
+    
+    switch(size) {
+      case 'sm': return 24;
+      case 'md': return 48;
+      case 'lg': return 80;
+      case 'xl': return 120;
+      default: return 100;
+    }
+  };
+
+  const numericSize = getNumericSize();
   
   useEffect(() => {
     if (!animate || !svgRef.current) return;
@@ -79,9 +94,9 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
   // Generate 24 spokes for the Ashoka Chakra
   const generateSpokes = () => {
     const spokes = [];
-    const cx = size / 2;
-    const cy = size / 2;
-    const outerRadius = (size / 2) - strokeWidth;
+    const cx = numericSize / 2;
+    const cy = numericSize / 2;
+    const outerRadius = (numericSize / 2) - strokeWidth;
     const innerRadius = outerRadius * 0.7;
     
     for (let i = 0; i < 24; i++) {
@@ -113,23 +128,23 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
     <svg 
       ref={svgRef}
       className={`ashok-chakra ${className}`}
-      width={size} 
-      height={size} 
-      viewBox={`0 0 ${size} ${size}`}
+      width={numericSize} 
+      height={numericSize} 
+      viewBox={`0 0 ${numericSize} ${numericSize}`}
     >
       <circle
         className="chakra-wheel"
-        cx={size / 2}
-        cy={size / 2}
-        r={(size / 2) - strokeWidth}
+        cx={numericSize / 2}
+        cy={numericSize / 2}
+        r={(numericSize / 2) - strokeWidth}
         stroke={color}
         strokeWidth={strokeWidth}
         fill="none"
       />
       <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={size * 0.1}
+        cx={numericSize / 2}
+        cy={numericSize / 2}
+        r={numericSize * 0.1}
         fill={color}
       />
       {generateSpokes()}
