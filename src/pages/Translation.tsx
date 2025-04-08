@@ -70,11 +70,35 @@ const mockTranslate = (text: string, targetLang: string) => {
   return Promise.resolve(`${text} (translated to ${languages.find(l => l.code === targetLang)?.name || targetLang})`);
 };
 
-// Mock text-to-speech function
-const mockTextToSpeech = (text: string, lang: string) => {
-  // In a real app, this would call a TTS API
-  console.log(`Text-to-speech: "${text}" in language: ${lang}`);
-  return Promise.resolve('audio-data-url-would-be-here');
+// Implementation of the text-to-speech function
+const textToSpeech = (text: string, lang: string) => {
+  if (!text) return Promise.reject(new Error('No text provided'));
+  
+  if ('speechSynthesis' in window) {
+    return new Promise<void>((resolve, reject) => {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Match language code with available voices if possible
+      const voices = window.speechSynthesis.getVoices();
+      const matchingVoice = voices.find(voice => voice.lang.startsWith(lang));
+      if (matchingVoice) {
+        utterance.voice = matchingVoice;
+      }
+      
+      // Set language - fallback to English if language not supported
+      utterance.lang = lang === 'en' ? 'en-US' : lang;
+      
+      utterance.onend = () => resolve();
+      utterance.onerror = (event) => reject(new Error(`Speech synthesis error: ${event}`));
+      
+      window.speechSynthesis.speak(utterance);
+    });
+  } else {
+    return Promise.reject(new Error('Speech synthesis not supported'));
+  }
 };
 
 const Translation = () => {
@@ -88,10 +112,24 @@ const Translation = () => {
   const [apiKey, setApiKey] = useState('');
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
   const { toast } = useToast();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   
   // Speech recognition reference
   const recognitionRef = useRef<any>(null);
+
+  // Load voices when the component mounts
+  useEffect(() => {
+    if ('speechSynthesis' in window) {
+      // Firefox needs a small delay to load voices
+      setTimeout(() => {
+        window.speechSynthesis.getVoices();
+      }, 100);
+      
+      // Chrome and other browsers might need this event
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  }, []);
 
   // Initialize speech recognition on component mount
   useEffect(() => {
@@ -102,16 +140,16 @@ const Translation = () => {
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
       
-      recognitionRef.current.onresult = (event: any) => {
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = Array.from(event.results)
-          .map((result: any) => result[0])
-          .map((result: any) => result.transcript)
+          .map((result) => result[0])
+          .map((result) => result.transcript)
           .join('');
         
         setSourceText(transcript);
       };
       
-      recognitionRef.current.onerror = (event: any) => {
+      recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
         console.error('Speech recognition error', event.error);
         setIsRecording(false);
         toast({
@@ -126,6 +164,11 @@ const Translation = () => {
       // Cleanup speech recognition
       if (recognitionRef.current) {
         recognitionRef.current.stop();
+      }
+      
+      // Stop any ongoing speech synthesis
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
       }
     };
   }, [toast]);
@@ -214,43 +257,21 @@ const Translation = () => {
     try {
       setIsPlaying(true);
       
-      if (!apiKey && !showApiKeyInput) {
-        setShowApiKeyInput(true);
-        toast({
-          title: "API Key Required",
-          description: "Please enter your ElevenLabs API key to use text-to-speech.",
-        });
-        return;
-      }
+      // Use the browser's built-in speech synthesis (no API key needed)
+      await textToSpeech(text, lang);
       
-      if (apiKey) {
-        // In a real implementation, this would call the ElevenLabs API
-        await mockTextToSpeech(text, lang);
-        
-        // Simulate audio playback with browser's built-in TTS
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = lang === 'en' ? 'en-US' : lang;
-          speechSynthesis.speak(utterance);
-          
-          utterance.onend = () => {
-            setIsPlaying(false);
-          };
-        } else {
-          setIsPlaying(false);
-        }
-        
-        toast({
-          title: "Playing Audio",
-          description: "Text is being spoken.",
-        });
-      }
+      toast({
+        title: "Playing Audio",
+        description: "Text is being spoken.",
+      });
     } catch (error) {
+      console.error('Text-to-speech error:', error);
       toast({
         title: "Text-to-Speech Failed",
-        description: "There was an error generating speech. Please try again.",
+        description: "There was an error generating speech. This feature may not be supported in your browser.",
         variant: "destructive",
       });
+    } finally {
       setIsPlaying(false);
     }
   };
@@ -266,6 +287,23 @@ const Translation = () => {
     }
   };
 
+  // Read page introduction when component mounts
+  useEffect(() => {
+    const readPageIntro = async () => {
+      if ('speechSynthesis' in window) {
+        try {
+          const introText = "Welcome to ChakraShield Translation Service. Break language barriers with our AI-powered translation and speech services.";
+          await textToSpeech(introText, 'en');
+        } catch (error) {
+          console.error('Error reading page intro:', error);
+        }
+      }
+    };
+    
+    // Uncomment the line below if you want the page to speak automatically on load
+    // readPageIntro();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -277,6 +315,15 @@ const Translation = () => {
               <h1 className="text-4xl font-bold">ChakraShield Translation Service</h1>
             </div>
             <p className="text-xl text-center">Break language barriers with our AI-powered translation and speech services</p>
+            <div className="mt-4 flex justify-center">
+              <Button 
+                onClick={() => handleTextToSpeech("Welcome to ChakraShield Translation Service. Break language barriers with our AI-powered translation and speech services.", "en")}
+                className="bg-india-saffron hover:bg-india-saffron/90 text-white"
+              >
+                <Volume2 className="mr-2 h-4 w-4" />
+                Read this aloud
+              </Button>
+            </div>
           </div>
         </section>
 
@@ -338,14 +385,25 @@ const Translation = () => {
                             rows={6}
                             className="w-full pr-10"
                           />
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
-                            onClick={() => toggleRecording()}
-                          >
-                            {isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                          </Button>
+                          <div className="absolute right-2 top-2 flex">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="text-gray-500 hover:text-gray-700"
+                              onClick={() => handleTextToSpeech(sourceText, sourceLang)}
+                              disabled={!sourceText || isPlaying}
+                            >
+                              <Volume2 className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="text-gray-500 hover:text-gray-700"
+                              onClick={() => toggleRecording()}
+                            >
+                              {isRecording ? <MicOff className="h-4 w-4 text-red-500" /> : <Mic className="h-4 w-4" />}
+                            </Button>
+                          </div>
                         </div>
                         
                         <div className="flex justify-center">
@@ -379,31 +437,6 @@ const Translation = () => {
                           )}
                         </div>
                       </div>
-                      
-                      {showApiKeyInput && (
-                        <div className="mt-4">
-                          <label className="block text-sm font-medium mb-2">ElevenLabs API Key (for text-to-speech)</label>
-                          <div className="flex gap-2">
-                            <Input
-                              type="password"
-                              value={apiKey}
-                              onChange={(e) => setApiKey(e.target.value)}
-                              placeholder="Enter your ElevenLabs API key"
-                              className="flex-1"
-                            />
-                            <Button 
-                              variant="outline" 
-                              onClick={() => setShowApiKeyInput(false)}
-                              disabled={!apiKey}
-                            >
-                              Save
-                            </Button>
-                          </div>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Your API key is only stored in your browser session and is not saved on our servers.
-                          </p>
-                        </div>
-                      )}
                     </CardContent>
                     <CardFooter className="flex flex-col sm:flex-row gap-3">
                       <Button 
@@ -478,45 +511,34 @@ const Translation = () => {
                           
                           <div className="mt-4">
                             <label className="block text-sm font-medium mb-2">Transcribed Text</label>
-                            <Textarea
-                              value={sourceText}
-                              onChange={(e) => setSourceText(e.target.value)}
-                              placeholder="Transcribed text will appear here..."
-                              rows={4}
-                              className="w-full"
-                            />
+                            <div className="relative">
+                              <Textarea
+                                value={sourceText}
+                                onChange={(e) => setSourceText(e.target.value)}
+                                placeholder="Transcribed text will appear here..."
+                                rows={4}
+                                className="w-full pr-10"
+                              />
+                              {sourceText && (
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                                  onClick={() => handleTextToSpeech(sourceText, sourceLang)}
+                                  disabled={isPlaying}
+                                >
+                                  <Volume2 className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </div>
                           </div>
                         </div>
                         
                         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                           <h3 className="text-lg font-medium mb-2">Text to Speech</h3>
                           <p className="text-gray-600 mb-4">
-                            Convert text to natural-sounding speech in multiple Indian languages using our AI voice models.
+                            Convert text to natural-sounding speech in multiple Indian languages using browser's speech synthesis capabilities.
                           </p>
-                          
-                          {!apiKey && (
-                            <div className="mb-4">
-                              <label className="block text-sm font-medium mb-2">ElevenLabs API Key</label>
-                              <div className="flex gap-2">
-                                <Input
-                                  type="password"
-                                  value={apiKey}
-                                  onChange={(e) => setApiKey(e.target.value)}
-                                  placeholder="Enter your ElevenLabs API key"
-                                  className="flex-1"
-                                />
-                                <Button 
-                                  variant="outline"
-                                  disabled={!apiKey}
-                                >
-                                  Save
-                                </Button>
-                              </div>
-                              <p className="text-xs text-gray-500 mt-1">
-                                Required for text-to-speech functionality. Get a key at elevenlabs.io
-                              </p>
-                            </div>
-                          )}
                           
                           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                             <div className="md:col-span-3">
@@ -550,7 +572,7 @@ const Translation = () => {
                           <div className="flex justify-center mt-4 space-x-3">
                             <Button 
                               onClick={() => handleTextToSpeech(translatedText || sourceText, targetLang)}
-                              disabled={isPlaying || !translatedText && !sourceText || !apiKey}
+                              disabled={isPlaying || (!translatedText && !sourceText)}
                               className="bg-india-navyBlue hover:bg-india-navyBlue/90"
                             >
                               <Play className="mr-2 h-4 w-4" />
@@ -573,9 +595,10 @@ const Translation = () => {
                           <Volume2 className="h-4 w-4" />
                           <AlertTitle>About Voice Services</AlertTitle>
                           <AlertDescription>
-                            Our text-to-speech services use ElevenLabs API for high-quality voice synthesis. 
-                            You need to provide your own API key to use this feature. Speech recognition uses 
+                            Our text-to-speech services use your browser's built-in speech synthesis capabilities.
+                            Support for languages varies by browser. Speech recognition uses 
                             your device's built-in capabilities and works directly in your browser.
+                            Allow microphone access when prompted to use speech recognition.
                           </AlertDescription>
                         </Alert>
                       </div>
@@ -666,4 +689,3 @@ const Translation = () => {
 };
 
 export default Translation;
-
