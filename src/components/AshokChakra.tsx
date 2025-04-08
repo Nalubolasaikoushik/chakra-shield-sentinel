@@ -50,13 +50,10 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
       if (spoke instanceof SVGElement) {
         spoke.style.animation = `chakraRotate 3s ${delay}s infinite linear`;
         spoke.style.transformOrigin = 'center';
-        spoke.style.opacity = '0';
+        spoke.style.opacity = '1'; // Changed from 0 to 1 to make spokes visible immediately
         
         // Add animation to appear one by one
-        setTimeout(() => {
-          spoke.style.opacity = '1';
-          spoke.style.transition = 'opacity 0.5s ease-in';
-        }, index * 100);
+        spoke.style.transition = 'opacity 0.5s ease-in';
       }
     });
     
@@ -93,7 +90,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
     return () => {
       document.head.removeChild(style);
     };
-  }, [animate, spinning]); // Added spinning to dependency array
+  }, [animate, spinning]); 
 
   // Generate 24 spokes for the Ashoka Chakra
   const generateSpokes = () => {
@@ -135,6 +132,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
       width={numericSize} 
       height={numericSize} 
       viewBox={`0 0 ${numericSize} ${numericSize}`}
+      aria-label="Ashoka Chakra - Symbol of India"
     >
       <circle
         className="chakra-wheel"
@@ -145,13 +143,13 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
         strokeWidth={strokeWidth}
         fill="none"
       />
+      {generateSpokes()}
       <circle
         cx={numericSize / 2}
         cy={numericSize / 2}
         r={numericSize * 0.1}
         fill={color}
       />
-      {generateSpokes()}
     </svg>
   );
 };

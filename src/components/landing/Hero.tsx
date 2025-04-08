@@ -1,12 +1,17 @@
 
-import React, { useEffect, useState } from 'react';
-import { Search, Shield, Database, FileText, BellRing, Cpu, Brain } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { Search, Shield, Database, FileText, BellRing, Cpu, Brain, Volume2, Mic } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import AshokChakra from '../AshokChakra';
 
 const Hero = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const speechSynthesisRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const chakraInfoRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +24,106 @@ const Hero = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // Text-to-speech functionality
+  const speakText = (textToSpeak: string) => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    // Create a new utterance if one doesn't exist
+    if (!speechSynthesisRef.current) {
+      speechSynthesisRef.current = new SpeechSynthesisUtterance();
+    }
+
+    // Set the text and voice
+    speechSynthesisRef.current.text = textToSpeak;
+    speechSynthesisRef.current.lang = 'en-US';
+    speechSynthesisRef.current.rate = 1;
+    speechSynthesisRef.current.pitch = 1;
+
+    // Add event listeners
+    speechSynthesisRef.current.onstart = () => setIsSpeaking(true);
+    speechSynthesisRef.current.onend = () => setIsSpeaking(false);
+    speechSynthesisRef.current.onerror = () => setIsSpeaking(false);
+
+    // Start speaking
+    window.speechSynthesis.speak(speechSynthesisRef.current);
+  };
+
+  // Speech recognition functionality
+  const startSpeechRecognition = () => {
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      return;
+    }
+
+    // Check if the browser supports speech recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in your browser.");
+      return;
+    }
+
+    // Create a new recognition instance if one doesn't exist
+    if (!recognitionRef.current) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = 'en-US';
+    }
+
+    // Add event listeners
+    recognitionRef.current.onstart = () => setIsListening(true);
+    recognitionRef.current.onend = () => setIsListening(false);
+    recognitionRef.current.onerror = () => setIsListening(false);
+    recognitionRef.current.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      // Navigate based on voice command
+      if (transcript.toLowerCase().includes("scan")) {
+        window.location.href = "/scan";
+      } else if (transcript.toLowerCase().includes("about")) {
+        window.location.href = "/about";
+      } else if (transcript.toLowerCase().includes("dashboard")) {
+        window.location.href = "/dashboard";
+      }
+    };
+
+    // Start listening
+    recognitionRef.current.start();
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (speechSynthesisRef.current && isSpeaking) {
+        window.speechSynthesis.cancel();
+      }
+      if (recognitionRef.current && isListening) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [isSpeaking, isListening]);
+
+  const getChakraInfoText = () => {
+    return `
+      The Ashoka Chakra, a 24-spoked wheel, is a symbol of the eternal law of dharma. 
+      Featured prominently in India's national flag, it represents motion, progress, and the dynamism of a peaceful change.
+      
+      Like the Ashoka Chakra which symbolizes protection and righteous governance in ancient India, ChakraShield 
+      embodies the modern digital protection for our nation. The 24 spokes represent our 24/7 vigilance in the 
+      cyber realm, constantly spinning to detect threats across social media platforms.
+      
+      Just as Emperor Ashoka used this symbol to spread his message of peace and harmony across his empire, 
+      ChakraShield spreads digital safety and security across India's vast online landscape, protecting citizens 
+      from the modern threats of fake accounts, misinformation, and digital fraud.
+    `;
+  };
 
   return (
     <div className="min-h-[85vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
@@ -48,6 +153,28 @@ const Hero = () => {
                 Learn More
               </Button>
             </Link>
+            <Button 
+              variant="outline" 
+              className="border-india-green text-india-green hover:bg-india-green/10"
+              onClick={() => speakText("ChakraShield uses advanced artificial intelligence to protect digital India from fraudulent social media activities. Government-grade security for our nation's online integrity.")}
+            >
+              {isSpeaking ? 
+                <Volume2 className="mr-2 h-4 w-4 animate-pulse" /> : 
+                <Volume2 className="mr-2 h-4 w-4" />
+              }
+              Read Aloud
+            </Button>
+            <Button 
+              variant="outline" 
+              className="border-india-saffron text-india-saffron hover:bg-india-saffron/10"
+              onClick={startSpeechRecognition}
+            >
+              {isListening ? 
+                <Mic className="mr-2 h-4 w-4 animate-pulse" /> : 
+                <Mic className="mr-2 h-4 w-4" />
+              }
+              Voice Command
+            </Button>
           </div>
           
           {/* Trust indicators */}
@@ -105,6 +232,64 @@ const Hero = () => {
             <div className="text-sm">
               <p className="font-semibold">AI Scanner</p>
               <p className="text-xs text-gray-500">Advanced detection</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Ashoka Chakra Meaning Section */}
+      <div className="bg-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center mb-4">
+              <AshokChakra size="md" className="mr-4" />
+              <h2 className="text-2xl md:text-3xl font-bold text-india-navyBlue">The Significance of Chakra</h2>
+            </div>
+            <p className="text-gray-600 max-w-4xl mx-auto slide-in-up">
+              Named after the Ashoka Chakra, a powerful symbol in Indian heritage, 
+              ChakraShield represents the union of ancient wisdom and cutting-edge technology.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="glass-card p-6 border-l-4 border-india-saffron" ref={chakraInfoRef}>
+              <h3 className="text-xl font-semibold mb-4 text-india-navyBlue">Historical Significance</h3>
+              <p className="text-gray-700 mb-4">
+                The Ashoka Chakra, adorning the center of India's national flag, dates back to the 3rd century BCE during Emperor Ashoka's reign. Originally part of the Lion Capital of Ashoka, this 24-spoked wheel symbolizes the wheel of dharma (righteousness) and the cycle of time.
+              </p>
+              <p className="text-gray-700 mb-4">
+                Each spoke represents important principles like love, courage, patience, and truthfulness—values that should guide every citizen's conduct in both personal and public life.
+              </p>
+              <div className="flex justify-end">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="border-india-navyBlue text-india-navyBlue hover:bg-india-navyBlue/10"
+                  onClick={() => speakText(getChakraInfoText())}
+                >
+                  {isSpeaking ? 
+                    <Volume2 className="mr-2 h-4 w-4 animate-pulse" /> : 
+                    <Volume2 className="mr-2 h-4 w-4" />
+                  }
+                  Read History
+                </Button>
+              </div>
+            </div>
+            
+            <div className="glass-card p-6 border-l-4 border-india-green">
+              <h3 className="text-xl font-semibold mb-4 text-india-navyBlue">Chakra in Cybersecurity</h3>
+              <p className="text-gray-700 mb-4">
+                Just as the Chakra stands as a symbol of protection and righteous governance, ChakraShield defends India's digital landscape with unwavering vigilance:
+              </p>
+              <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                <li>The 24 spokes represent our 24/7 continuous monitoring across digital platforms</li>
+                <li>The rotating motion symbolizes our active scanning and detection capabilities</li>
+                <li>The center hub represents our core AI analytics engine</li>
+                <li>The outer wheel signifies our protective shield around India's digital citizens</li>
+              </ul>
+              <p className="text-gray-700">
+                By invoking the Chakra in our name, we honor India's heritage while building technology that safeguards its future.
+              </p>
             </div>
           </div>
         </div>

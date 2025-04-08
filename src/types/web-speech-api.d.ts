@@ -45,4 +45,3 @@ interface SpeechRecognitionErrorEvent extends Event {
   error: string;
   message: string;
 }
-
