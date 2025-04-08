@@ -7,6 +7,7 @@ interface AshokChakraProps {
   animate?: boolean;
   strokeWidth?: number;
   color?: string;
+  spinning?: boolean; // Added spinning property
 }
 
 const AshokChakra: React.FC<AshokChakraProps> = ({ 
@@ -14,7 +15,8 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
   size = 100, 
   animate = true,
   strokeWidth = 5,
-  color = "#0F52BA" 
+  color = "#0F52BA",
+  spinning = false // Default value for spinning
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   
@@ -34,7 +36,9 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
   const numericSize = getNumericSize();
   
   useEffect(() => {
-    if (!animate || !svgRef.current) return;
+    // If spinning property is true, prioritize it over animate
+    const shouldAnimate = spinning || animate;
+    if (!shouldAnimate || !svgRef.current) return;
     
     const chakra = svgRef.current;
     const spokes = chakra.querySelectorAll('.spoke');
@@ -89,7 +93,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
     return () => {
       document.head.removeChild(style);
     };
-  }, [animate]);
+  }, [animate, spinning]); // Added spinning to dependency array
 
   // Generate 24 spokes for the Ashoka Chakra
   const generateSpokes = () => {
