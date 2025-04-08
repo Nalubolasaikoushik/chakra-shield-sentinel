@@ -4,6 +4,7 @@ import { Search, Shield, Database, FileText, BellRing, Cpu, Brain, Volume2, Mic 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import AshokChakra from '../AshokChakra';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -12,6 +13,7 @@ const Hero = () => {
   const speechSynthesisRef = useRef<SpeechSynthesisUtterance | null>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const chakraInfoRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -196,16 +198,22 @@ const Hero = () => {
         
         <div className="relative slide-in-right" style={{ animationDelay: "0.3s" }}>
           {/* Shield graphic with Chakra animation inside */}
-          <div 
-            className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] bg-white p-6 rounded-full shadow-xl"
-          >
-            <div className="absolute inset-0 rounded-full overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-india-saffron via-white to-india-green opacity-10"></div>
+          <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-india-saffron/10 via-white to-india-green/10 rounded-full shadow-lg"></div>
+            <div className="relative z-10 w-[220px] h-[220px] md:w-[320px] md:h-[320px] bg-white rounded-full shadow-xl flex items-center justify-center">
+              <Shield className="absolute h-16 w-16 md:h-24 md:w-24 text-india-navyBlue opacity-10" />
+              <AshokChakra 
+                size={isMobile ? 180 : 260} 
+                spinning={true} 
+                color="#1E3799" 
+                strokeWidth={3}
+                className="animate-pulse-glow" 
+              />
             </div>
-            <div className="relative h-full w-full flex items-center justify-center">
-              <Shield className="h-16 w-16 md:h-24 md:w-24 text-india-navyBlue pulse-alert" />
-              <AshokChakra size="lg" spinning={true} className="absolute" />
-            </div>
+            
+            {/* Decorative elements */}
+            <div className="absolute inset-0 rounded-full border-8 border-white/30 animate-spin-slow"></div>
+            <div className="absolute -inset-4 rounded-full border-2 border-dashed border-india-saffron/30"></div>
           </div>
           
           {/* Simplified feature cards */}
@@ -242,7 +250,7 @@ const Hero = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <AshokChakra size="md" className="mr-4" />
+              <AshokChakra size="md" className="mr-4" color="#1E3799" />
               <h2 className="text-2xl md:text-3xl font-bold text-india-navyBlue">The Significance of Chakra</h2>
             </div>
             <p className="text-gray-600 max-w-4xl mx-auto slide-in-up">
