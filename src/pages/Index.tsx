@@ -132,7 +132,7 @@ const Index = () => {
                     rel="noopener noreferrer"
                     className="text-gray-600 hover:text-gray-900 transition-colors"
                   >
-                    <GitHub className="h-5 w-5" />
+                    <Github className="h-5 w-5" />
                   </a>
                   <a 
                     href="https://www.linkedin.com/" 
