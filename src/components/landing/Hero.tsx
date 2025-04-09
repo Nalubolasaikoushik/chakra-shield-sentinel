@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { Search, Shield, Database, FileText, BellRing, Cpu, Brain, Volume2, Mic } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -129,87 +128,88 @@ const Hero = () => {
 
   return (
     <div className="min-h-[90vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
-      {/* Animated background elements */}
+      {/* Improved animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-india-saffron/5 animate-pulse"></div>
-        <div className="absolute -bottom-32 -left-20 w-80 h-80 rounded-full bg-india-green/5 animate-pulse" style={{animationDelay: "1.5s"}}></div>
+        <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-india-saffron/5 animate-pulse"></div>
+        <div className="absolute -bottom-32 -left-20 w-96 h-96 rounded-full bg-india-green/5 animate-pulse" style={{animationDelay: "1.5s"}}></div>
+        <div className="absolute top-1/3 left-1/2 w-48 h-48 rounded-full bg-india-navyBlue/3 animate-pulse" style={{animationDelay: "2s"}}></div>
       </div>
       
-      {/* Hero main content */}
-      <div className="container mx-auto px-4 py-20 md:py-28 flex flex-col lg:flex-row items-center justify-between relative z-10">
-        <div className="z-10 max-w-2xl mb-12 lg:mb-0 px-0 md:px-4">
-          <div className="flex items-center mb-6">
-            <div className="h-12 w-4 bg-india-saffron mr-4"></div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-india-navyBlue slide-in-left">
+      {/* Hero main content with fixed padding */}
+      <div className="container mx-auto px-6 py-24 md:py-32 flex flex-col lg:flex-row items-center justify-between relative z-10">
+        <div className="z-10 max-w-2xl mb-16 lg:mb-0">
+          <div className="flex items-center mb-8">
+            <div className="h-14 w-4 bg-india-saffron mr-5"></div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-india-navyBlue slide-in-left">
               AI-Powered Detection of Fake Social Media Accounts
             </h1>
           </div>
           
-          <p className="text-lg md:text-xl mb-8 text-gray-700 slide-in-left" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl md:text-2xl mb-10 text-gray-700 slide-in-left" style={{ animationDelay: "0.2s" }}>
             ChakraShield uses advanced artificial intelligence to protect digital India from fraudulent social media activities. Government-grade security for our nation's online integrity.
           </p>
           
-          <div className="flex flex-wrap gap-4 slide-in-left" style={{ animationDelay: "0.3s" }}>
+          <div className="flex flex-wrap gap-5 slide-in-left" style={{ animationDelay: "0.3s" }}>
             <Link to="/scan">
-              <Button className="gradient-button">
-                <Search className="mr-2 h-4 w-4" />
+              <Button className="gradient-button text-base px-6 py-6">
+                <Search className="mr-2 h-5 w-5" />
                 Scan Profile
               </Button>
             </Link>
             <Link to="/about">
-              <Button variant="outline" className="border-india-navyBlue text-india-navyBlue hover:bg-india-navyBlue/10">
+              <Button variant="outline" className="border-india-navyBlue text-india-navyBlue hover:bg-india-navyBlue/10 text-base px-6 py-6">
                 Learn More
               </Button>
             </Link>
             <Button 
               variant="outline" 
-              className="border-india-green text-india-green hover:bg-india-green/10"
+              className="border-india-green text-india-green hover:bg-india-green/10 text-base px-6 py-6"
               onClick={() => speakText("ChakraShield uses advanced artificial intelligence to protect digital India from fraudulent social media activities. Government-grade security for our nation's online integrity.")}
             >
               {isSpeaking ? 
-                <Volume2 className="mr-2 h-4 w-4 animate-pulse" /> : 
-                <Volume2 className="mr-2 h-4 w-4" />
+                <Volume2 className="mr-2 h-5 w-5 animate-pulse" /> : 
+                <Volume2 className="mr-2 h-5 w-5" />
               }
               Read Aloud
             </Button>
             <Button 
               variant="outline" 
-              className="border-india-saffron text-india-saffron hover:bg-india-saffron/10"
+              className="border-india-saffron text-india-saffron hover:bg-india-saffron/10 text-base px-6 py-6"
               onClick={startSpeechRecognition}
             >
               {isListening ? 
-                <Mic className="mr-2 h-4 w-4 animate-pulse" /> : 
-                <Mic className="mr-2 h-4 w-4" />
+                <Mic className="mr-2 h-5 w-5 animate-pulse" /> : 
+                <Mic className="mr-2 h-5 w-5" />
               }
               Voice Command
             </Button>
           </div>
           
-          {/* Trust indicators */}
-          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center space-y-3 md:space-y-0 md:space-x-6 text-sm slide-in-left" style={{ animationDelay: "0.4s" }}>
+          {/* Trust indicators with improved spacing */}
+          <div className="mt-10 flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8 text-base slide-in-left" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center">
-              <Shield className="h-5 w-5 mr-2 text-india-navyBlue" />
+              <Shield className="h-6 w-6 mr-3 text-india-navyBlue" />
               <span>Govt. Secured</span>
             </div>
             <div className="flex items-center">
-              <Database className="h-5 w-5 mr-2 text-india-navyBlue" />
+              <Database className="h-6 w-6 mr-3 text-india-navyBlue" />
               <span>Blockchain Verified</span>
             </div>
             <div className="flex items-center">
-              <FileText className="h-5 w-5 mr-2 text-india-navyBlue" />
+              <FileText className="h-6 w-6 mr-3 text-india-navyBlue" />
               <span>Legal Reports</span>
             </div>
           </div>
         </div>
         
         <div className="relative slide-in-right" style={{ animationDelay: "0.3s" }}>
-          {/* Shield graphic with Chakra animation inside */}
-          <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-india-saffron/10 via-white to-india-green/10 rounded-full shadow-lg"></div>
-            <div className="relative z-10 w-[220px] h-[220px] md:w-[320px] md:h-[320px] bg-white rounded-full shadow-xl flex items-center justify-center">
-              <Shield className="absolute h-16 w-16 md:h-24 md:w-24 text-india-navyBlue opacity-10" />
+          {/* Enhanced Shield graphic with Chakra animation inside */}
+          <div className="relative w-[300px] h-[300px] md:w-[440px] md:h-[440px] flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-india-saffron/10 via-white to-india-green/10 rounded-full shadow-xl"></div>
+            <div className="relative z-10 w-[240px] h-[240px] md:w-[350px] md:h-[350px] bg-white rounded-full shadow-2xl flex items-center justify-center">
+              <Shield className="absolute h-20 w-20 md:h-32 md:w-32 text-india-navyBlue opacity-10" />
               <AshokChakra 
-                size={isMobile ? 180 : 260} 
+                size={isMobile ? 200 : 280} 
                 spinning={true} 
                 color="#1E3799" 
                 strokeWidth={3}
@@ -217,18 +217,19 @@ const Hero = () => {
               />
             </div>
             
-            {/* Decorative elements */}
-            <div className="absolute inset-0 rounded-full border-8 border-white/30 animate-spin-slow"></div>
-            <div className="absolute -inset-4 rounded-full border-2 border-dashed border-india-saffron/30"></div>
+            {/* Enhanced decorative elements */}
+            <div className="absolute inset-0 rounded-full border-8 border-white/40 animate-spin-slow"></div>
+            <div className="absolute -inset-5 rounded-full border-2 border-dashed border-india-saffron/40"></div>
+            <div className="absolute inset-4 rounded-full border-4 border-india-green/10"></div>
           </div>
           
-          {/* Feature cards - fixed positioning for better visibility */}
+          {/* Feature cards - improved positioning and design */}
           <div 
-            className="absolute -left-16 md:-left-20 top-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-left transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl"
+            className="absolute -left-20 md:-left-24 top-1/4 glass-card p-4 flex items-center max-w-[180px] shadow-xl rounded-xl slide-in-left transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
             style={{ animationDelay: "0.5s" }}
           >
-            <div className="bg-red-100 p-2 rounded-full mr-3 flex-shrink-0">
-              <BellRing className="h-5 w-5 text-red-500" />
+            <div className="bg-red-100 p-3 rounded-full mr-3 flex-shrink-0">
+              <BellRing className="h-6 w-6 text-red-500" />
             </div>
             <div className="text-sm">
               <p className="font-semibold">Threat Alerts</p>
@@ -237,11 +238,11 @@ const Hero = () => {
           </div>
           
           <div 
-            className="absolute -right-12 md:-right-16 bottom-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-right transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl"
+            className="absolute -right-16 md:-right-20 bottom-1/4 glass-card p-4 flex items-center max-w-[180px] shadow-xl rounded-xl slide-in-right transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
             style={{ animationDelay: "0.6s" }}
           >
-            <div className="bg-blue-100 p-2 rounded-full mr-3 flex-shrink-0">
-              <Search className="h-5 w-5 text-blue-500" />
+            <div className="bg-blue-100 p-3 rounded-full mr-3 flex-shrink-0">
+              <Search className="h-6 w-6 text-blue-500" />
             </div>
             <div className="text-sm">
               <p className="font-semibold">AI Scanner</p>

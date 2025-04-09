@@ -25,10 +25,10 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
     if (typeof size === 'number') return size;
     
     switch(size) {
-      case 'sm': return 28;
-      case 'md': return 48;
-      case 'lg': return 80;
-      case 'xl': return 120;
+      case 'sm': return 32;
+      case 'md': return 56;
+      case 'lg': return 96;
+      case 'xl': return 140;
       default: return 100;
     }
   };
@@ -61,20 +61,26 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
         100% { opacity: 0.6; stroke-width: ${strokeWidth}px; }
       }
       
+      @keyframes glow {
+        0% { filter: drop-shadow(0 0 2px ${color}40); }
+        50% { filter: drop-shadow(0 0 8px ${color}80); }
+        100% { filter: drop-shadow(0 0 2px ${color}40); }
+      }
+      
       .chakra-wheel {
-        animation: spin ${spinning ? 3 : 24}s linear infinite;
+        animation: spin ${spinning ? 12 : 36}s linear infinite;
         transform-origin: center;
       }
       
       .spoke {
-        animation: pulse 3s ease-in-out infinite;
+        animation: pulse 3s ease-in-out infinite, glow 4s ease-in-out infinite;
         animation-delay: calc(var(--index) * 0.125s);
       }
     `;
     document.head.appendChild(style);
     
     if (wheel instanceof SVGElement) {
-      wheel.style.animation = `spin ${spinning ? 3 : 24}s linear infinite`;
+      wheel.style.animation = `spin ${spinning ? 12 : 36}s linear infinite`;
       wheel.style.transformOrigin = 'center';
     }
     
@@ -88,7 +94,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
     return () => {
       document.head.removeChild(style);
     };
-  }, [animate, spinning, strokeWidth]);
+  }, [animate, spinning, strokeWidth, color]);
 
   // Generate 24 spokes for the Ashoka Chakra
   const generateSpokes = () => {
@@ -132,7 +138,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
     >
       <defs>
         <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feGaussianBlur stdDeviation="3" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
         </filter>
       </defs>
