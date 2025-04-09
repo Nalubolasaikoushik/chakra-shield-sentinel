@@ -8,7 +8,7 @@ import Disclaimer from '@/components/landing/Disclaimer';
 import Footer from '@/components/Footer';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Shield, ExternalLink, GitHub, Linkedin, Globe, Mail } from 'lucide-react';
+import { Shield, ExternalLink, Github, Linkedin, Globe, Mail } from 'lucide-react';
 import AshokChakra from '@/components/AshokChakra';
 
 const Index = () => {
