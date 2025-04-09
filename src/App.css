@@ -1,3 +1,4 @@
+
 #root {
   width: 100%;
   margin: 0 auto;
@@ -523,7 +524,7 @@ html {
   }
 }
 
-/* Developer section */
+/* Enhanced Developer section styling */
 .developer-section {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 3rem 0;
@@ -543,10 +544,28 @@ html {
 
 .developer-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  position: relative;
+}
+
+.developer-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(to right, #ff9933, #1E3799);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.developer-card:hover::after {
+  transform: scaleX(1);
 }
 
 .developer-card:hover {
@@ -558,6 +577,20 @@ html {
   padding: 1.5rem;
   background: linear-gradient(45deg, #1E3799, #4b6cb7);
   color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.developer-header::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(rgba(255, 255, 255, 0.2), transparent);
+  opacity: 0.5;
 }
 
 .developer-body {
@@ -597,4 +630,95 @@ html {
 .nav-link.active::after {
   width: 80%;
   left: 10%;
+}
+
+/* Improved animations */
+@keyframes slide-in-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-up {
+  animation: slide-in-up 0.6s forwards;
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-left {
+  animation: slide-in-left 0.6s forwards;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.6s forwards;
+}
+
+/* Animation delay utility classes */
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+.delay-500 {
+  animation-delay: 0.5s;
+}
+
+/* Spin animation for various speeds */
+.animate-spin-slow {
+  animation: spin 15s linear infinite;
+}
+
+.animate-spin-medium {
+  animation: spin 10s linear infinite;
+}
+
+.animate-spin-fast {
+  animation: spin 5s linear infinite;
+}
+
+/* 3D card effect */
+.card-3d {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+  transform: translateY(-5px) rotateX(2deg) rotateY(2deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
 }

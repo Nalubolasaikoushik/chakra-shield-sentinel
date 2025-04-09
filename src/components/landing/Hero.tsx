@@ -128,10 +128,16 @@ const Hero = () => {
   };
 
   return (
-    <div className="min-h-[85vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
+    <div className="min-h-[90vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-india-saffron/5 animate-pulse"></div>
+        <div className="absolute -bottom-32 -left-20 w-80 h-80 rounded-full bg-india-green/5 animate-pulse" style={{animationDelay: "1.5s"}}></div>
+      </div>
+      
       {/* Hero main content */}
-      <div className="container mx-auto px-4 py-16 md:py-24 flex flex-col lg:flex-row items-center justify-between relative z-10">
-        <div className="z-10 max-w-2xl mb-12 lg:mb-0">
+      <div className="container mx-auto px-4 py-20 md:py-28 flex flex-col lg:flex-row items-center justify-between relative z-10">
+        <div className="z-10 max-w-2xl mb-12 lg:mb-0 px-0 md:px-4">
           <div className="flex items-center mb-6">
             <div className="h-12 w-4 bg-india-saffron mr-4"></div>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-india-navyBlue slide-in-left">
@@ -216,9 +222,9 @@ const Hero = () => {
             <div className="absolute -inset-4 rounded-full border-2 border-dashed border-india-saffron/30"></div>
           </div>
           
-          {/* Simplified feature cards */}
+          {/* Feature cards - fixed positioning for better visibility */}
           <div 
-            className="absolute -left-12 md:-left-16 top-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-left"
+            className="absolute -left-16 md:-left-20 top-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-left transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl"
             style={{ animationDelay: "0.5s" }}
           >
             <div className="bg-red-100 p-2 rounded-full mr-3 flex-shrink-0">
@@ -231,7 +237,7 @@ const Hero = () => {
           </div>
           
           <div 
-            className="absolute -right-12 md:-right-12 bottom-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-right"
+            className="absolute -right-12 md:-right-16 bottom-1/4 glass-card p-3 flex items-center max-w-[160px] shadow-lg slide-in-right transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl"
             style={{ animationDelay: "0.6s" }}
           >
             <div className="bg-blue-100 p-2 rounded-full mr-3 flex-shrink-0">
