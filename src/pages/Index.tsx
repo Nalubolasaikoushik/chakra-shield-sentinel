@@ -8,7 +8,7 @@ import Disclaimer from '@/components/landing/Disclaimer';
 import Footer from '@/components/Footer';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Shield, ExternalLink, Github, Linkedin, Globe, Mail, Brain, Code, BadgeCheck, Award } from 'lucide-react';
+import { Shield, ExternalLink, Github, Linkedin, Globe, Mail, Brain, Code, BadgeCheck, Award, Cpu, BookOpen, Rocket } from 'lucide-react';
 import AshokChakra from '@/components/AshokChakra';
 
 const Index = () => {
@@ -89,43 +89,43 @@ const Index = () => {
                       </div>
                     </div>
                     <div className="text-center md:text-left">
-                      <h3 className="text-2xl md:text-3xl font-bold text-india-navyBlue mb-2">Sai Koushik Nalubola</h3>
-                      <p className="text-india-accent3 mb-3 font-medium">Lead Developer & Security Specialist</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-india-navyBlue mb-2">Saikoushik Nalubola</h3>
+                      <p className="text-india-accent3 mb-3 font-medium">Developer | AI & Robotics Enthusiast</p>
                       <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-india-saffron/20 text-india-saffron">
-                          AI/ML Enthusiast
-                        </span>
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-india-navyBlue/20 text-india-navyBlue">
                           B.Tech CSE (AIML)
                         </span>
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-india-navyBlue/20 text-india-navyBlue">
+                          Open-Source Contributor
+                        </span>
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-india-green/20 text-india-green">
-                          Cybersecurity Researcher
+                          Privacy Advocate
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="developer-body p-8">
                     <p className="text-gray-700 mb-8 leading-relaxed">
-                      Cybersecurity professional specializing in artificial intelligence and social media threat detection.
-                      Currently pursuing B.Tech in Computer Science Engineering with specialization in AI/ML.
-                      Committed to safeguarding India's digital landscape through innovative technology solutions.
+                      Computer Science & Engineering student who breathes code and bleeds innovation. 
+                      Specializing in AI, Robotics, and Sustainable Tech, with a mission to build systems 
+                      that are not just smart — but ethical, scalable, and meaningful.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="glass-card bg-gradient-to-br from-white to-gray-50 p-5 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px]">
                         <Brain className="h-7 w-7 text-india-saffron mb-3" />
-                        <h4 className="font-medium text-india-navyBlue mb-3">AI Expertise</h4>
+                        <h4 className="font-medium text-india-navyBlue mb-3">AI/ML Skills</h4>
                         <ul className="space-y-2 text-gray-600 text-sm">
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-saffron mr-2"></span>
-                            Deep learning architectures
+                            TensorFlow, PyTorch
                           </li>
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-saffron mr-2"></span>
-                            NLP for threat detection
+                            Scikit-Learn, Pandas, NumPy
                           </li>
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-saffron mr-2"></span>
-                            Computer vision systems
+                            Computer Vision (OpenCV)
                           </li>
                         </ul>
                       </div>
@@ -135,33 +135,33 @@ const Index = () => {
                         <ul className="space-y-2 text-gray-600 text-sm">
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-navyBlue mr-2"></span>
-                            Python, TensorFlow, PyTorch
+                            Python, JavaScript, C++, Java
                           </li>
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-navyBlue mr-2"></span>
-                            React, Node.js, TypeScript
+                            React.js, Node.js, Express.js
                           </li>
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-navyBlue mr-2"></span>
-                            Cloud security & infrastructure
+                            Firebase, MongoDB, GCP
                           </li>
                         </ul>
                       </div>
                       <div className="glass-card bg-gradient-to-br from-white to-gray-50 p-5 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px]">
-                        <Award className="h-7 w-7 text-india-green mb-3" />
-                        <h4 className="font-medium text-india-navyBlue mb-3">Achievements</h4>
+                        <Rocket className="h-7 w-7 text-india-green mb-3" />
+                        <h4 className="font-medium text-india-navyBlue mb-3">Key Projects</h4>
                         <ul className="space-y-2 text-gray-600 text-sm">
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-green mr-2"></span>
-                            National cybersecurity competitions
+                            Garuda OS (Privacy-First OS)
                           </li>
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-green mr-2"></span>
-                            Published research in AI security
+                            Water Purification Drone
                           </li>
                           <li className="flex items-center">
                             <span className="w-2 h-2 rounded-full bg-india-green mr-2"></span>
-                            Open-source contributions
+                            AI Farming Assistant
                           </li>
                         </ul>
                       </div>
@@ -169,13 +169,13 @@ const Index = () => {
                     
                     <div className="mt-8 p-5 border border-dashed border-india-saffron/50 rounded-xl bg-gradient-to-r from-white to-gray-50">
                       <div className="flex items-center mb-3">
-                        <BadgeCheck className="h-6 w-6 text-india-navyBlue mr-2" />
-                        <h4 className="font-medium text-india-navyBlue">Education & Certification</h4>
+                        <BookOpen className="h-6 w-6 text-india-navyBlue mr-2" />
+                        <h4 className="font-medium text-india-navyBlue">Currently Exploring</h4>
                       </div>
                       <p className="text-gray-700 leading-relaxed">
-                        Currently pursuing B.Tech in Computer Science Engineering with specialization in 
-                        Artificial Intelligence and Machine Learning. Certified in advanced cybersecurity 
-                        protocols and ethical hacking methodologies.
+                        Generative AI with LLMs for multilingual education & voice assistants.
+                        Drone Swarming Algorithms for coordinated disaster management.
+                        Secure Mobile OS Development and Open-source contributions to AI & privacy projects.
                       </p>
                     </div>
                   </div>

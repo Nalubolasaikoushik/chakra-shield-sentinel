@@ -56,15 +56,15 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
       }
       
       @keyframes pulse {
-        0% { opacity: 0.6; stroke-width: ${strokeWidth}px; }
+        0% { opacity: 0.7; stroke-width: ${strokeWidth}px; }
         50% { opacity: 1; stroke-width: ${strokeWidth * 1.5}px; }
-        100% { opacity: 0.6; stroke-width: ${strokeWidth}px; }
+        100% { opacity: 0.7; stroke-width: ${strokeWidth}px; }
       }
       
       @keyframes glow {
-        0% { filter: drop-shadow(0 0 2px ${color}40); }
-        50% { filter: drop-shadow(0 0 8px ${color}80); }
-        100% { filter: drop-shadow(0 0 2px ${color}40); }
+        0% { filter: drop-shadow(0 0 3px ${color}60); }
+        50% { filter: drop-shadow(0 0 10px ${color}); }
+        100% { filter: drop-shadow(0 0 3px ${color}60); }
       }
       
       .chakra-wheel {
@@ -138,7 +138,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
     >
       <defs>
         <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feGaussianBlur stdDeviation="4" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
         </filter>
       </defs>

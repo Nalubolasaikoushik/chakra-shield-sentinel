@@ -26,7 +26,6 @@ const Hero = () => {
     };
   }, []);
 
-  // Text-to-speech functionality
   const speakText = (textToSpeak: string) => {
     if (isSpeaking) {
       window.speechSynthesis.cancel();
@@ -34,27 +33,22 @@ const Hero = () => {
       return;
     }
 
-    // Create a new utterance if one doesn't exist
     if (!speechSynthesisRef.current) {
       speechSynthesisRef.current = new SpeechSynthesisUtterance();
     }
 
-    // Set the text and voice
     speechSynthesisRef.current.text = textToSpeak;
     speechSynthesisRef.current.lang = 'en-US';
     speechSynthesisRef.current.rate = 1;
     speechSynthesisRef.current.pitch = 1;
 
-    // Add event listeners
     speechSynthesisRef.current.onstart = () => setIsSpeaking(true);
     speechSynthesisRef.current.onend = () => setIsSpeaking(false);
     speechSynthesisRef.current.onerror = () => setIsSpeaking(false);
 
-    // Start speaking
     window.speechSynthesis.speak(speechSynthesisRef.current);
   };
 
-  // Speech recognition functionality
   const startSpeechRecognition = () => {
     if (isListening) {
       if (recognitionRef.current) {
@@ -64,14 +58,12 @@ const Hero = () => {
       return;
     }
 
-    // Check if the browser supports speech recognition
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert("Speech recognition is not supported in your browser.");
       return;
     }
 
-    // Create a new recognition instance if one doesn't exist
     if (!recognitionRef.current) {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = false;
@@ -79,13 +71,11 @@ const Hero = () => {
       recognitionRef.current.lang = 'en-US';
     }
 
-    // Add event listeners
     recognitionRef.current.onstart = () => setIsListening(true);
     recognitionRef.current.onend = () => setIsListening(false);
     recognitionRef.current.onerror = () => setIsListening(false);
     recognitionRef.current.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
-      // Navigate based on voice command
       if (transcript.toLowerCase().includes("scan")) {
         window.location.href = "/scan";
       } else if (transcript.toLowerCase().includes("about")) {
@@ -95,11 +85,9 @@ const Hero = () => {
       }
     };
 
-    // Start listening
     recognitionRef.current.start();
   };
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (speechSynthesisRef.current && isSpeaking) {
@@ -128,15 +116,13 @@ const Hero = () => {
 
   return (
     <div className="min-h-[90vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
-      {/* Improved animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-india-saffron/5 animate-pulse"></div>
         <div className="absolute -bottom-32 -left-20 w-96 h-96 rounded-full bg-india-green/5 animate-pulse" style={{animationDelay: "1.5s"}}></div>
         <div className="absolute top-1/3 left-1/2 w-48 h-48 rounded-full bg-india-navyBlue/3 animate-pulse" style={{animationDelay: "2s"}}></div>
       </div>
       
-      {/* Hero main content with fixed padding */}
-      <div className="container mx-auto px-6 py-24 md:py-32 flex flex-col lg:flex-row items-center justify-between relative z-10">
+      <div className="container mx-auto px-6 pt-28 pb-16 md:pt-32 md:pb-24 flex flex-col lg:flex-row items-center justify-between relative z-10">
         <div className="z-10 max-w-2xl mb-16 lg:mb-0">
           <div className="flex items-center mb-8">
             <div className="h-14 w-4 bg-india-saffron mr-5"></div>
@@ -185,7 +171,6 @@ const Hero = () => {
             </Button>
           </div>
           
-          {/* Trust indicators with improved spacing */}
           <div className="mt-10 flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8 text-base slide-in-left" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center">
               <Shield className="h-6 w-6 mr-3 text-india-navyBlue" />
@@ -203,7 +188,6 @@ const Hero = () => {
         </div>
         
         <div className="relative slide-in-right" style={{ animationDelay: "0.3s" }}>
-          {/* Enhanced Shield graphic with Chakra animation inside */}
           <div className="relative w-[300px] h-[300px] md:w-[440px] md:h-[440px] flex items-center justify-center">
             <div className="absolute inset-0 bg-gradient-to-br from-india-saffron/10 via-white to-india-green/10 rounded-full shadow-xl"></div>
             <div className="relative z-10 w-[240px] h-[240px] md:w-[350px] md:h-[350px] bg-white rounded-full shadow-2xl flex items-center justify-center">
@@ -217,13 +201,11 @@ const Hero = () => {
               />
             </div>
             
-            {/* Enhanced decorative elements */}
             <div className="absolute inset-0 rounded-full border-8 border-white/40 animate-spin-slow"></div>
             <div className="absolute -inset-5 rounded-full border-2 border-dashed border-india-saffron/40"></div>
             <div className="absolute inset-4 rounded-full border-4 border-india-green/10"></div>
           </div>
           
-          {/* Feature cards - improved positioning and design */}
           <div 
             className="absolute -left-20 md:-left-24 top-1/4 glass-card p-4 flex items-center max-w-[180px] shadow-xl rounded-xl slide-in-left transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
             style={{ animationDelay: "0.5s" }}
@@ -252,7 +234,6 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Ashoka Chakra Meaning Section */}
       <div className="bg-white py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
@@ -310,7 +291,6 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Digital India Initiatives */}
       <div className="bg-white py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -389,7 +369,6 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Decorative elements */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-india-saffron via-white to-india-green"></div>
     </div>
   );
