@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { Search, Shield, Database, FileText, BellRing, Cpu, Brain, Volume2, Mic } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -122,7 +123,7 @@ const Hero = () => {
         <div className="absolute top-1/3 left-1/2 w-48 h-48 rounded-full bg-india-navyBlue/3 animate-pulse" style={{animationDelay: "2s"}}></div>
       </div>
       
-      <div className="container mx-auto px-6 pt-28 pb-16 md:pt-32 md:pb-24 flex flex-col lg:flex-row items-center justify-between relative z-10">
+      <div className="container mx-auto px-4 md:px-6 pt-24 pb-16 md:pt-28 md:pb-24 flex flex-col lg:flex-row items-center justify-between relative z-10">
         <div className="z-10 max-w-2xl mb-16 lg:mb-0">
           <div className="flex items-center mb-8">
             <div className="h-14 w-4 bg-india-saffron mr-5"></div>
@@ -187,13 +188,13 @@ const Hero = () => {
           </div>
         </div>
         
-        <div className="relative slide-in-right" style={{ animationDelay: "0.3s" }}>
-          <div className="relative w-[300px] h-[300px] md:w-[440px] md:h-[440px] flex items-center justify-center">
+        <div className="relative slide-in-right w-full max-w-lg mx-auto lg:mx-0" style={{ animationDelay: "0.3s" }}>
+          <div className="relative w-[280px] h-[280px] md:w-[440px] md:h-[440px] flex items-center justify-center mx-auto lg:mx-0">
             <div className="absolute inset-0 bg-gradient-to-br from-india-saffron/10 via-white to-india-green/10 rounded-full shadow-xl"></div>
-            <div className="relative z-10 w-[240px] h-[240px] md:w-[350px] md:h-[350px] bg-white rounded-full shadow-2xl flex items-center justify-center">
+            <div className="relative z-10 w-[220px] h-[220px] md:w-[350px] md:h-[350px] bg-white rounded-full shadow-2xl flex items-center justify-center">
               <Shield className="absolute h-20 w-20 md:h-32 md:w-32 text-india-navyBlue opacity-10" />
               <AshokChakra 
-                size={isMobile ? 200 : 280} 
+                size={isMobile ? 180 : 280} 
                 spinning={true} 
                 color="#1E3799" 
                 strokeWidth={3}
@@ -207,7 +208,7 @@ const Hero = () => {
           </div>
           
           <div 
-            className="absolute -left-20 md:-left-24 top-1/4 glass-card p-4 flex items-center max-w-[180px] shadow-xl rounded-xl slide-in-left transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
+            className="absolute -left-4 sm:-left-16 md:-left-24 top-1/4 glass-card p-4 flex items-center max-w-[180px] shadow-xl rounded-xl slide-in-left transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl z-20"
             style={{ animationDelay: "0.5s" }}
           >
             <div className="bg-red-100 p-3 rounded-full mr-3 flex-shrink-0">
@@ -220,7 +221,7 @@ const Hero = () => {
           </div>
           
           <div 
-            className="absolute -right-16 md:-right-20 bottom-1/4 glass-card p-4 flex items-center max-w-[180px] shadow-xl rounded-xl slide-in-right transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
+            className="absolute -right-4 sm:-right-16 md:-right-20 bottom-1/4 glass-card p-4 flex items-center max-w-[180px] shadow-xl rounded-xl slide-in-right transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl z-20"
             style={{ animationDelay: "0.6s" }}
           >
             <div className="bg-blue-100 p-3 rounded-full mr-3 flex-shrink-0">

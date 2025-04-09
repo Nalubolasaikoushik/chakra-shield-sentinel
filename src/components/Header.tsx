@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Shield, Menu, Globe, X, MapPin, AlertTriangle, FileText, Wrench, Users, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -271,7 +270,7 @@ const Header = () => {
                 <h1 className="text-lg md:text-2xl font-bold mr-1 md:mr-2 bg-gradient-to-r from-india-saffron to-white bg-clip-text text-transparent">
                   ChakraShield
                 </h1>
-                <AshokChakra size="sm" spinning={false} />
+                <AshokChakra size="sm" spinning={true} />
               </div>
               <p className="text-xs md:text-sm font-devanagari text-white/90">
                 {currentLanguage === "English" ? "साइबर सुरक्षा प्रणाली" : text.headerTitle}
@@ -288,7 +287,7 @@ const Header = () => {
                 <span className="hidden sm:inline">{currentLanguage}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white">
+            <DropdownMenuContent className="bg-white z-50">
               <DropdownMenuItem onClick={() => handleLanguageChange("English")}>English</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLanguageChange("हिंदी")} className="font-devanagari">हिंदी</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLanguageChange("தமிழ்")}>தமிழ்</DropdownMenuItem>
@@ -307,7 +306,7 @@ const Header = () => {
                 <span>{text.resources}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white w-56">
+            <DropdownMenuContent className="bg-white w-56 z-50">
               <DropdownMenuLabel>Resources</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
@@ -360,8 +359,8 @@ const Header = () => {
       </div>
 
       {/* Center aligned navigation menu with security features dropdown */}
-      <div className="relative bg-white/10 text-white before:absolute before:top-0 before:left-0 before:w-full before:h-0.5 before:bg-india-saffron after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-india-green">
-        <nav className="container mx-auto flex justify-center overflow-x-auto scrollbar-none">
+      <div className="relative bg-white/10 text-white overflow-x-auto scrollbar-none before:absolute before:top-0 before:left-0 before:w-full before:h-0.5 before:bg-india-saffron after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-india-green">
+        <nav className="container mx-auto flex justify-center">
           <Link to="/" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.home}</Link>
           <Link to="/scan" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.scan}</Link>
           <Link to="/dashboard" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{text.dashboard}</Link>
@@ -417,7 +416,11 @@ const Header = () => {
       {/* Mobile menu - centered content with security features */}
       {mobileMenuOpen && isMobile && (
         <div className="md:hidden fixed inset-0 z-50 bg-india-navyBlue bg-opacity-98 flex flex-col">
-          <div className="flex justify-end p-4">
+          <div className="flex justify-between items-center p-4">
+            <div className="flex items-center">
+              <Shield className="h-8 w-8 text-india-saffron mr-2" />
+              <span className="text-xl font-bold">ChakraShield</span>
+            </div>
             <Button variant="ghost" onClick={toggleMobileMenu} className="text-white hover:bg-white/10">
               <X className="h-6 w-6" />
             </Button>
@@ -444,6 +447,8 @@ const Header = () => {
               <Link to="/features/cross-platform-monitor" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Cross-Platform Monitor</Link>
               <Link to="/features/multilingual-engine" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>Multilingual Engine</Link>
             </div>
+            
+            {/* Additional mobile menu items */}
             
             <div className="border-t border-white/10 w-3/4 my-2"></div>
             
