@@ -45,6 +45,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
     
     const chakra = svgRef.current;
     const wheel = chakra.querySelector('.chakra-wheel');
+    const spokes = chakra.querySelectorAll('.spoke');
     
     // Add CSS animation
     const style = document.createElement('style');
@@ -54,9 +55,20 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
         to { transform: rotate(360deg); }
       }
       
+      @keyframes pulse {
+        0% { opacity: 0.6; stroke-width: ${strokeWidth}px; }
+        50% { opacity: 1; stroke-width: ${strokeWidth * 1.5}px; }
+        100% { opacity: 0.6; stroke-width: ${strokeWidth}px; }
+      }
+      
       .chakra-wheel {
         animation: spin ${spinning ? 3 : 24}s linear infinite;
         transform-origin: center;
+      }
+      
+      .spoke {
+        animation: pulse 3s ease-in-out infinite;
+        animation-delay: calc(var(--index) * 0.125s);
       }
     `;
     document.head.appendChild(style);
@@ -66,10 +78,17 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
       wheel.style.transformOrigin = 'center';
     }
     
+    // Apply animation delay to each spoke
+    spokes.forEach((spoke, index) => {
+      if (spoke instanceof SVGElement) {
+        spoke.style.setProperty('--index', index.toString());
+      }
+    });
+    
     return () => {
       document.head.removeChild(style);
     };
-  }, [animate, spinning]);
+  }, [animate, spinning, strokeWidth]);
 
   // Generate 24 spokes for the Ashoka Chakra
   const generateSpokes = () => {
@@ -111,7 +130,13 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
       viewBox={`0 0 ${numericSize} ${numericSize}`}
       aria-label="Ashoka Chakra - Symbol of India"
     >
-      <g className="chakra-wheel">
+      <defs>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+      <g className="chakra-wheel" filter="url(#glow)">
         {/* Outer circle */}
         <circle
           cx={centerX}
