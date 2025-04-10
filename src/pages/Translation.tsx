@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -28,6 +27,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const languages = [
   { code: 'en', name: 'English' },
@@ -44,9 +44,7 @@ const languages = [
   { code: 'mr', name: 'मराठी' },
 ];
 
-// Mock translation function (in a real app, this would connect to an API)
 const mockTranslate = (text: string, targetLang: string) => {
-  // Simple mock translations for demo purposes
   const translations: Record<string, Record<string, string>> = {
     en: {
       hi: 'अनुवादित पाठ यहां दिखाई देगा',
@@ -61,34 +59,28 @@ const mockTranslate = (text: string, targetLang: string) => {
     },
   };
 
-  // If we have a mock translation, return it
   if (translations[targetLang] && text) {
     return Promise.resolve(translations[targetLang][text] || 'Translation not available for this text');
   }
   
-  // Otherwise generate a mock response
   return Promise.resolve(`${text} (translated to ${languages.find(l => l.code === targetLang)?.name || targetLang})`);
 };
 
-// Implementation of the text-to-speech function
 const textToSpeech = (text: string, lang: string) => {
   if (!text) return Promise.reject(new Error('No text provided'));
   
   if ('speechSynthesis' in window) {
     return new Promise<void>((resolve, reject) => {
-      // Cancel any ongoing speech
       window.speechSynthesis.cancel();
       
       const utterance = new SpeechSynthesisUtterance(text);
       
-      // Match language code with available voices if possible
       const voices = window.speechSynthesis.getVoices();
       const matchingVoice = voices.find(voice => voice.lang.startsWith(lang));
       if (matchingVoice) {
         utterance.voice = matchingVoice;
       }
       
-      // Set language - fallback to English if language not supported
       utterance.lang = lang === 'en' ? 'en-US' : lang;
       
       utterance.onend = () => resolve();
@@ -112,28 +104,23 @@ const Translation = () => {
   const [apiKey, setApiKey] = useState('');
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
   
-  // Speech recognition reference
   const recognitionRef = useRef<any>(null);
 
-  // Load voices when the component mounts
   useEffect(() => {
     if ('speechSynthesis' in window) {
-      // Firefox needs a small delay to load voices
       setTimeout(() => {
         window.speechSynthesis.getVoices();
       }, 100);
       
-      // Chrome and other browsers might need this event
       window.speechSynthesis.onvoiceschanged = () => {
         window.speechSynthesis.getVoices();
       };
     }
   }, []);
 
-  // Initialize speech recognition on component mount
   useEffect(() => {
-    // Check if browser supports speech recognition
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognitionAPI();
@@ -161,12 +148,10 @@ const Translation = () => {
     }
     
     return () => {
-      // Cleanup speech recognition
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
       
-      // Stop any ongoing speech synthesis
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
@@ -186,7 +171,6 @@ const Translation = () => {
     setIsTranslating(true);
 
     try {
-      // In a real app, this would be an API call
       const result = await mockTranslate(sourceText, targetLang);
       setTranslatedText(result);
       
@@ -210,7 +194,6 @@ const Translation = () => {
     setSourceLang(targetLang);
     setTargetLang(temp);
     
-    // Also swap the text
     setSourceText(translatedText);
     setTranslatedText(sourceText);
   };
@@ -233,7 +216,6 @@ const Translation = () => {
         description: "Speech recording has been stopped.",
       });
     } else {
-      // Set language for speech recognition
       recognitionRef.current.lang = sourceLang === 'en' ? 'en-US' : sourceLang;
       recognitionRef.current.start();
       setIsRecording(true);
@@ -257,7 +239,6 @@ const Translation = () => {
     try {
       setIsPlaying(true);
       
-      // Use the browser's built-in speech synthesis (no API key needed)
       await textToSpeech(text, lang);
       
       toast({
@@ -287,7 +268,6 @@ const Translation = () => {
     }
   };
 
-  // Read page introduction when component mounts
   useEffect(() => {
     const readPageIntro = async () => {
       if ('speechSynthesis' in window) {
@@ -300,8 +280,7 @@ const Translation = () => {
       }
     };
     
-    // Uncomment the line below if you want the page to speak automatically on load
-    // readPageIntro();
+    readPageIntro();
   }, []);
 
   return (
@@ -312,16 +291,16 @@ const Translation = () => {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-center mb-4">
               <Globe className="h-10 w-10 text-india-saffron mr-3" />
-              <h1 className="text-4xl font-bold">ChakraShield Translation Service</h1>
+              <h1 className="text-4xl font-bold">{t('translationTitle')}</h1>
             </div>
-            <p className="text-xl text-center">Break language barriers with our AI-powered translation and speech services</p>
+            <p className="text-xl text-center">{t('translationSubtitle')}</p>
             <div className="mt-4 flex justify-center">
               <Button 
-                onClick={() => handleTextToSpeech("Welcome to ChakraShield Translation Service. Break language barriers with our AI-powered translation and speech services.", "en")}
+                onClick={() => handleTextToSpeech(t('translationSubtitle'), "en")}
                 className="bg-india-saffron hover:bg-india-saffron/90 text-white"
               >
                 <Volume2 className="mr-2 h-4 w-4" />
-                Read this aloud
+                {t('readAloud')}
               </Button>
             </div>
           </div>
@@ -332,20 +311,20 @@ const Translation = () => {
             <div className="max-w-4xl mx-auto">
               <Tabs defaultValue="text" className="mb-8">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="text">Text Translation</TabsTrigger>
-                  <TabsTrigger value="speech">Speech Services</TabsTrigger>
+                  <TabsTrigger value="text">{t('translateText')}</TabsTrigger>
+                  <TabsTrigger value="speech">{t('speechToText')}</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="text" className="mt-6">
                   <Card className="border-india-navyBlue/10">
                     <CardHeader>
-                      <CardTitle>Universal Translation</CardTitle>
-                      <CardDescription>Translate text between multiple Indian languages and English</CardDescription>
+                      <CardTitle>{t('universalTranslation')}</CardTitle>
+                      <CardDescription>{t('translateText')}</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
-                          <label className="block text-sm font-medium mb-2">Source Language</label>
+                          <label className="block text-sm font-medium mb-2">{t('sourceLanguage')}</label>
                           <Select value={sourceLang} onValueChange={setSourceLang}>
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Select language" />
@@ -360,7 +339,7 @@ const Translation = () => {
                           </Select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium mb-2">Target Language</label>
+                          <label className="block text-sm font-medium mb-2">{t('targetLanguage')}</label>
                           <Select value={targetLang} onValueChange={setTargetLang}>
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Select language" />
@@ -444,7 +423,7 @@ const Translation = () => {
                         className="w-full sm:flex-1 bg-india-saffron hover:bg-india-saffron/90 text-white"
                         disabled={isTranslating}
                       >
-                        {isTranslating ? "Translating..." : "Translate"}
+                        {isTranslating ? t('translating') : t('translate')}
                       </Button>
                       {isPlaying && (
                         <Button 
@@ -669,7 +648,7 @@ const Translation = () => {
 
         <section className="py-12 bg-india-navyBlue/5">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-2xl font-bold mb-6 text-india-navyBlue">Supporting Digital Bharat</h2>
+            <h2 className="text-2xl font-bold mb-6 text-india-navyBlue">{t('supportingDigitalBharat')}</h2>
             <p className="max-w-3xl mx-auto mb-8 text-gray-700">
               Our translation service is a key component of ChakraShield's commitment to the Digital India initiative, 
               helping to bridge linguistic divides and ensure that all citizens can access digital services in their 
