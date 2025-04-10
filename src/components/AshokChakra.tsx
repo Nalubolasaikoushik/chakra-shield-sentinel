@@ -37,8 +37,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
   const radius = numericSize / 2;
   const centerX = radius;
   const centerY = radius;
-  const innerRadius = radius * 0.2;
-  const spokeLength = radius - innerRadius - strokeWidth * 2;
+  const innerRadius = radius * 0.15;
   
   useEffect(() => {
     if (!svgRef.current || (!animate && !spinning)) return;
@@ -55,46 +54,23 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
         to { transform: rotate(360deg); }
       }
       
-      @keyframes pulse {
-        0% { opacity: 0.9; stroke-width: ${strokeWidth}px; }
-        50% { opacity: 1; stroke-width: ${strokeWidth * 1.2}px; }
-        100% { opacity: 0.9; stroke-width: ${strokeWidth}px; }
-      }
-      
-      @keyframes glow {
-        0% { filter: drop-shadow(0 0 2px ${color}80); }
-        50% { filter: drop-shadow(0 0 6px ${color}); }
-        100% { filter: drop-shadow(0 0 2px ${color}80); }
-      }
-      
       .chakra-wheel {
-        animation: ${spinning ? 'spin' : ''} ${spinning ? 15 : 0}s linear infinite;
+        animation: ${spinning ? 'spin 15s linear infinite' : ''};
         transform-origin: center;
-      }
-      
-      .spoke {
-        animation: ${animate ? 'pulse 3s ease-in-out infinite, glow 4s ease-in-out infinite' : ''};
-        animation-delay: calc(var(--index) * 0.125s);
       }
     `;
     document.head.appendChild(style);
     
+    // Apply animation to wheel if spinning is enabled
     if (wheel instanceof SVGElement && spinning) {
-      wheel.style.animation = `spin ${spinning ? 15 : 0}s linear infinite`;
+      wheel.style.animation = 'spin 15s linear infinite';
       wheel.style.transformOrigin = 'center';
     }
-    
-    // Apply animation delay to each spoke
-    spokes.forEach((spoke, index) => {
-      if (spoke instanceof SVGElement) {
-        spoke.style.setProperty('--index', index.toString());
-      }
-    });
     
     return () => {
       document.head.removeChild(style);
     };
-  }, [animate, spinning, strokeWidth, color]);
+  }, [animate, spinning]);
 
   // Generate 24 spokes for the Ashoka Chakra
   const generateSpokes = () => {
@@ -136,23 +112,13 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
       viewBox={`0 0 ${numericSize} ${numericSize}`}
       aria-label="Ashoka Chakra - Symbol of India"
     >
-      <defs>
-        <filter id="chakra-glow" x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-        <linearGradient id="chakra-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={`${color}FF`} />
-          <stop offset="100%" stopColor={`${color}CC`} />
-        </linearGradient>
-      </defs>
-      <g className="chakra-wheel" filter="url(#chakra-glow)">
+      <g className="chakra-wheel">
         {/* Outer circle */}
         <circle
           cx={centerX}
           cy={centerY}
           r={radius - strokeWidth}
-          stroke="url(#chakra-grad)"
+          stroke={color}
           strokeWidth={strokeWidth}
           fill="none"
         />
@@ -165,7 +131,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
           cx={centerX}
           cy={centerY}
           r={innerRadius}
-          fill="url(#chakra-grad)"
+          fill={color}
         />
       </g>
     </svg>
