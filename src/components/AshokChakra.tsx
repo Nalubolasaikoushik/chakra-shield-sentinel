@@ -37,7 +37,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
   const radius = numericSize / 2;
   const centerX = radius;
   const centerY = radius;
-  const innerRadius = radius * 0.15;
+  const innerRadius = radius * 0.2;
   const spokeLength = radius - innerRadius - strokeWidth * 2;
   
   useEffect(() => {
@@ -56,31 +56,31 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
       }
       
       @keyframes pulse {
-        0% { opacity: 0.7; stroke-width: ${strokeWidth}px; }
-        50% { opacity: 1; stroke-width: ${strokeWidth * 1.5}px; }
-        100% { opacity: 0.7; stroke-width: ${strokeWidth}px; }
+        0% { opacity: 0.9; stroke-width: ${strokeWidth}px; }
+        50% { opacity: 1; stroke-width: ${strokeWidth * 1.2}px; }
+        100% { opacity: 0.9; stroke-width: ${strokeWidth}px; }
       }
       
       @keyframes glow {
-        0% { filter: drop-shadow(0 0 3px ${color}60); }
-        50% { filter: drop-shadow(0 0 10px ${color}); }
-        100% { filter: drop-shadow(0 0 3px ${color}60); }
+        0% { filter: drop-shadow(0 0 2px ${color}80); }
+        50% { filter: drop-shadow(0 0 6px ${color}); }
+        100% { filter: drop-shadow(0 0 2px ${color}80); }
       }
       
       .chakra-wheel {
-        animation: spin ${spinning ? 12 : 36}s linear infinite;
+        animation: ${spinning ? 'spin' : ''} ${spinning ? 15 : 0}s linear infinite;
         transform-origin: center;
       }
       
       .spoke {
-        animation: pulse 3s ease-in-out infinite, glow 4s ease-in-out infinite;
+        animation: ${animate ? 'pulse 3s ease-in-out infinite, glow 4s ease-in-out infinite' : ''};
         animation-delay: calc(var(--index) * 0.125s);
       }
     `;
     document.head.appendChild(style);
     
-    if (wheel instanceof SVGElement) {
-      wheel.style.animation = `spin ${spinning ? 12 : 36}s linear infinite`;
+    if (wheel instanceof SVGElement && spinning) {
+      wheel.style.animation = `spin ${spinning ? 15 : 0}s linear infinite`;
       wheel.style.transformOrigin = 'center';
     }
     
@@ -137,18 +137,22 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
       aria-label="Ashoka Chakra - Symbol of India"
     >
       <defs>
-        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="4" result="blur" />
+        <filter id="chakra-glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
         </filter>
+        <linearGradient id="chakra-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor={`${color}FF`} />
+          <stop offset="100%" stopColor={`${color}CC`} />
+        </linearGradient>
       </defs>
-      <g className="chakra-wheel" filter="url(#glow)">
+      <g className="chakra-wheel" filter="url(#chakra-glow)">
         {/* Outer circle */}
         <circle
           cx={centerX}
           cy={centerY}
           r={radius - strokeWidth}
-          stroke={color}
+          stroke="url(#chakra-grad)"
           strokeWidth={strokeWidth}
           fill="none"
         />
@@ -161,7 +165,7 @@ const AshokChakra: React.FC<AshokChakraProps> = ({
           cx={centerX}
           cy={centerY}
           r={innerRadius}
-          fill={color}
+          fill="url(#chakra-grad)"
         />
       </g>
     </svg>
