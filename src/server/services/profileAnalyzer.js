@@ -201,7 +201,7 @@ function getRandomInsight(type) {
     temporal: [
       'Timing correlates with specific campaign',
       'Activity schedule suggests non-human operator',
-      'Posting times don't match claimed location'
+      'Posting times do not match claimed location'
     ],
     network: [
       'Account part of suspected influence network',
