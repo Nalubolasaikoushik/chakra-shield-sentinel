@@ -52,10 +52,11 @@ const englishTranslations: Translations = {
   'languageChanged': 'Language has been set to English',
   'headerTitle': 'Cyber Security System',
   'digitalIndia': 'A Digital India Initiative',
-  'securityTools': 'Security Tools',
+  'securityToolsLink': 'Security Tools',
   'ourMission': 'Our mission is to protect digital infrastructure',
   'legal': 'Legal',
   'help': 'Help',
+  'supportingDigitalBharat': 'Supporting Digital Bharat',
   
   // Footer
   'allRightsReserved': 'All rights reserved',
@@ -140,10 +141,11 @@ const hindiTranslations: Translations = {
   'languageChanged': 'भाषा हिंदी पर सेट की गई है',
   'headerTitle': 'साइबर सुरक्षा प्रणाली',
   'digitalIndia': 'एक डिजिटल इंडिया पहल',
-  'securityTools': 'सुरक्षा उपकरण',
+  'securityToolsLink': 'सुरक्षा उपकरण',
   'ourMission': 'हमारा मिशन डिजिटल इंफ्रास्ट्रक्चर की रक्षा करना है',
   'legal': 'कानूनी',
   'help': 'सहायता',
+  'supportingDigitalBharat': 'डिजिटल भारत का समर्थन करना',
   
   // Footer
   'allRightsReserved': 'सर्वाधिकार सुरक्षित',
