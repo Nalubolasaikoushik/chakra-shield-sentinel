@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code, MapPin, Github, Linkedin } from 'lucide-react';
+import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code, Github, Linkedin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { Link } from "react-router-dom";
 import AshokChakra from './AshokChakra';
 import { useIsMobile } from '@/hooks/use-mobile';
