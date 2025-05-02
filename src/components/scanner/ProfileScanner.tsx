@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Upload, Share2, AlertCircle, CheckCircle, Loader, Download, FileText, ExternalLink, ScanSearch } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
 import AshokChakra from '../AshokChakra';
+import { verifyImage, verifyImageBase64 } from '@/services/profileAnalysisService';
 
 interface ImageVerificationResult {
   success: boolean;
@@ -125,24 +125,18 @@ const ProfileScanner = () => {
     }, 200);
     
     try {
-      const formData = new FormData();
+      let result;
+      
       if (imageFile) {
-        formData.append('image', imageFile);
+        // Use the service function instead of direct fetch
+        result = await verifyImage(imageFile);
       } else if (imagePreview) {
-        // If we have a preview but no file (e.g., from drag and drop)
-        formData.append('base64Image', imagePreview);
+        // Use base64 verification if we only have preview
+        result = await verifyImageBase64(imagePreview);
+      } else {
+        throw new Error("No image data available");
       }
       
-      const response = await fetch('/api/verify-image', {
-        method: 'POST',
-        body: formData,
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Server responded with ${response.status}`);
-      }
-      
-      const result = await response.json();
       setVerificationResult(result);
       
       clearInterval(progressInterval);

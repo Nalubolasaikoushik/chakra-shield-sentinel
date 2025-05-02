@@ -1,227 +1,215 @@
 
-/**
- * Simulates analyzing a social media profile and returns behavior analysis results
- */
-const analyzeProfile = async (username, platform) => {
-  // In a real implementation, this would call platform-specific APIs or web scraping
-  // This is a simulation that generates plausible data based on the username and platform
-  
-  // Simulate API call delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // Generate pseudo-random but deterministic scores based on username
-  const seed = username.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-  const randomScore = (base) => Math.min(95, Math.max(5, Math.floor(
-    (seed * base * 13) % 100
-  )));
-  
-  const behaviorScore = randomScore(1.1);
-  const languageScore = randomScore(1.3);
-  const contentScore = randomScore(0.9);
-  const temporalScore = randomScore(1.5);
-  const networkScore = randomScore(0.7);
-  
-  // Calculate overall alert level
-  const overallScore = (behaviorScore + languageScore + contentScore + temporalScore + networkScore) / 5;
-  let alertLevel = 'low';
-  if (overallScore > 70) alertLevel = 'high';
-  else if (overallScore > 40) alertLevel = 'medium';
-  
-  // Generate mock profile metadata
-  const profileMetadata = generateProfileMetadata(username, platform);
-  
-  // Generate pattern analysis based on scores
-  const patterns = generatePatternAnalysis(username, platform, {
-    behaviorScore,
-    languageScore,
-    contentScore,
-    temporalScore,
-    networkScore
-  });
-  
-  return {
-    username,
-    platform,
-    analysisDate: new Date().toISOString(),
-    profileMetadata,
-    scores: {
-      behaviorScore,
-      languageScore,
-      contentScore,
-      temporalScore,
-      networkScore,
-    },
-    alertLevel,
-    patterns
-  };
-};
+// Simulated profile analysis service
+// In a real implementation, this would use actual APIs or web scraping
 
 /**
- * Generates simulated profile metadata based on username and platform
+ * Analyzes a social media profile for suspicious patterns
+ * @param {String} username - The username to analyze
+ * @param {String} platform - The platform to analyze (twitter, instagram, etc.)
+ * @returns {Object} Analysis result with scores and pattern matches
  */
-const generateProfileMetadata = (username, platform) => {
-  const seed = username.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-  const randomInt = (min, max) => Math.floor(
-    ((seed * (platform.charCodeAt(0) * 0.5)) % (max - min)) + min
-  );
+export async function analyzeProfile(username, platform) {
+  try {
+    // In a real implementation, this would use actual APIs or web scraping
+    // For now, we'll simulate the analysis with mock data
+    
+    // Simulate processing time (remove in production)
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Generate randomized metadata based on platform
+    const profileMetadata = generateProfileMetadata(platform);
+    
+    // Generate scores and patterns
+    const scores = generateScores();
+    const patterns = generatePatterns(scores);
+    
+    // Determine alert level based on scores
+    const alertLevel = determineAlertLevel(scores);
+    
+    return {
+      username,
+      platform,
+      analysisDate: new Date().toISOString(),
+      profileMetadata,
+      scores,
+      alertLevel,
+      patterns
+    };
+  } catch (error) {
+    console.error('Error analyzing profile:', error);
+    throw new Error(`Profile analysis failed: ${error.message}`);
+  }
+}
+
+// Helper function to generate random profile metadata
+function generateProfileMetadata(platform) {
+  const creationDate = new Date();
+  creationDate.setMonth(creationDate.getMonth() - Math.floor(Math.random() * 36)); // 0-36 months ago
   
-  // Calculate a plausible account creation date (between 1-5 years ago)
-  const currentDate = new Date();
-  const yearsAgo = randomInt(1, 6);
-  const creationDate = new Date(currentDate);
-  creationDate.setFullYear(creationDate.getFullYear() - yearsAgo);
-  creationDate.setMonth(randomInt(0, 12));
-  creationDate.setDate(randomInt(1, 28));
+  const metadata = {
+    displayName: 'User ' + Math.floor(Math.random() * 1000),
+    followers: Math.floor(Math.random() * 10000),
+    following: Math.floor(Math.random() * 1000),
+    creationDate: creationDate.toISOString(),
+    bio: getRandomBio(),
+    location: getRandomLocation(),
+    postCount: Math.floor(Math.random() * 500),
+    engagement: Math.random() * 10
+  };
   
-  // Generate different metadata based on platform
-  const platformSpecificData = {};
-  
-  switch (platform.toLowerCase()) {
-    case 'twitter':
-      platformSpecificData.tweets = randomInt(50, 5000);
-      platformSpecificData.verified = seed % 7 === 0;
-      break;
-    case 'instagram':
-      platformSpecificData.posts = randomInt(10, 500);
-      platformSpecificData.verified = seed % 9 === 0;
-      break;
-    case 'facebook':
-      platformSpecificData.friends = randomInt(50, 2000);
-      platformSpecificData.groups = randomInt(1, 20);
-      break;
-    case 'linkedin':
-      platformSpecificData.connections = randomInt(100, 3000);
-      platformSpecificData.recommendations = randomInt(0, 30);
-      break;
-    default:
-      // Default metadata
-      platformSpecificData.posts = randomInt(10, 300);
+  // Add platform-specific fields
+  if (platform === 'twitter') {
+    metadata.verified = Math.random() > 0.8;
+    metadata.tweetFrequency = Math.random() * 20;
+  } else if (platform === 'instagram') {
+    metadata.verified = Math.random() > 0.9;
+    metadata.avgLikes = Math.floor(Math.random() * 1000);
+  } else if (platform === 'facebook') {
+    metadata.friendCount = Math.floor(Math.random() * 2000);
+    metadata.pageCount = Math.floor(Math.random() * 5);
+  } else if (platform === 'linkedin') {
+    metadata.connections = Math.floor(Math.random() * 500);
+    metadata.recommendations = Math.floor(Math.random() * 20);
   }
   
+  return metadata;
+}
+
+// Helper function to generate random scores
+function generateScores() {
   return {
-    displayName: username.charAt(0).toUpperCase() + username.slice(1),
-    followers: randomInt(10, 10000),
-    following: randomInt(10, 1000),
-    creationDate: creationDate.toISOString().split('T')[0],
-    bio: generateMockBio(username, platform),
-    location: generateRandomLocation(),
-    ...platformSpecificData
+    behaviorScore: Math.floor(Math.random() * 100),
+    languageScore: Math.floor(Math.random() * 100),
+    contentScore: Math.floor(Math.random() * 100),
+    temporalScore: Math.floor(Math.random() * 100),
+    networkScore: Math.floor(Math.random() * 100)
   };
-};
+}
 
-/**
- * Generates mock bio text
- */
-const generateMockBio = (username, platform) => {
-  const bios = [
-    `Official account of ${username}`,
-    `${platform} enthusiast | Content creator`,
-    `Digital marketing specialist | ${username}`,
-    `${username} | Thoughts are my own`,
-    `${platform} user since ${new Date().getFullYear() - 3}`,
-    `Just sharing my journey | Follow for updates`,
-    `${username} | Professional ${platform} user`,
-    `Content creator | Influencer | ${username}`,
-    `${username}'s official ${platform} account`,
-    `Just here for the memes | ${username}`,
-  ];
+// Helper function to determine alert level
+function determineAlertLevel(scores) {
+  const avgScore = (scores.behaviorScore + scores.languageScore + scores.contentScore + 
+                    scores.temporalScore + scores.networkScore) / 5;
   
-  const seed = username.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-  return bios[seed % bios.length];
-};
+  if (avgScore < 30) return 'low';
+  if (avgScore < 70) return 'medium';
+  return 'high';
+}
 
-/**
- * Generates a random location
- */
-const generateRandomLocation = () => {
-  const locations = [
-    'Mumbai, India',
-    'Delhi, India',
-    'Bangalore, India',
-    'Chennai, India',
-    'Hyderabad, India',
-    'Kolkata, India',
-    'Pune, India',
-    'Ahmedabad, India',
-    'Jaipur, India',
-    'Lucknow, India',
-    'Not specified',
+// Helper function to generate random patterns
+function generatePatterns(scores) {
+  const patternTypes = [
+    'behavior', 'language', 'content', 'temporal', 'network'
   ];
-  
-  return locations[Math.floor(Math.random() * locations.length)];
-};
-
-/**
- * Generates pattern analysis based on scores
- */
-const generatePatternAnalysis = (username, platform, scores) => {
-  const { behaviorScore, languageScore, contentScore, temporalScore, networkScore } = scores;
   
   const patterns = [];
+  const patternCount = Math.floor(Math.random() * 5) + 1; // 1-5 patterns
   
-  // Posting Frequency Pattern
-  if (temporalScore > 60) {
-    patterns.push({
-      type: 'Posting Frequency',
-      description: 'Unusual posting patterns detected outside normal human behavior',
-      score: temporalScore,
-      insights: 'Account posts at consistent intervals suggesting automated behavior'
-    });
-  }
-  
-  // Content Repetition Pattern
-  if (contentScore > 55) {
-    patterns.push({
-      type: 'Content Repetition',
-      description: 'Similar content patterns across multiple posts',
-      score: contentScore,
-      insights: 'Templates or recycled content detected across timeline'
-    });
-  }
-  
-  // Temporal Anomalies Pattern
-  if (temporalScore > 50) {
-    patterns.push({
-      type: 'Temporal Anomalies',
-      description: 'Posting times inconsistent with claimed location',
-      score: temporalScore,
-      insights: 'Account claims to be in India but posts during Indian night hours'
-    });
-  }
-  
-  // Linguistic Analysis Pattern
-  if (languageScore > 45) {
-    patterns.push({
-      type: 'Linguistic Analysis',
-      description: 'Language patterns inconsistent with claimed identity',
-      score: languageScore,
-      insights: 'Hindi text shows machine translation patterns and syntax errors'
-    });
-  }
-  
-  // Network Behavior Pattern
-  if (networkScore > 40) {
-    patterns.push({
-      type: 'Network Behavior',
-      description: 'Unusual interaction patterns with other accounts',
-      score: networkScore,
-      insights: 'Coordinated engagement detected with cluster of similar accounts'
-    });
-  }
-  
-  // Ensure we have at least 2 patterns
-  if (patterns.length < 2) {
-    patterns.push({
-      type: 'Account Activity',
-      description: 'General account activity analysis',
-      score: behaviorScore,
-      insights: 'Some minor inconsistencies detected in account activity patterns'
-    });
+  for (let i = 0; i < patternCount; i++) {
+    const type = patternTypes[Math.floor(Math.random() * patternTypes.length)];
+    const pattern = {
+      type,
+      description: getRandomPatternDescription(type),
+      score: Math.floor(Math.random() * 100),
+      insights: getRandomInsight(type)
+    };
+    patterns.push(pattern);
   }
   
   return patterns;
-};
+}
 
-module.exports = {
-  analyzeProfile
-};
+// Helper function to get random bio
+function getRandomBio() {
+  const bios = [
+    'Just living life to the fullest',
+    'Professional photographer and traveler',
+    'Entrepreneur | Speaker | Coffee lover',
+    'Digital marketer with 10+ years experience',
+    'Proud parent of 2 kids and 3 dogs',
+    ''
+  ];
+  return bios[Math.floor(Math.random() * bios.length)];
+}
+
+// Helper function to get random location
+function getRandomLocation() {
+  const locations = [
+    'New York, NY',
+    'San Francisco, CA',
+    'London, UK',
+    'Tokyo, Japan',
+    'Mumbai, India',
+    'Sydney, Australia',
+    ''
+  ];
+  return locations[Math.floor(Math.random() * locations.length)];
+}
+
+// Helper function to get random pattern description
+function getRandomPatternDescription(type) {
+  const descriptions = {
+    behavior: [
+      'Unusual posting frequency detected',
+      'Account shows automation patterns',
+      'Suspicious interaction patterns observed'
+    ],
+    language: [
+      'NLP analysis suggests non-native speaker',
+      'Writing style inconsistencies detected',
+      'Similar text patterns to known fake accounts'
+    ],
+    content: [
+      'Content frequently contains misleading claims',
+      'Images show signs of manipulation',
+      'Profile promotes divisive content'
+    ],
+    temporal: [
+      'Activity during unusual hours',
+      'Posting patterns suggest automation',
+      'Account becomes active during specific events'
+    ],
+    network: [
+      'Connected to known inauthentic accounts',
+      'Unusual follower growth pattern',
+      'Interactions limited to specific network cluster'
+    ]
+  };
+  
+  const typeDescriptions = descriptions[type] || descriptions.behavior;
+  return typeDescriptions[Math.floor(Math.random() * typeDescriptions.length)];
+}
+
+// Helper function to get random insight
+function getRandomInsight(type) {
+  const insights = {
+    behavior: [
+      'Pattern matches known bot behavior',
+      'Activity suggests coordinated campaign',
+      'Behavior inconsistent with profile claims'
+    ],
+    language: [
+      'Text likely generated or translated',
+      'Language patterns suggest specific origin',
+      'Writing style changed significantly over time'
+    ],
+    content: [
+      'Content amplifies specific narrative',
+      'Media frequently manipulated',
+      'Posts contain embedded misinformation'
+    ],
+    temporal: [
+      'Timing correlates with specific campaign',
+      'Activity schedule suggests non-human operator',
+      'Posting times don't match claimed location'
+    ],
+    network: [
+      'Account part of suspected influence network',
+      'Followers show suspicious creation patterns',
+      'Connection pattern indicates artificial growth'
+    ]
+  };
+  
+  const typeInsights = insights[type] || insights.behavior;
+  return typeInsights[Math.floor(Math.random() * typeInsights.length)];
+}
