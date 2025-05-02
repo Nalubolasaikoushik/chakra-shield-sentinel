@@ -1,4 +1,3 @@
-
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -7,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { analyzeProfile } from './services/profileAnalyzer.js';
 import { verifyImage } from './services/imageVerifier.js';
+import { generateReport } from './services/reportGenerator.js';
 
 // ES Module compatibility
 const __filename = fileURLToPath(import.meta.url);
@@ -93,6 +93,37 @@ app.post('/api/verify-image', upload.single('image'), async (req, res) => {
     return res.status(500).json({
       error: 'Failed to verify image',
       message: error.message
+    });
+  }
+});
+
+// New endpoint for generating reports
+app.post('/api/generate-report', async (req, res) => {
+  try {
+    const analysisData = req.body;
+    
+    if (!analysisData || !analysisData.username || !analysisData.platform) {
+      return res.status(400).json({ 
+        error: 'Invalid analysis data. Required fields are missing.' 
+      });
+    }
+    
+    // Generate the PDF report
+    const pdfBuffer = await generateReport(analysisData);
+    
+    // Set response headers for PDF download
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 
+      `attachment; filename="report-${analysisData.username}-${analysisData.platform}-${Date.now()}.pdf"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    
+    // Send the PDF file
+    return res.send(pdfBuffer);
+  } catch (error) {
+    console.error('Error generating report:', error);
+    return res.status(500).json({ 
+      error: 'Failed to generate report',
+      message: error.message 
     });
   }
 });
