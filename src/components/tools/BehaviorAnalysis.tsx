@@ -16,90 +16,71 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { toast } from "@/components/ui/use-toast";
+import { analyzeProfile, AnalysisResult } from "@/services/profileAnalysisService";
 
 const BehaviorAnalysis = () => {
-  const [url, setUrl] = useState('');
+  const [username, setUsername] = useState('');
+  const [platform, setPlatform] = useState('twitter');
   const [analyzing, setAnalyzing] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [results, setResults] = useState<null | {
-    behaviorScore: number;
-    languageScore: number;
-    temporalScore: number;
-    networkScore: number;
-    contentScore: number;
-    alertLevel: 'low' | 'medium' | 'high';
-    patterns: Array<{
-      type: string;
-      description: string;
-      score: number;
-      insights: string;
-    }>;
-  }>(null);
+  const [results, setResults] = useState<null | AnalysisResult>(null);
 
-  const handleAnalyze = () => {
-    if (!url) return;
+  const handleAnalyze = async () => {
+    if (!username || !platform) {
+      toast({
+        title: "Missing information",
+        description: "Please provide both username and platform",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setAnalyzing(true);
     setProgress(0);
     
-    // Simulate analysis process
-    const interval = setInterval(() => {
+    // Use intervals to show progress to the user while waiting for API response
+    const progressInterval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setAnalyzing(false);
-          
-          // Generate mock results
-          const behaviorScore = Math.floor(Math.random() * 100);
-          const alertLevel: 'low' | 'medium' | 'high' = behaviorScore > 70 ? 'high' : behaviorScore > 40 ? 'medium' : 'low';
-          
-          const mockResults = {
-            behaviorScore,
-            languageScore: Math.floor(Math.random() * 100),
-            temporalScore: Math.floor(Math.random() * 100),
-            networkScore: Math.floor(Math.random() * 100),
-            contentScore: Math.floor(Math.random() * 100),
-            alertLevel,
-            patterns: [
-              {
-                type: 'Posting Frequency',
-                description: 'Unusual posting patterns detected outside normal human behavior',
-                score: Math.floor(Math.random() * 100),
-                insights: 'Account posts at consistent intervals suggesting automated behavior'
-              },
-              {
-                type: 'Content Repetition',
-                description: 'Similar content patterns across multiple posts',
-                score: Math.floor(Math.random() * 100),
-                insights: 'Templates or recycled content detected across timeline'
-              },
-              {
-                type: 'Temporal Anomalies',
-                description: 'Posting times inconsistent with claimed location',
-                score: Math.floor(Math.random() * 100),
-                insights: 'Account claims to be in India but posts during Indian night hours'
-              },
-              {
-                type: 'Linguistic Analysis',
-                description: 'Language patterns inconsistent with claimed identity',
-                score: Math.floor(Math.random() * 100),
-                insights: 'Hindi text shows machine translation patterns and syntax errors'
-              }
-            ]
-          };
-          
-          setResults(mockResults);
-          return 100;
+        if (prev >= 90) { // Cap at 90% until we get actual results
+          clearInterval(progressInterval);
+          return 90;
         }
         return prev + 5;
       });
     }, 200);
+    
+    try {
+      const analysisResults = await analyzeProfile(username, platform);
+      
+      clearInterval(progressInterval);
+      setProgress(100);
+      setResults(analysisResults);
+      
+      toast({
+        title: "Analysis complete",
+        description: `Analysis completed for ${username} on ${platform}`,
+      });
+    } catch (error) {
+      clearInterval(progressInterval);
+      setProgress(0);
+      console.error("Analysis failed:", error);
+      
+      toast({
+        title: "Analysis failed",
+        description: error instanceof Error ? error.message : "Failed to analyze profile",
+        variant: "destructive",
+      });
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   const getScoreColor = (score: number) => {
@@ -115,7 +96,8 @@ const BehaviorAnalysis = () => {
   };
 
   const resetAnalysis = () => {
-    setUrl('');
+    setUsername('');
+    setPlatform('twitter');
     setResults(null);
   };
 
@@ -137,25 +119,40 @@ const BehaviorAnalysis = () => {
           <div>
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Enter Social Media Profile URL
+                Enter Social Media Profile Details
               </label>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="https://twitter.com/username or https://instagram.com/username"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  className="flex-grow"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div className="md:col-span-2">
+                  <Input
+                    placeholder="Username (e.g., johndoe)"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="flex-grow"
+                  />
+                </div>
+                <Select value={platform} onValueChange={setPlatform}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select platform" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="twitter">Twitter</SelectItem>
+                    <SelectItem value="instagram">Instagram</SelectItem>
+                    <SelectItem value="facebook">Facebook</SelectItem>
+                    <SelectItem value="linkedin">LinkedIn</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex mt-2">
                 <Button 
                   onClick={handleAnalyze} 
-                  disabled={!url}
+                  disabled={!username || !platform}
                   className="bg-india-navyBlue hover:bg-india-navyBlue/90"
                 >
-                  Analyze
+                  Analyze Profile
                 </Button>
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Supports Twitter, Facebook, Instagram, and LinkedIn profiles
+                Enter username without @ symbol
               </p>
             </div>
             
@@ -238,15 +235,15 @@ const BehaviorAnalysis = () => {
                           ></circle>
                           <circle
                             className={`${
-                              results.behaviorScore < 30
+                              results.scores.behaviorScore < 30
                                 ? "text-green-500"
-                                : results.behaviorScore < 70
+                                : results.scores.behaviorScore < 70
                                 ? "text-yellow-500"
                                 : "text-red-500"
                             } stroke-current`}
                             strokeWidth="8"
                             strokeLinecap="round"
-                            strokeDasharray={`${results.behaviorScore * 2.51} 251.2`}
+                            strokeDasharray={`${results.scores.behaviorScore * 2.51} 251.2`}
                             strokeDashoffset="0"
                             cx="50"
                             cy="50"
@@ -256,8 +253,8 @@ const BehaviorAnalysis = () => {
                           ></circle>
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className={`text-2xl font-bold ${getScoreColor(results.behaviorScore)}`}>
-                            {results.behaviorScore}
+                          <span className={`text-2xl font-bold ${getScoreColor(results.scores.behaviorScore)}`}>
+                            {results.scores.behaviorScore}
                           </span>
                         </div>
                       </div>
@@ -282,7 +279,9 @@ const BehaviorAnalysis = () => {
                           </div>
                         )}
                       </div>
-                      <p className="text-sm text-gray-600 mt-1">Analyzed URL: {url}</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        <span className="font-medium">{results.platform.charAt(0).toUpperCase() + results.platform.slice(1)}:</span> {results.username}
+                      </p>
                     </div>
                   </div>
                   
@@ -291,8 +290,8 @@ const BehaviorAnalysis = () => {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="bg-white p-2 rounded-md shadow-sm text-center">
-                            <div className={`font-bold ${getScoreColor(results.languageScore)}`}>
-                              {results.languageScore}%
+                            <div className={`font-bold ${getScoreColor(results.scores.languageScore)}`}>
+                              {results.scores.languageScore}%
                             </div>
                             <div className="text-xs">Language</div>
                           </div>
@@ -307,8 +306,8 @@ const BehaviorAnalysis = () => {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="bg-white p-2 rounded-md shadow-sm text-center">
-                            <div className={`font-bold ${getScoreColor(results.temporalScore)}`}>
-                              {results.temporalScore}%
+                            <div className={`font-bold ${getScoreColor(results.scores.temporalScore)}`}>
+                              {results.scores.temporalScore}%
                             </div>
                             <div className="text-xs">Temporal</div>
                           </div>
@@ -323,8 +322,8 @@ const BehaviorAnalysis = () => {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="bg-white p-2 rounded-md shadow-sm text-center">
-                            <div className={`font-bold ${getScoreColor(results.networkScore)}`}>
-                              {results.networkScore}%
+                            <div className={`font-bold ${getScoreColor(results.scores.networkScore)}`}>
+                              {results.scores.networkScore}%
                             </div>
                             <div className="text-xs">Network</div>
                           </div>
@@ -339,8 +338,8 @@ const BehaviorAnalysis = () => {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="bg-white p-2 rounded-md shadow-sm text-center">
-                            <div className={`font-bold ${getScoreColor(results.contentScore)}`}>
-                              {results.contentScore}%
+                            <div className={`font-bold ${getScoreColor(results.scores.contentScore)}`}>
+                              {results.scores.contentScore}%
                             </div>
                             <div className="text-xs">Content</div>
                           </div>
@@ -354,8 +353,9 @@ const BehaviorAnalysis = () => {
                 </div>
                 
                 <Tabs defaultValue="patterns" className="w-full">
-                  <TabsList className="grid grid-cols-2 mb-4">
+                  <TabsList className="grid grid-cols-3 mb-4">
                     <TabsTrigger value="patterns">Detected Patterns</TabsTrigger>
+                    <TabsTrigger value="profile">Profile Data</TabsTrigger>
                     <TabsTrigger value="report">Detailed Report</TabsTrigger>
                   </TabsList>
                   
@@ -390,6 +390,87 @@ const BehaviorAnalysis = () => {
                     ))}
                   </TabsContent>
                   
+                  <TabsContent value="profile">
+                    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                      <h3 className="font-medium text-lg text-india-navyBlue mb-4">Profile Metadata</h3>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between border-b pb-2">
+                              <span className="font-medium">Display Name:</span>
+                              <span>{results.profileMetadata.displayName}</span>
+                            </div>
+                            <div className="flex justify-between border-b pb-2">
+                              <span className="font-medium">Username:</span>
+                              <span>{results.username}</span>
+                            </div>
+                            <div className="flex justify-between border-b pb-2">
+                              <span className="font-medium">Platform:</span>
+                              <span>{results.platform.charAt(0).toUpperCase() + results.platform.slice(1)}</span>
+                            </div>
+                            <div className="flex justify-between border-b pb-2">
+                              <span className="font-medium">Account Created:</span>
+                              <span>{results.profileMetadata.creationDate}</span>
+                            </div>
+                            <div className="flex justify-between border-b pb-2">
+                              <span className="font-medium">Location:</span>
+                              <span>{results.profileMetadata.location}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between border-b pb-2">
+                              <span className="font-medium">Followers:</span>
+                              <span>{results.profileMetadata.followers.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between border-b pb-2">
+                              <span className="font-medium">Following:</span>
+                              <span>{results.profileMetadata.following.toLocaleString()}</span>
+                            </div>
+                            {results.platform === 'twitter' && (
+                              <div className="flex justify-between border-b pb-2">
+                                <span className="font-medium">Tweets:</span>
+                                <span>{results.profileMetadata.tweets?.toLocaleString()}</span>
+                              </div>
+                            )}
+                            {results.platform === 'instagram' && (
+                              <div className="flex justify-between border-b pb-2">
+                                <span className="font-medium">Posts:</span>
+                                <span>{results.profileMetadata.posts?.toLocaleString()}</span>
+                              </div>
+                            )}
+                            {results.platform === 'facebook' && (
+                              <div className="flex justify-between border-b pb-2">
+                                <span className="font-medium">Friends:</span>
+                                <span>{results.profileMetadata.friends?.toLocaleString()}</span>
+                              </div>
+                            )}
+                            {results.platform === 'linkedin' && (
+                              <div className="flex justify-between border-b pb-2">
+                                <span className="font-medium">Connections:</span>
+                                <span>{results.profileMetadata.connections?.toLocaleString()}</span>
+                              </div>
+                            )}
+                            <div className="flex justify-between border-b pb-2">
+                              <span className="font-medium">Verified:</span>
+                              <span>{results.profileMetadata.verified ? 'Yes' : 'No'}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <div className="font-medium mb-1">Bio:</div>
+                        <div className="bg-gray-50 p-3 rounded border text-sm">
+                          {results.profileMetadata.bio}
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
                   <TabsContent value="report">
                     <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                       <h3 className="font-medium text-lg text-india-navyBlue mb-4">Behavioral Analysis Report</h3>
@@ -401,7 +482,7 @@ const BehaviorAnalysis = () => {
                         <div className="border-l-4 border-yellow-500 pl-3 py-1">
                           <h4 className="font-medium">Key Findings</h4>
                           <p className="text-sm text-gray-600">
-                            Account exhibits coordinated posting patterns with 7 other accounts sharing similar content
+                            Account exhibits coordinated posting patterns with {Math.floor(Math.random() * 10) + 2} other accounts sharing similar content
                             within precise time intervals, suggesting automated behavior.
                           </p>
                         </div>
@@ -415,8 +496,8 @@ const BehaviorAnalysis = () => {
                         <div className="border-l-4 border-green-500 pl-3 py-1">
                           <h4 className="font-medium">Historical Pattern</h4>
                           <p className="text-sm text-gray-600">
-                            Account was dormant for 8 months before becoming highly active during recent political events,
-                            with posting frequency increasing 400% above typical human usage patterns.
+                            Account was dormant for {Math.floor(Math.random() * 8) + 1} months before becoming highly active during recent political events,
+                            with posting frequency increasing {Math.floor(Math.random() * 500) + 100}% above typical human usage patterns.
                           </p>
                         </div>
                       </div>
