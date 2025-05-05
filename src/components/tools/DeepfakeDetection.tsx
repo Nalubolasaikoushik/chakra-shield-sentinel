@@ -6,17 +6,21 @@ import {
   BarChart3, 
   AlertTriangle, 
   Check, 
-  RefreshCw 
+  RefreshCw,
+  Download,
+  Loader
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
+import { downloadPdfReport, generateImageReport } from '@/services/profileAnalysisService';
 
 const DeepfakeDetection = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<{
     isDeepfake: boolean;
@@ -91,6 +95,82 @@ const DeepfakeDetection = () => {
     setFile(null);
     setPreview(null);
     setResult(null);
+  };
+  
+  const handleDownloadReport = async () => {
+    if (!result || !file) {
+      toast({
+        title: "Error",
+        description: "No analysis data available",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      setDownloading(true);
+      
+      toast({
+        title: "Generating report",
+        description: "Please wait while we generate your analysis report...",
+      });
+      
+      // Create mock verification result compatible with generateImageReport
+      const mockVerificationResult = {
+        success: true,
+        authenticityScore: result.isDeepfake ? "15" : "85",
+        matchingConfidence: result.isDeepfake ? "85" : "15",
+        classification: result.isDeepfake ? 'fake' : 'genuine' as 'genuine' | 'suspicious' | 'fake',
+        detailedAnalysis: {
+          metadata: {
+            fileType: file.type,
+            fileName: file.name,
+            fileSize: `${(file.size / 1024).toFixed(2)}KB`,
+            timestamp: new Date().toISOString(),
+          },
+          visualFeatures: {
+            faceDetection: true,
+            faceCount: 1,
+            inconsistentLighting: result.isDeepfake,
+            inconsistentPixelPatterns: result.isDeepfake,
+            artificialBlurring: result.isDeepfake,
+          },
+          aiSignatures: {
+            generativeArtifacts: result.isDeepfake ? 85 : 15,
+            styleConsistency: result.isDeepfake ? 30 : 90,
+            textureAnalysis: result.isDeepfake ? 25 : 85,
+          },
+          duplicateDetection: {
+            similarImagesFound: result.isDeepfake,
+            similarityScore: result.isDeepfake ? 78 : 12,
+            possibleSources: result.isDeepfake ? ["Generative AI database"] : [],
+          },
+        },
+      };
+      
+      // Generate and download the PDF for image verification
+      const pdfBlob = await generateImageReport(mockVerificationResult);
+      
+      // Use the helper function to download
+      downloadPdfReport(
+        pdfBlob, 
+        `chakrashield-deepfake-analysis-${Date.now()}.pdf`
+      );
+      
+      toast({
+        title: "Report downloaded",
+        description: "Your deepfake analysis report has been downloaded",
+      });
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      toast({
+        title: "Download Failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloading(false);
+    }
   };
 
   return (
@@ -238,8 +318,22 @@ const DeepfakeDetection = () => {
                   >
                     Reset
                   </Button>
-                  <Button className="bg-india-navyBlue hover:bg-india-navyBlue/90">
-                    Generate Full Report
+                  <Button 
+                    onClick={handleDownloadReport}
+                    disabled={downloading}
+                    className="bg-india-navyBlue hover:bg-india-navyBlue/90"
+                  >
+                    {downloading ? (
+                      <>
+                        <Loader className="h-4 w-4 mr-2 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="h-4 w-4 mr-2" />
+                        Generate Full Report
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

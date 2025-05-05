@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Upload, Share2, AlertCircle, CheckCircle, Loader, Download, FileText, ExternalLink, ScanSearch } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -7,39 +8,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
 import AshokChakra from '../AshokChakra';
-import { verifyImage, verifyImageBase64 } from '@/services/profileAnalysisService';
-
-interface ImageVerificationResult {
-  success: boolean;
-  authenticityScore: string;
-  matchingConfidence: string;
-  classification: 'genuine' | 'suspicious' | 'fake';
-  detailedAnalysis: {
-    metadata: {
-      fileType: string;
-      fileName: string;
-      fileSize: string;
-      timestamp: string;
-    };
-    visualFeatures: {
-      faceDetection: boolean;
-      faceCount: number;
-      inconsistentLighting: boolean;
-      inconsistentPixelPatterns: boolean;
-      artificialBlurring: boolean;
-    };
-    aiSignatures: {
-      generativeArtifacts: number;
-      styleConsistency: number;
-      textureAnalysis: number;
-    };
-    duplicateDetection: {
-      similarImagesFound: boolean;
-      similarityScore: number;
-      possibleSources: string[];
-    };
-  };
-}
+import { 
+  verifyImage, 
+  verifyImageBase64, 
+  generateProfileReport, 
+  generateImageReport, 
+  downloadPdfReport, 
+  AnalysisResult,
+  ImageVerificationResult 
+} from '@/services/profileAnalysisService';
 
 const ProfileScanner = () => {
   const [url, setUrl] = useState('');
@@ -47,11 +24,13 @@ const ProfileScanner = () => {
   const [scanComplete, setScanComplete] = useState(false);
   const [progress, setProgress] = useState(0);
   const [riskScore, setRiskScore] = useState(0);
+  const [analysisResult, setAnalysisResult] = useState<Partial<AnalysisResult> | null>(null);
   
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [verifying, setVerifying] = useState(false);
   const [verificationResult, setVerificationResult] = useState<ImageVerificationResult | null>(null);
+  const [downloading, setDownloading] = useState(false);
   
   const { toast } = useToast();
 
@@ -69,13 +48,35 @@ const ProfileScanner = () => {
     setScanComplete(false);
     setProgress(0);
     
+    // Mock scan process - in a real app this would call the API
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           setScanning(false);
           setScanComplete(true);
-          setRiskScore(Math.floor(Math.random() * 65) + 30);
+          const riskScoreValue = Math.floor(Math.random() * 65) + 30;
+          setRiskScore(riskScoreValue);
+          
+          // Create mock analysis result
+          const mockResult: Partial<AnalysisResult> = {
+            username: url.split('/').pop() || 'unknown',
+            platform: url.includes('twitter') ? 'Twitter' : 
+                     url.includes('facebook') ? 'Facebook' : 
+                     url.includes('instagram') ? 'Instagram' : 'Other',
+            analysisDate: new Date().toISOString(),
+            alertLevel: riskScoreValue > 70 ? 'high' : 
+                      riskScoreValue > 45 ? 'medium' : 'low',
+            scores: {
+              behaviorScore: Math.floor(Math.random() * 100),
+              languageScore: Math.floor(Math.random() * 100),
+              contentScore: Math.floor(Math.random() * 100),
+              temporalScore: Math.floor(Math.random() * 100),
+              networkScore: Math.floor(Math.random() * 100)
+            }
+          };
+          
+          setAnalysisResult(mockResult);
           return 100;
         }
         return prev + 5;
@@ -166,11 +167,90 @@ const ProfileScanner = () => {
     });
   };
 
-  const handleDownload = () => {
-    toast({
-      title: "Downloaded",
-      description: "Report downloaded successfully",
-    });
+  const handleDownloadProfileReport = async () => {
+    if (!analysisResult) {
+      toast({
+        title: "Error",
+        description: "No analysis data available",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      setDownloading(true);
+      
+      toast({
+        title: "Generating report",
+        description: "Please wait while we generate your PDF report...",
+      });
+      
+      // Generate and download the PDF
+      const pdfBlob = await generateProfileReport(analysisResult as AnalysisResult);
+      
+      // Use the helper function to download
+      downloadPdfReport(
+        pdfBlob, 
+        `chakrashield-${analysisResult.username}-${analysisResult.platform}-${Date.now()}.pdf`
+      );
+      
+      toast({
+        title: "Report downloaded",
+        description: "Your PDF report has been generated successfully",
+      });
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      toast({
+        title: "Download Failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloading(false);
+    }
+  };
+  
+  const handleDownloadImageReport = async () => {
+    if (!verificationResult) {
+      toast({
+        title: "Error",
+        description: "No verification data available",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      setDownloading(true);
+      
+      toast({
+        title: "Generating report",
+        description: "Please wait while we generate your image verification report...",
+      });
+      
+      // Generate and download the PDF for image verification
+      const pdfBlob = await generateImageReport(verificationResult);
+      
+      // Use the helper function to download
+      downloadPdfReport(
+        pdfBlob, 
+        `chakrashield-image-verification-${Date.now()}.pdf`
+      );
+      
+      toast({
+        title: "Report downloaded",
+        description: "Your image verification report has been downloaded",
+      });
+    } catch (error) {
+      console.error('Error downloading image report:', error);
+      toast({
+        title: "Download Failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const handleTakedown = () => {
@@ -266,9 +346,22 @@ const ProfileScanner = () => {
             </div>
             
             <div className="flex flex-wrap gap-3">
-              <Button className="bg-india-navyBlue hover:bg-india-navyBlue/90 text-white" onClick={handleDownload}>
-                <Download className="h-4 w-4 mr-2" />
-                Download Report
+              <Button 
+                className="bg-india-navyBlue hover:bg-india-navyBlue/90 text-white" 
+                onClick={handleDownloadProfileReport}
+                disabled={downloading}
+              >
+                {downloading ? (
+                  <>
+                    <Loader className="h-4 w-4 mr-2 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Report
+                  </>
+                )}
               </Button>
               <Button variant="outline" className="border-india-navyBlue text-india-navyBlue" onClick={handleShare}>
                 <Share2 className="h-4 w-4 mr-2" />
@@ -432,9 +525,22 @@ const ProfileScanner = () => {
             )}
             
             <div className="flex flex-wrap gap-3 pt-2">
-              <Button className="bg-india-navyBlue hover:bg-india-navyBlue/90 text-white" onClick={handleDownload}>
-                <Download className="h-4 w-4 mr-2" />
-                Download Report
+              <Button 
+                className="bg-india-navyBlue hover:bg-india-navyBlue/90 text-white"
+                onClick={handleDownloadImageReport}
+                disabled={downloading}
+              >
+                {downloading ? (
+                  <>
+                    <Loader className="h-4 w-4 mr-2 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Report
+                  </>
+                )}
               </Button>
               <Button variant="outline" className="border-india-navyBlue text-india-navyBlue" onClick={handleShare}>
                 <Share2 className="h-4 w-4 mr-2" />

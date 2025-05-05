@@ -139,3 +139,113 @@ export const verifyImageBase64 = async (base64Image: string, filename?: string):
     throw error;
   }
 };
+
+// New function to generate PDF report for profile analysis
+export const generateProfileReport = async (analysisData: AnalysisResult): Promise<Blob> => {
+  try {
+    const response = await fetch(`${API_URL}/api/generate-report`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(analysisData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to generate report');
+    }
+
+    return await response.blob();
+  } catch (error) {
+    console.error('Error generating report:', error);
+    throw error;
+  }
+};
+
+// New function to generate PDF report for image verification
+export const generateImageReport = async (verificationResult: ImageVerificationResult): Promise<Blob> => {
+  try {
+    // Add necessary metadata for report generation
+    const reportData = {
+      username: 'Image Verification',
+      platform: 'Image Analysis',
+      analysisDate: new Date().toISOString(),
+      profileMetadata: {
+        imageType: verificationResult.detailedAnalysis.metadata.fileType,
+        fileName: verificationResult.detailedAnalysis.metadata.fileName,
+        fileSize: verificationResult.detailedAnalysis.metadata.fileSize,
+        timestamp: verificationResult.detailedAnalysis.metadata.timestamp,
+      },
+      scores: {
+        authenticityScore: parseInt(verificationResult.authenticityScore),
+        matchingConfidence: parseInt(verificationResult.matchingConfidence),
+        generativeArtifacts: verificationResult.detailedAnalysis.aiSignatures.generativeArtifacts,
+        styleConsistency: verificationResult.detailedAnalysis.aiSignatures.styleConsistency,
+        textureAnalysis: verificationResult.detailedAnalysis.aiSignatures.textureAnalysis,
+      },
+      alertLevel: verificationResult.classification === 'genuine' ? 'low' : 
+                 verificationResult.classification === 'suspicious' ? 'medium' : 'high',
+      patterns: [],
+    };
+    
+    // Add patterns based on verification results
+    if (verificationResult.detailedAnalysis.visualFeatures.inconsistentLighting) {
+      reportData.patterns.push({
+        type: 'Lighting Inconsistency',
+        description: 'Unnatural lighting patterns detected in the image',
+        score: 85,
+        insights: 'Suggests possible image manipulation or compositing'
+      });
+    }
+    
+    if (verificationResult.detailedAnalysis.visualFeatures.inconsistentPixelPatterns) {
+      reportData.patterns.push({
+        type: 'Pixel Pattern Anomaly',
+        description: 'Unusual pixel distributions detected',
+        score: 92,
+        insights: 'Indicates potential AI generation or digital manipulation'
+      });
+    }
+    
+    if (verificationResult.detailedAnalysis.duplicateDetection.similarImagesFound) {
+      reportData.patterns.push({
+        type: 'Image Duplication',
+        description: 'Similar images found in database',
+        score: 78,
+        insights: 'Image may be derived from existing content with modifications'
+      });
+    }
+
+    const response = await fetch(`${API_URL}/api/generate-report`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reportData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to generate image report');
+    }
+
+    return await response.blob();
+  } catch (error) {
+    console.error('Error generating image report:', error);
+    throw error;
+  }
+};
+
+// Helper function for downloading reports
+export const downloadPdfReport = (blob: Blob, filename: string): void => {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+};

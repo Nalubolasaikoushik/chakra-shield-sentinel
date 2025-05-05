@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { FileText, Download, Filter, CheckCircle, AlertTriangle, XCircle, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { FileText, Download, Filter, CheckCircle, AlertTriangle, XCircle, ChevronDown, ChevronUp, ExternalLink, Loader } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from "@/components/ui/button";
@@ -13,10 +13,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from '@/hooks/use-toast';
 import AshokChakra from '@/components/AshokChakra';
+import { downloadPdfReport } from '@/services/profileAnalysisService';
 
 const Reports = () => {
   const [expandedReports, setExpandedReports] = useState<string[]>([]);
+  const [downloading, setDownloading] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const toggleReport = (id: string) => {
     if (expandedReports.includes(id)) {
@@ -28,6 +32,7 @@ const Reports = () => {
 
   const isExpanded = (id: string) => expandedReports.includes(id);
 
+  // Mock report data
   const reports = [
     {
       id: "rep001",
@@ -111,6 +116,84 @@ const Reports = () => {
         return 'bg-gray-100 text-gray-800';
     }
   };
+  
+  const handleDownloadReport = async (reportId: string) => {
+    try {
+      setDownloading(reportId);
+      
+      toast({
+        title: "Generating report",
+        description: "Please wait while we generate your PDF report...",
+      });
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Mock PDF content
+      const mockPdf = new Blob(['PDF content would go here'], { type: 'application/pdf' });
+      
+      // Get report data for filename
+      const report = reports.find(r => r.id === reportId);
+      if (!report) throw new Error("Report not found");
+      
+      // Download the PDF
+      downloadPdfReport(
+        mockPdf,
+        `chakrashield-${report.type}-${report.platform}-${Date.now()}.pdf`
+      );
+      
+      toast({
+        title: "Report downloaded",
+        description: "Your PDF report has been generated successfully",
+      });
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      toast({
+        title: "Download Failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloading(null);
+    }
+  };
+  
+  const handleExportAllReports = async () => {
+    try {
+      setDownloading('all');
+      
+      toast({
+        title: "Exporting reports",
+        description: "Please wait while we prepare all your reports...",
+      });
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Mock PDF content
+      const mockPdf = new Blob(['All reports compiled'], { type: 'application/pdf' });
+      
+      // Download the compiled PDF
+      downloadPdfReport(
+        mockPdf,
+        `chakrashield-all-reports-${Date.now()}.pdf`
+      );
+      
+      toast({
+        title: "Reports exported",
+        description: "All reports have been compiled and downloaded",
+      });
+    } catch (error) {
+      console.error('Error exporting reports:', error);
+      toast({
+        title: "Export Failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloading(null);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -125,8 +208,20 @@ const Reports = () => {
                 <p className="text-gray-600">Comprehensive analysis and evidence collection of fake accounts</p>
               </div>
             </div>
-            <Button className="bg-india-saffron hover:bg-india-saffron/90 hidden md:flex">
-              <Download className="mr-2 h-4 w-4" /> Export Reports
+            <Button 
+              className="bg-india-saffron hover:bg-india-saffron/90 hidden md:flex"
+              onClick={handleExportAllReports}
+              disabled={downloading === 'all'}
+            >
+              {downloading === 'all' ? (
+                <>
+                  <Loader className="mr-2 h-4 w-4 animate-spin" /> Exporting...
+                </>
+              ) : (
+                <>
+                  <Download className="mr-2 h-4 w-4" /> Export Reports
+                </>
+              )}
             </Button>
           </div>
 
@@ -217,8 +312,20 @@ const Reports = () => {
                 </TabsList>
                 
                 <TabsContent value="reports" className="space-y-4">
-                  <Button className="md:hidden w-full mb-4 bg-india-saffron hover:bg-india-saffron/90">
-                    <Download className="mr-2 h-4 w-4" /> Export Reports
+                  <Button 
+                    className="md:hidden w-full mb-4 bg-india-saffron hover:bg-india-saffron/90"
+                    onClick={handleExportAllReports}
+                    disabled={downloading === 'all'}
+                  >
+                    {downloading === 'all' ? (
+                      <>
+                        <Loader className="mr-2 h-4 w-4 animate-spin" /> Exporting...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="mr-2 h-4 w-4" /> Export Reports
+                      </>
+                    )}
                   </Button>
                 
                   {reports.map(report => (
@@ -263,8 +370,22 @@ const Reports = () => {
                           <h4 className="font-medium text-india-navyBlue mb-2">Detailed Analysis</h4>
                           <p className="text-gray-700 mb-4">{report.details}</p>
                           <div className="flex flex-wrap gap-3">
-                            <Button variant="outline" size="sm" className="text-india-navyBlue">
-                              <Download className="mr-2 h-4 w-4" /> Full Report
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-india-navyBlue"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDownloadReport(report.id);
+                              }}
+                              disabled={downloading === report.id}
+                            >
+                              {downloading === report.id ? (
+                                <Loader className="mr-2 h-4 w-4 animate-spin" />
+                              ) : (
+                                <Download className="mr-2 h-4 w-4" />
+                              )}
+                              Full Report
                             </Button>
                             <Button variant="outline" size="sm" className="text-india-navyBlue">
                               <FileText className="mr-2 h-4 w-4" /> Evidence Package

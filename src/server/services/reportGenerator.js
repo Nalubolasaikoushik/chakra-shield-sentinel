@@ -16,7 +16,7 @@ export async function generateReport(analysisData) {
         margin: 50,
         info: {
           Title: `Social Media Account Analysis - ${analysisData.username}`,
-          Author: 'Indian Cyber-Intelligence Agency',
+          Author: 'ChakraShield Security',
           Subject: 'Social Media Analysis Report',
           Keywords: 'social media, analysis, security, authentication'
         }
@@ -47,9 +47,9 @@ export async function generateReport(analysisData) {
 function generateReportContent(doc, data) {
   const { username, platform, analysisDate, profileMetadata, scores, alertLevel, patterns } = data;
   
-  // Add header with logo placeholder
+  // Add header with ChakraShield branding
   doc.fontSize(20)
-     .text('INDIAN CYBER-INTELLIGENCE AGENCY', { align: 'center' })
+     .text('CHAKRASHIELD SECURITY', { align: 'center' })
      .moveDown(0.5);
   
   doc.fontSize(16)
@@ -57,7 +57,8 @@ function generateReportContent(doc, data) {
      .moveDown(0.5);
     
   doc.fontSize(10)
-     .text(`REPORT GENERATED: ${new Date(analysisDate).toLocaleString('en-IN')}`, { align: 'center' })
+     .text(`REPORT GENERATED: ${new Date(analysisDate).toLocaleString()}`, { align: 'center' })
+     .text(`REPORT ID: CSR-${Date.now().toString().substring(5)}`, { align: 'center' })
      .moveDown(1.5);
   
   // Basic information section
@@ -89,7 +90,7 @@ function generateReportContent(doc, data) {
   doc.fontSize(11);
   for (const [key, value] of Object.entries(profileMetadata)) {
     if (key === 'creationDate' && value) {
-      doc.text(`${formatKey(key)}: ${new Date(value).toLocaleDateString('en-IN')}`);
+      doc.text(`${formatKey(key)}: ${new Date(value).toLocaleDateString()}`);
     } else {
       doc.text(`${formatKey(key)}: ${value}`);
     }
@@ -144,11 +145,11 @@ function generateReportContent(doc, data) {
        .moveDown(0.5);
   }
   
-  // Footer with disclaimer
+  // Footer with classification
   doc.fontSize(8)
-     .text('CONFIDENTIAL - FOR OFFICIAL USE ONLY', { align: 'center' })
+     .text('CHAKRASHIELD CONFIDENTIAL', { align: 'center' })
      .moveDown(0.5)
-     .text('This report is generated automatically and should be reviewed by a qualified analyst. ' +
+     .text('This report is generated automatically by ChakraShield Security analysis system. ' +
            'The findings in this report are based on pattern analysis and statistical models.', 
            { align: 'center' });
   
