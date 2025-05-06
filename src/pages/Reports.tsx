@@ -14,7 +14,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from '@/hooks/use-toast';
 import AshokChakra from '@/components/AshokChakra';
-import { generateProfileReport, downloadPdfReport } from '@/services/profileAnalysisService';
+import { generateProfileReport, downloadPdfReport, AnalysisResult } from '@/services/profileAnalysisService';
 
 const Reports = () => {
   const [expandedReports, setExpandedReports] = useState<string[]>([]);
@@ -131,28 +131,34 @@ const Reports = () => {
       
       console.log(`Generating report for ${reportId}: ${report.title}`);
       
-      // Create proper analysis data structure for the report
-      const analysisData = {
+      // Create proper analysis data structure for the report with all required fields
+      const analysisData: AnalysisResult = {
         username: `${report.platform} Network Analysis`,
         platform: report.platform,
         analysisDate: report.date,
         profileMetadata: {
+          // Add all required fields from ProfileMetadata interface
+          displayName: report.title,
+          followers: report.accounts,
+          following: 0,
+          creationDate: report.date,
+          bio: report.summary,
+          location: "India",
+          // Additional custom fields
           reportType: report.type,
           accountsAnalyzed: report.accounts,
           reportId: report.id,
           generatedDate: new Date().toISOString()
         },
         scores: {
-          riskScore: report.status === "verified" ? 85 : 
-                    report.status === "pending" ? 60 : 30,
-          authenticityScore: report.status === "verified" ? 15 : 
-                           report.status === "pending" ? 40 : 75,
-          networkScore: report.type === "network" ? 90 : 65,
           behaviorScore: Math.floor(Math.random() * 100),
-          temporalScore: Math.floor(Math.random() * 100)
+          languageScore: Math.floor(Math.random() * 100),
+          contentScore: Math.floor(Math.random() * 100),
+          temporalScore: Math.floor(Math.random() * 100),
+          networkScore: report.type === "network" ? 90 : 65,
         },
         alertLevel: report.status === "verified" ? 'high' : 
-                   report.status === "pending" ? 'medium' : 'low',
+                  report.status === "pending" ? 'medium' : 'low',
         patterns: [{
           type: report.type,
           description: report.summary,
@@ -198,23 +204,31 @@ const Reports = () => {
         description: "Please wait while we prepare all your reports...",
       });
       
-      // Create a combined report data structure
-      const combinedReport = {
+      // Create a combined report data structure with all required fields
+      const combinedReport: AnalysisResult = {
         username: "All Reports Compilation",
         platform: "Multiple Platforms",
         analysisDate: new Date().toISOString(),
         profileMetadata: {
+          // Add all required fields from ProfileMetadata interface
+          displayName: "Compiled Reports Analysis",
+          followers: reports.reduce((sum, r) => sum + r.accounts, 0),
+          following: 0,
+          creationDate: new Date().toISOString(),
+          bio: "Compilation of all security reports",
+          location: "India",
+          // Additional custom fields
           reportCount: reports.length,
           platformsCovered: [...new Set(reports.map(r => r.platform))].join(', '),
           generatedDate: new Date().toISOString(),
           reportPeriod: "Last 30 days"
         },
         scores: {
-          overallRiskScore: 75,
-          averageAuthenticityScore: 35,
-          networkComplexityScore: 80,
-          temporalAnomalyScore: 65,
-          crossPlatformScore: 70
+          behaviorScore: 75,
+          languageScore: 65,
+          contentScore: 70, 
+          temporalScore: 65,
+          networkScore: 80,
         },
         alertLevel: 'medium',
         patterns: reports.map(report => ({
