@@ -1,4 +1,3 @@
-
 interface AnalyzeProfileRequest {
   username: string;
   platform: string;
@@ -143,6 +142,8 @@ export const verifyImageBase64 = async (base64Image: string, filename?: string):
 // New function to generate PDF report for profile analysis
 export const generateProfileReport = async (analysisData: AnalysisResult): Promise<Blob> => {
   try {
+    console.log('Generating profile report with data:', JSON.stringify(analysisData));
+    
     const response = await fetch(`${API_URL}/api/generate-report`, {
       method: 'POST',
       headers: {
@@ -152,13 +153,25 @@ export const generateProfileReport = async (analysisData: AnalysisResult): Promi
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to generate report');
+      console.error('Error response from server:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('Error details:', errorText);
+      throw new Error(`Failed to generate report: ${response.statusText}`);
     }
 
-    return await response.blob();
+    // Verify the content type is PDF
+    const contentType = response.headers.get('Content-Type');
+    console.log('Response content type:', contentType);
+    
+    // Get the blob with the correct MIME type
+    const blob = await response.blob();
+    console.log('Received blob size:', blob.size, 'type:', blob.type);
+    
+    // Create a new blob with explicit PDF MIME type if it's not set correctly
+    const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+    return pdfBlob;
   } catch (error) {
-    console.error('Error generating report:', error);
+    console.error('Error generating profile report:', error);
     throw error;
   }
 };
@@ -166,6 +179,8 @@ export const generateProfileReport = async (analysisData: AnalysisResult): Promi
 // New function to generate PDF report for image verification
 export const generateImageReport = async (verificationResult: ImageVerificationResult): Promise<Blob> => {
   try {
+    console.log('Generating image report with data:', JSON.stringify(verificationResult));
+    
     // Add necessary metadata for report generation
     const reportData = {
       username: 'Image Verification',
@@ -226,11 +241,23 @@ export const generateImageReport = async (verificationResult: ImageVerificationR
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to generate image report');
+      console.error('Error response from server:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('Error details:', errorText);
+      throw new Error(`Failed to generate image report: ${response.statusText}`);
     }
 
-    return await response.blob();
+    // Verify the content type is PDF
+    const contentType = response.headers.get('Content-Type');
+    console.log('Response content type:', contentType);
+    
+    // Get the blob with the correct MIME type
+    const blob = await response.blob();
+    console.log('Received blob size:', blob.size, 'type:', blob.type);
+    
+    // Create a new blob with explicit PDF MIME type if it's not set correctly
+    const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+    return pdfBlob;
   } catch (error) {
     console.error('Error generating image report:', error);
     throw error;
@@ -239,13 +266,31 @@ export const generateImageReport = async (verificationResult: ImageVerificationR
 
 // Helper function for downloading reports
 export const downloadPdfReport = (blob: Blob, filename: string): void => {
-  const url = window.URL.createObjectURL(blob);
+  console.log('Downloading PDF report:', filename, 'size:', blob.size, 'type:', blob.type);
+  
+  // Ensure the blob has the correct MIME type
+  const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+  
+  // Create a download URL
+  const url = window.URL.createObjectURL(pdfBlob);
+  
+  // Create and trigger download link
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
   a.download = filename;
+  
+  // Log download attempt
+  console.log('Creating download link with URL:', url);
+  
+  // Add to DOM, trigger click, and clean up
   document.body.appendChild(a);
   a.click();
-  window.URL.revokeObjectURL(url);
-  document.body.removeChild(a);
+  
+  // Small delay before revoking URL to ensure download starts
+  setTimeout(() => {
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    console.log('Download link removed, URL revoked');
+  }, 100);
 };

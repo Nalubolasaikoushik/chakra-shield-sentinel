@@ -15,7 +15,7 @@ export async function generateReport(analysisData) {
         size: 'A4',
         margin: 50,
         info: {
-          Title: `Social Media Account Analysis - ${analysisData.username}`,
+          Title: `ChakraShield - ${analysisData.username} Analysis Report`,
           Author: 'ChakraShield Security',
           Subject: 'Social Media Analysis Report',
           Keywords: 'social media, analysis, security, authentication'
@@ -34,6 +34,7 @@ export async function generateReport(analysisData) {
       // Finalize the PDF document
       doc.end();
     } catch (error) {
+      console.error('Error generating PDF:', error);
       reject(error);
     }
   });
@@ -85,46 +86,54 @@ function generateReportContent(doc, data) {
      .moveDown(1.5);
   
   // Profile metadata section
-  addSectionTitle(doc, 'PROFILE METADATA');
-  
-  doc.fontSize(11);
-  for (const [key, value] of Object.entries(profileMetadata)) {
-    if (key === 'creationDate' && value) {
-      doc.text(`${formatKey(key)}: ${new Date(value).toLocaleDateString()}`);
-    } else {
-      doc.text(`${formatKey(key)}: ${value}`);
+  if (profileMetadata) {
+    addSectionTitle(doc, 'PROFILE METADATA');
+    
+    doc.fontSize(11);
+    for (const [key, value] of Object.entries(profileMetadata)) {
+      if (value !== undefined && value !== null) {
+        if (key === 'creationDate' && value) {
+          doc.text(`${formatKey(key)}: ${new Date(value).toLocaleDateString()}`);
+        } else {
+          doc.text(`${formatKey(key)}: ${value}`);
+        }
+      }
     }
+    doc.moveDown(1.5);
   }
-  doc.moveDown(1.5);
   
   // Analysis scores section
-  addSectionTitle(doc, 'ANALYSIS SCORES');
-  
-  doc.fontSize(11);
-  for (const [key, value] of Object.entries(scores)) {
-    const score = parseInt(value);
-    const scoreText = `${formatKey(key)}: ${score}/100`;
+  if (scores) {
+    addSectionTitle(doc, 'ANALYSIS SCORES');
     
-    doc.text(scoreText);
-    
-    // Add a simple score bar
-    const barWidth = 200;
-    const filledWidth = (score / 100) * barWidth;
-    
-    doc.rect(doc.x + 150, doc.y - 12, barWidth, 10)
-       .stroke();
-    
-    let barColor = '#3b82f6'; // blue for low scores
-    if (score > 70) {
-      barColor = '#ef4444'; // red for high scores
-    } else if (score > 30) {
-      barColor = '#f59e0b'; // amber for medium scores
+    doc.fontSize(11);
+    for (const [key, value] of Object.entries(scores)) {
+      if (value !== undefined && value !== null) {
+        const score = parseInt(value);
+        const scoreText = `${formatKey(key)}: ${score}/100`;
+        
+        doc.text(scoreText);
+        
+        // Add a simple score bar
+        const barWidth = 200;
+        const filledWidth = (score / 100) * barWidth;
+        
+        doc.rect(doc.x + 150, doc.y - 12, barWidth, 10)
+           .stroke();
+        
+        let barColor = '#3b82f6'; // blue for low scores
+        if (score > 70) {
+          barColor = '#ef4444'; // red for high scores
+        } else if (score > 30) {
+          barColor = '#f59e0b'; // amber for medium scores
+        }
+        
+        doc.rect(doc.x + 150, doc.y - 12, filledWidth, 10)
+           .fill(barColor);
+      }
     }
-    
-    doc.rect(doc.x + 150, doc.y - 12, filledWidth, 10)
-       .fill(barColor);
+    doc.moveDown(1.5);
   }
-  doc.moveDown(1.5);
   
   // Identified patterns section
   addSectionTitle(doc, 'IDENTIFIED SUSPICIOUS PATTERNS');
@@ -145,7 +154,7 @@ function generateReportContent(doc, data) {
        .moveDown(0.5);
   }
   
-  // Footer with classification
+  // Footer with branding
   doc.fontSize(8)
      .text('CHAKRASHIELD CONFIDENTIAL', { align: 'center' })
      .moveDown(0.5)

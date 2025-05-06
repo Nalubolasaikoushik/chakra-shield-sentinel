@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Image, 
@@ -115,6 +114,8 @@ const DeepfakeDetection = () => {
         description: "Please wait while we generate your analysis report...",
       });
       
+      console.log('Generating deepfake detection report...');
+      
       // Create mock verification result compatible with generateImageReport
       const mockVerificationResult = {
         success: true,
@@ -150,6 +151,8 @@ const DeepfakeDetection = () => {
       
       // Generate and download the PDF for image verification
       const pdfBlob = await generateImageReport(mockVerificationResult);
+      
+      console.log('Deepfake report generated, downloading...');
       
       // Use the helper function to download
       downloadPdfReport(

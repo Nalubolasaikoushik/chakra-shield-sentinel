@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { FileText, Download, Filter, CheckCircle, AlertTriangle, XCircle, ChevronDown, ChevronUp, ExternalLink, Loader } from 'lucide-react';
 import Header from '@/components/Header';
@@ -15,7 +14,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from '@/hooks/use-toast';
 import AshokChakra from '@/components/AshokChakra';
-import { downloadPdfReport } from '@/services/profileAnalysisService';
+import { generateProfileReport, downloadPdfReport } from '@/services/profileAnalysisService';
 
 const Reports = () => {
   const [expandedReports, setExpandedReports] = useState<string[]>([]);
@@ -126,19 +125,51 @@ const Reports = () => {
         description: "Please wait while we generate your PDF report...",
       });
       
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mock PDF content
-      const mockPdf = new Blob(['PDF content would go here'], { type: 'application/pdf' });
-      
-      // Get report data for filename
+      // Get report data for the report
       const report = reports.find(r => r.id === reportId);
       if (!report) throw new Error("Report not found");
       
-      // Download the PDF
+      console.log(`Generating report for ${reportId}: ${report.title}`);
+      
+      // Create proper analysis data structure for the report
+      const analysisData = {
+        username: `${report.platform} Network Analysis`,
+        platform: report.platform,
+        analysisDate: report.date,
+        profileMetadata: {
+          reportType: report.type,
+          accountsAnalyzed: report.accounts,
+          reportId: report.id,
+          generatedDate: new Date().toISOString()
+        },
+        scores: {
+          riskScore: report.status === "verified" ? 85 : 
+                    report.status === "pending" ? 60 : 30,
+          authenticityScore: report.status === "verified" ? 15 : 
+                           report.status === "pending" ? 40 : 75,
+          networkScore: report.type === "network" ? 90 : 65,
+          behaviorScore: Math.floor(Math.random() * 100),
+          temporalScore: Math.floor(Math.random() * 100)
+        },
+        alertLevel: report.status === "verified" ? 'high' : 
+                   report.status === "pending" ? 'medium' : 'low',
+        patterns: [{
+          type: report.type,
+          description: report.summary,
+          score: report.status === "verified" ? 85 : 
+                report.status === "pending" ? 60 : 30,
+          insights: report.details
+        }]
+      };
+      
+      // Generate the PDF report
+      const pdfBlob = await generateProfileReport(analysisData);
+      
+      console.log('Report generated, downloading...');
+      
+      // Use the helper function to download
       downloadPdfReport(
-        mockPdf,
+        pdfBlob,
         `chakrashield-${report.type}-${report.platform}-${Date.now()}.pdf`
       );
       
@@ -167,15 +198,40 @@ const Reports = () => {
         description: "Please wait while we prepare all your reports...",
       });
       
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Create a combined report data structure
+      const combinedReport = {
+        username: "All Reports Compilation",
+        platform: "Multiple Platforms",
+        analysisDate: new Date().toISOString(),
+        profileMetadata: {
+          reportCount: reports.length,
+          platformsCovered: [...new Set(reports.map(r => r.platform))].join(', '),
+          generatedDate: new Date().toISOString(),
+          reportPeriod: "Last 30 days"
+        },
+        scores: {
+          overallRiskScore: 75,
+          averageAuthenticityScore: 35,
+          networkComplexityScore: 80,
+          temporalAnomalyScore: 65,
+          crossPlatformScore: 70
+        },
+        alertLevel: 'medium',
+        patterns: reports.map(report => ({
+          type: report.type,
+          description: report.summary,
+          score: report.status === "verified" ? 85 : 
+                report.status === "pending" ? 60 : 30,
+          insights: report.details
+        }))
+      };
       
-      // Mock PDF content
-      const mockPdf = new Blob(['All reports compiled'], { type: 'application/pdf' });
+      // Generate the PDF
+      const pdfBlob = await generateProfileReport(combinedReport);
       
       // Download the compiled PDF
       downloadPdfReport(
-        mockPdf,
+        pdfBlob,
         `chakrashield-all-reports-${Date.now()}.pdf`
       );
       
