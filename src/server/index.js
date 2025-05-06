@@ -97,7 +97,7 @@ app.post('/api/verify-image', upload.single('image'), async (req, res) => {
   }
 });
 
-// New endpoint for generating reports
+// New endpoint for generating reports with improved error handling
 app.post('/api/generate-report', async (req, res) => {
   try {
     const analysisData = req.body;
@@ -108,8 +108,19 @@ app.post('/api/generate-report', async (req, res) => {
       });
     }
     
+    console.log('Received request to generate report for:', analysisData.username);
+    
     // Generate the PDF report
     const pdfBuffer = await generateReport(analysisData);
+    
+    if (!pdfBuffer || pdfBuffer.length === 0) {
+      console.error('Generated PDF buffer is empty');
+      return res.status(500).json({
+        error: 'Failed to generate PDF content'
+      });
+    }
+    
+    console.log('Generated PDF buffer size:', pdfBuffer.length);
     
     // Set response headers for PDF download
     res.setHeader('Content-Type', 'application/pdf');

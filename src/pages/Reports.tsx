@@ -137,14 +137,12 @@ const Reports = () => {
         platform: report.platform,
         analysisDate: report.date,
         profileMetadata: {
-          // Add all required fields from ProfileMetadata interface
           displayName: report.title,
           followers: report.accounts,
           following: 0,
           creationDate: report.date,
           bio: report.summary,
           location: "India",
-          // Additional custom fields
           reportType: report.type,
           accountsAnalyzed: report.accounts,
           reportId: report.id,
@@ -168,21 +166,32 @@ const Reports = () => {
         }]
       };
       
-      // Generate the PDF report
-      const pdfBlob = await generateProfileReport(analysisData);
+      console.log('Sending analysis data to generateProfileReport:', JSON.stringify(analysisData));
       
-      console.log('Report generated, downloading...');
-      
-      // Use the helper function to download
-      downloadPdfReport(
-        pdfBlob,
-        `chakrashield-${report.type}-${report.platform}-${Date.now()}.pdf`
-      );
-      
-      toast({
-        title: "Report downloaded",
-        description: "Your PDF report has been generated successfully",
-      });
+      // Generate the PDF report with proper error handling
+      try {
+        const pdfBlob = await generateProfileReport(analysisData);
+        
+        if (!pdfBlob || pdfBlob.size === 0) {
+          throw new Error("Generated PDF is empty");
+        }
+        
+        console.log('Report generated successfully, blob size:', pdfBlob.size);
+        
+        // Use the helper function to download with proper error handling
+        downloadPdfReport(
+          pdfBlob,
+          `chakrashield-${report.type}-${report.platform}-${Date.now()}.pdf`
+        );
+        
+        toast({
+          title: "Report downloaded",
+          description: "Your PDF report has been generated successfully",
+        });
+      } catch (downloadError) {
+        console.error('Error in PDF generation or download:', downloadError);
+        throw new Error(`PDF generation failed: ${downloadError.message}`);
+      }
     } catch (error) {
       console.error('Error downloading report:', error);
       toast({
@@ -210,14 +219,12 @@ const Reports = () => {
         platform: "Multiple Platforms",
         analysisDate: new Date().toISOString(),
         profileMetadata: {
-          // Add all required fields from ProfileMetadata interface
           displayName: "Compiled Reports Analysis",
           followers: reports.reduce((sum, r) => sum + r.accounts, 0),
           following: 0,
           creationDate: new Date().toISOString(),
           bio: "Compilation of all security reports",
           location: "India",
-          // Additional custom fields
           reportCount: reports.length,
           platformsCovered: [...new Set(reports.map(r => r.platform))].join(', '),
           generatedDate: new Date().toISOString(),
@@ -240,19 +247,32 @@ const Reports = () => {
         }))
       };
       
-      // Generate the PDF
-      const pdfBlob = await generateProfileReport(combinedReport);
+      console.log('Sending combined analysis data to generateProfileReport:', JSON.stringify(combinedReport));
       
-      // Download the compiled PDF
-      downloadPdfReport(
-        pdfBlob,
-        `chakrashield-all-reports-${Date.now()}.pdf`
-      );
-      
-      toast({
-        title: "Reports exported",
-        description: "All reports have been compiled and downloaded",
-      });
+      // Generate the PDF with proper error handling
+      try {
+        const pdfBlob = await generateProfileReport(combinedReport);
+        
+        if (!pdfBlob || pdfBlob.size === 0) {
+          throw new Error("Generated combined PDF is empty");
+        }
+        
+        console.log('Combined report generated successfully, blob size:', pdfBlob.size);
+        
+        // Download the compiled PDF with proper error handling
+        downloadPdfReport(
+          pdfBlob,
+          `chakrashield-all-reports-${Date.now()}.pdf`
+        );
+        
+        toast({
+          title: "Reports exported",
+          description: "All reports have been compiled and downloaded",
+        });
+      } catch (downloadError) {
+        console.error('Error in combined PDF generation or download:', downloadError);
+        throw new Error(`Combined PDF generation failed: ${downloadError.message}`);
+      }
     } catch (error) {
       console.error('Error exporting reports:', error);
       toast({

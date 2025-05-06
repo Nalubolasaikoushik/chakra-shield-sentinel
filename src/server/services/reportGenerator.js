@@ -1,6 +1,5 @@
 
 import PDFDocument from 'pdfkit';
-import { Readable } from 'stream';
 
 /**
  * Generates a PDF report from profile analysis data
@@ -25,8 +24,14 @@ export async function generateReport(analysisData) {
       // Collect PDF data into a buffer
       const buffers = [];
       doc.on('data', buffer => buffers.push(buffer));
-      doc.on('end', () => resolve(Buffer.concat(buffers)));
-      doc.on('error', err => reject(err));
+      doc.on('end', () => {
+        console.log("PDF generation complete, buffer size:", Buffer.concat(buffers).length);
+        resolve(Buffer.concat(buffers));
+      });
+      doc.on('error', err => {
+        console.error("PDF generation error:", err);
+        reject(err);
+      });
 
       // Start building the report
       generateReportContent(doc, analysisData);

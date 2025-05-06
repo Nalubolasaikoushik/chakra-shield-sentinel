@@ -144,6 +144,10 @@ export const generateProfileReport = async (analysisData: AnalysisResult): Promi
   try {
     console.log('Generating profile report with data:', JSON.stringify(analysisData));
     
+    // Set a local server URL for testing or use an environment variable
+    // In a real environment, this would come from an environment variable
+    const API_URL = 'http://localhost:3001';
+    
     const response = await fetch(`${API_URL}/api/generate-report`, {
       method: 'POST',
       headers: {
@@ -159,15 +163,11 @@ export const generateProfileReport = async (analysisData: AnalysisResult): Promi
       throw new Error(`Failed to generate report: ${response.statusText}`);
     }
 
-    // Verify the content type is PDF
-    const contentType = response.headers.get('Content-Type');
-    console.log('Response content type:', contentType);
-    
     // Get the blob with the correct MIME type
     const blob = await response.blob();
     console.log('Received blob size:', blob.size, 'type:', blob.type);
     
-    // Create a new blob with explicit PDF MIME type if it's not set correctly
+    // Ensure blob has PDF MIME type
     const pdfBlob = new Blob([blob], { type: 'application/pdf' });
     return pdfBlob;
   } catch (error) {
@@ -264,9 +264,14 @@ export const generateImageReport = async (verificationResult: ImageVerificationR
   }
 };
 
-// Helper function for downloading reports
+// Improved helper function for downloading reports with better error handling
 export const downloadPdfReport = (blob: Blob, filename: string): void => {
   console.log('Downloading PDF report:', filename, 'size:', blob.size, 'type:', blob.type);
+  
+  if (!blob || blob.size === 0) {
+    console.error('Invalid blob provided for download:', blob);
+    throw new Error('The generated PDF is empty or invalid');
+  }
   
   // Ensure the blob has the correct MIME type
   const pdfBlob = new Blob([blob], { type: 'application/pdf' });
@@ -274,23 +279,29 @@ export const downloadPdfReport = (blob: Blob, filename: string): void => {
   // Create a download URL
   const url = window.URL.createObjectURL(pdfBlob);
   
-  // Create and trigger download link
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = filename;
-  
-  // Log download attempt
-  console.log('Creating download link with URL:', url);
-  
-  // Add to DOM, trigger click, and clean up
-  document.body.appendChild(a);
-  a.click();
-  
-  // Small delay before revoking URL to ensure download starts
-  setTimeout(() => {
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-    console.log('Download link removed, URL revoked');
-  }, 100);
+  try {
+    // Create and trigger download link
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = filename;
+    
+    // Log download attempt
+    console.log('Creating download link with URL:', url);
+    
+    // Add to DOM, trigger click, and clean up
+    document.body.appendChild(a);
+    a.click();
+    
+    console.log('Download initiated');
+  } catch (error) {
+    console.error('Error during download:', error);
+    throw error;
+  } finally {
+    // Small delay before revoking URL to ensure download starts
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      console.log('URL revoked');
+    }, 1000); // Increased timeout to ensure download has time to start
+  }
 };
