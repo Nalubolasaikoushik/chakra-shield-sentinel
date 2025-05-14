@@ -7,6 +7,7 @@ import { dirname, join } from 'path';
 import { analyzeProfile } from './services/profileAnalyzer.js';
 import { verifyImage } from './services/imageVerifier.js';
 import { generateReport } from './services/reportGenerator.js';
+import { logToBlockchain, getLogEntryById, getAllEntries } from './services/blockchainLogger.js';
 
 // ES Module compatibility
 const __filename = fileURLToPath(import.meta.url);
@@ -141,6 +142,85 @@ app.post('/api/generate-report', async (req, res) => {
     console.error('Error generating report:', error);
     return res.status(500).json({ 
       error: 'Failed to generate report',
+      message: error.message 
+    });
+  }
+});
+
+// NEW ENDPOINT: Log alert to blockchain/IPFS
+app.post('/api/log-alert', async (req, res) => {
+  try {
+    const alertData = req.body;
+    
+    if (!alertData || !alertData.profileData) {
+      return res.status(400).json({ 
+        error: 'Invalid alert data. Profile information is required.' 
+      });
+    }
+    
+    console.log('Received request to log alert for:', 
+      alertData.profileData.username || 'Unknown profile');
+    
+    // Log the alert data to our simulated blockchain
+    const logResult = await logToBlockchain(alertData);
+    
+    return res.status(201).json({
+      success: true,
+      message: 'Alert successfully logged to immutable ledger',
+      referenceId: logResult.referenceId,
+      timestamp: logResult.timestamp,
+      blockNumber: logResult.blockNumber
+    });
+  } catch (error) {
+    console.error('Error logging alert:', error);
+    return res.status(500).json({ 
+      error: 'Failed to log alert',
+      message: error.message 
+    });
+  }
+});
+
+// Endpoint to retrieve a logged alert by reference ID
+app.get('/api/log-alert/:referenceId', (req, res) => {
+  try {
+    const { referenceId } = req.params;
+    
+    if (!referenceId) {
+      return res.status(400).json({ error: 'Reference ID is required' });
+    }
+    
+    const logEntry = getLogEntryById(referenceId);
+    
+    if (!logEntry) {
+      return res.status(404).json({ error: 'Log entry not found' });
+    }
+    
+    return res.json({
+      success: true,
+      logEntry
+    });
+  } catch (error) {
+    console.error('Error retrieving log entry:', error);
+    return res.status(500).json({ 
+      error: 'Failed to retrieve log entry',
+      message: error.message 
+    });
+  }
+});
+
+// Endpoint to get all blockchain entries (for demonstration purposes)
+app.get('/api/log-alerts', (req, res) => {
+  try {
+    const entries = getAllEntries();
+    return res.json({
+      success: true,
+      count: entries.length,
+      entries
+    });
+  } catch (error) {
+    console.error('Error retrieving logs:', error);
+    return res.status(500).json({ 
+      error: 'Failed to retrieve logs',
       message: error.message 
     });
   }
