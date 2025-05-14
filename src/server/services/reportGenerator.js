@@ -9,6 +9,8 @@ import PDFDocument from 'pdfkit';
 export async function generateReport(analysisData) {
   return new Promise((resolve, reject) => {
     try {
+      console.log('Starting PDF generation with data:', JSON.stringify(analysisData));
+      
       // Create a PDF document
       const doc = new PDFDocument({
         size: 'A4',
@@ -25,8 +27,9 @@ export async function generateReport(analysisData) {
       const buffers = [];
       doc.on('data', buffer => buffers.push(buffer));
       doc.on('end', () => {
-        console.log("PDF generation complete, buffer size:", Buffer.concat(buffers).length);
-        resolve(Buffer.concat(buffers));
+        const pdfBuffer = Buffer.concat(buffers);
+        console.log("PDF generation complete, buffer size:", pdfBuffer.length);
+        resolve(pdfBuffer);
       });
       doc.on('error', err => {
         console.error("PDF generation error:", err);

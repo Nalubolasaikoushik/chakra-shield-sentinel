@@ -17,8 +17,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
+// Enhanced CORS configuration
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:3000', process.env.FRONTEND_URL || '*'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json({ limit: '50mb' }));
 
 // Set up multer for file uploads
@@ -57,7 +63,7 @@ app.post('/api/analyze-profile', async (req, res) => {
   }
 });
 
-// New endpoint for image verification
+// Endpoint for image verification
 app.post('/api/verify-image', upload.single('image'), async (req, res) => {
   try {
     let imageData;
@@ -97,12 +103,13 @@ app.post('/api/verify-image', upload.single('image'), async (req, res) => {
   }
 });
 
-// New endpoint for generating reports with improved error handling
+// Enhanced endpoint for generating reports with better error handling
 app.post('/api/generate-report', async (req, res) => {
   try {
     const analysisData = req.body;
     
     if (!analysisData || !analysisData.username || !analysisData.platform) {
+      console.error('Invalid analysis data received:', analysisData);
       return res.status(400).json({ 
         error: 'Invalid analysis data. Required fields are missing.' 
       });
