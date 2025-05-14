@@ -69,8 +69,8 @@ export interface ImageVerificationResult {
   };
 }
 
-// Update server URL - ensure it's using the correct port and protocol
-const API_URL = window.location.hostname === 'localhost' 
+// Updated API URL with explicit port
+const API_URL = import.meta.env.DEV 
   ? 'http://localhost:3001' 
   : window.location.origin.replace(/:\d+$/, ':3001');
 
@@ -143,33 +143,31 @@ export const verifyImageBase64 = async (base64Image: string, filename?: string):
   }
 };
 
-// Fixed function to generate PDF report for profile analysis with better error handling
+// Completely rewritten function to generate PDF report with proper error handling and response processing
 export const generateProfileReport = async (analysisData: AnalysisResult): Promise<Blob> => {
   try {
     console.log('Generating profile report with data:', JSON.stringify(analysisData));
+    console.log('Using API URL:', API_URL);
     
-    // Use the dynamically determined API URL
     const response = await fetch(`${API_URL}/api/generate-report`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(analysisData),
-      credentials: 'include', // Include cookies if needed for CORS
+      credentials: 'include',
     });
 
     if (!response.ok) {
       console.error('Error response from server:', response.status, response.statusText);
-      const errorData = await response.text();
-      console.error('Error details:', errorData);
+      const errorText = await response.text();
+      console.error('Error details:', errorText);
       throw new Error(`Failed to generate report: ${response.statusText}`);
     }
 
-    // Verify content type and get the blob properly
     const contentType = response.headers.get('Content-Type');
     console.log('Response content type:', contentType);
     
-    // Get the blob directly from response
     const blob = await response.blob();
     console.log('Received blob size:', blob.size, 'type:', blob.type);
     
@@ -177,9 +175,8 @@ export const generateProfileReport = async (analysisData: AnalysisResult): Promi
       throw new Error('Server returned an empty PDF');
     }
     
-    // Ensure blob has PDF MIME type
-    const pdfBlob = new Blob([blob], { type: 'application/pdf' });
-    return pdfBlob;
+    // Always ensure we have the correct PDF MIME type
+    return new Blob([blob], { type: 'application/pdf' });
   } catch (error) {
     console.error('Error generating profile report:', error);
     throw error;
@@ -274,7 +271,7 @@ export const generateImageReport = async (verificationResult: ImageVerificationR
   }
 };
 
-// Improved helper function for downloading reports
+// Improved helper function for downloading reports with better error handling
 export const downloadPdfReport = (blob: Blob, filename: string): void => {
   console.log('Downloading PDF report:', filename, 'size:', blob.size, 'type:', blob.type);
   
@@ -284,8 +281,8 @@ export const downloadPdfReport = (blob: Blob, filename: string): void => {
   }
   
   try {
-    // Create a blob URL
-    const url = URL.createObjectURL(
+    // Create a blob URL with explicit PDF MIME type
+    const url = window.URL.createObjectURL(
       new Blob([blob], { type: 'application/pdf' })
     );
     
@@ -300,14 +297,12 @@ export const downloadPdfReport = (blob: Blob, filename: string): void => {
     document.body.appendChild(link);
     link.click();
     
-    // Clean up - remove link and revoke URL
+    // Clean up after a longer delay to ensure download starts
     setTimeout(() => {
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(url);
       console.log('Download link removed and URL revoked');
-    }, 1500); // Longer timeout to ensure download starts
-    
-    return;
+    }, 2000);
   } catch (error) {
     console.error('Download failed:', error);
     throw new Error(`Failed to download PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);

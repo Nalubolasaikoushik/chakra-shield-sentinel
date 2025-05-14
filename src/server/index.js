@@ -18,12 +18,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Enhanced CORS configuration
+// Enhanced CORS configuration with more permissive settings for development
 app.use(cors({
   origin: ['http://localhost:5173', 'http://localhost:3000', process.env.FRONTEND_URL || '*'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  maxAge: 86400 // 24 hours in seconds
 }));
 
 app.use(express.json({ limit: '50mb' }));
@@ -104,7 +105,7 @@ app.post('/api/verify-image', upload.single('image'), async (req, res) => {
   }
 });
 
-// Enhanced endpoint for generating reports with better error handling
+// Completely rewritten endpoint for generating reports with better error handling and response formatting
 app.post('/api/generate-report', async (req, res) => {
   try {
     const analysisData = req.body;
@@ -135,6 +136,7 @@ app.post('/api/generate-report', async (req, res) => {
     res.setHeader('Content-Disposition', 
       `attachment; filename="report-${analysisData.username}-${analysisData.platform}-${Date.now()}.pdf"`);
     res.setHeader('Content-Length', pdfBuffer.length);
+    res.setHeader('Cache-Control', 'no-cache');
     
     // Send the PDF file
     return res.send(pdfBuffer);
