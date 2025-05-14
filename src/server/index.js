@@ -8,6 +8,9 @@ import { analyzeProfile } from './services/profileAnalyzer.js';
 import { verifyImage } from './services/imageVerifier.js';
 import { generateReport } from './services/reportGenerator.js';
 import { logToBlockchain, getLogEntryById, getAllEntries } from './services/blockchainLogger.js';
+import { authenticateJWT, generateToken } from './middleware/authMiddleware.js';
+import { getAlerts, getAlertById, createAlert } from './services/alertService.js';
+import { initializeDatabase } from './utils/dbConnection.js';
 
 // ES Module compatibility
 const __filename = fileURLToPath(import.meta.url);
@@ -225,6 +228,127 @@ app.get('/api/log-alerts', (req, res) => {
       error: 'Failed to retrieve logs',
       message: error.message 
     });
+  }
+});
+
+// NEW ENDPOINT: Secure alerts API with JWT authentication and MongoDB integration
+app.get('/api/alerts', authenticateJWT, async (req, res) => {
+  try {
+    // Extract query parameters
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const { platform, alertLevel, startDate, endDate, sortBy, sortOrder } = req.query;
+    
+    console.log('Fetching alerts with filters:', { 
+      page, limit, platform, alertLevel, startDate, endDate, sortBy, sortOrder 
+    });
+    
+    // Get alerts with filters and pagination
+    const alertsResult = await getAlerts({ 
+      page, 
+      limit, 
+      platform, 
+      alertLevel, 
+      startDate, 
+      endDate,
+      sortBy: sortBy || 'createdAt',
+      sortOrder: sortOrder || 'desc'
+    });
+    
+    return res.json({
+      success: true,
+      ...alertsResult
+    });
+  } catch (error) {
+    console.error('Error in /api/alerts endpoint:', error);
+    return res.status(500).json({ 
+      error: 'Failed to fetch alerts',
+      message: error.message 
+    });
+  }
+});
+
+// Get a specific alert by ID
+app.get('/api/alerts/:id', authenticateJWT, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({ error: 'Alert ID is required' });
+    }
+    
+    const alert = await getAlertById(id);
+    
+    if (!alert) {
+      return res.status(404).json({ error: 'Alert not found' });
+    }
+    
+    return res.json({
+      success: true,
+      alert
+    });
+  } catch (error) {
+    console.error('Error retrieving alert:', error);
+    return res.status(500).json({ 
+      error: 'Failed to retrieve alert',
+      message: error.message 
+    });
+  }
+});
+
+// Create a new alert (for testing purposes)
+app.post('/api/alerts', authenticateJWT, async (req, res) => {
+  try {
+    const alertData = req.body;
+    
+    if (!alertData || !alertData.profileData) {
+      return res.status(400).json({ 
+        error: 'Invalid alert data. Profile information is required.' 
+      });
+    }
+    
+    const alert = await createAlert(alertData);
+    
+    return res.status(201).json({
+      success: true,
+      message: 'Alert created successfully',
+      alert
+    });
+  } catch (error) {
+    console.error('Error creating alert:', error);
+    return res.status(500).json({ 
+      error: 'Failed to create alert',
+      message: error.message 
+    });
+  }
+});
+
+// Development endpoint to generate a test token (would be removed in production)
+if (process.env.NODE_ENV === 'development') {
+  app.post('/api/auth/test-token', (req, res) => {
+    const testUser = {
+      id: '1',
+      email: 'admin@example.com',
+      roles: ['admin']
+    };
+    
+    const token = generateToken(testUser);
+    
+    res.json({
+      success: true,
+      token,
+      user: testUser,
+      expires: 'in 1 hour'
+    });
+  });
+}
+
+// Initialize database connection when the server starts
+initializeDatabase().then(initialized => {
+  if (initialized) {
+    console.log('Database initialized successfully');
+  } else {
+    console.warn('Database initialization failed');
   }
 });
 
