@@ -51,7 +51,7 @@ export async function initializeDatabase() {
   try {
     const { db } = await connectToDatabase();
     
-    // Create collections if they don't exist
+    // Create alerts collection if it doesn't exist
     if (!(await db.listCollections({ name: 'alerts' }).toArray()).length) {
       await db.createCollection('alerts');
       
@@ -62,6 +62,19 @@ export async function initializeDatabase() {
       await alertsCollection.createIndex({ alertLevel: 1 });
       
       console.log('Alerts collection and indexes created');
+    }
+    
+    // Create reports collection if it doesn't exist
+    if (!(await db.listCollections({ name: 'reports' }).toArray()).length) {
+      await db.createCollection('reports');
+      
+      // Create indexes for better query performance
+      const reportsCollection = db.collection('reports');
+      await reportsCollection.createIndex({ createdAt: -1 });
+      await reportsCollection.createIndex({ platform: 1 });
+      await reportsCollection.createIndex({ status: 1 });
+      
+      console.log('Reports collection and indexes created');
     }
     
     return true;

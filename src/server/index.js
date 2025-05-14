@@ -11,6 +11,7 @@ import { logToBlockchain, getLogEntryById, getAllEntries } from './services/bloc
 import { authenticateJWT, generateToken } from './middleware/authMiddleware.js';
 import { getAlerts, getAlertById, createAlert } from './services/alertService.js';
 import { initializeDatabase } from './utils/dbConnection.js';
+import { createReport, getReports } from './services/reportService.js';
 
 // ES Module compatibility
 const __filename = fileURLToPath(import.meta.url);
@@ -226,6 +227,77 @@ app.get('/api/log-alerts', (req, res) => {
     console.error('Error retrieving logs:', error);
     return res.status(500).json({ 
       error: 'Failed to retrieve logs',
+      message: error.message 
+    });
+  }
+});
+
+// NEW ENDPOINT: Submit suspicious profile report
+app.post('/api/report', async (req, res) => {
+  try {
+    const { username, platform, reason, screenshotUrl } = req.body;
+    
+    // Validate required fields
+    if (!username || !platform || !reason) {
+      return res.status(400).json({ 
+        error: 'Username, platform, and reason are required fields' 
+      });
+    }
+    
+    // Validate platform
+    const allowedPlatforms = ['twitter', 'instagram', 'facebook', 'linkedin'];
+    if (!allowedPlatforms.includes(platform.toLowerCase())) {
+      return res.status(400).json({ 
+        error: 'Invalid platform. Supported platforms: Twitter, Instagram, Facebook, LinkedIn' 
+      });
+    }
+    
+    // Create the report
+    const report = await createReport({
+      username,
+      platform: platform.toLowerCase(),
+      reason,
+      screenshotUrl: screenshotUrl || null
+    });
+    
+    return res.status(201).json({
+      success: true,
+      message: 'Suspicious profile report submitted successfully',
+      reportId: report._id
+    });
+  } catch (error) {
+    console.error('Error submitting report:', error);
+    return res.status(500).json({ 
+      error: 'Failed to submit report',
+      message: error.message 
+    });
+  }
+});
+
+// NEW ENDPOINT: Get reports (requires authentication)
+app.get('/api/reports', authenticateJWT, async (req, res) => {
+  try {
+    // Extract query parameters
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const { status, platform } = req.query;
+    
+    // Get reports with filters and pagination
+    const reportsResult = await getReports({ 
+      page, 
+      limit, 
+      status, 
+      platform
+    });
+    
+    return res.json({
+      success: true,
+      ...reportsResult
+    });
+  } catch (error) {
+    console.error('Error fetching reports:', error);
+    return res.status(500).json({ 
+      error: 'Failed to fetch reports',
       message: error.message 
     });
   }
