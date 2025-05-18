@@ -16,6 +16,8 @@ const API_URL = import.meta.env.DEV
 // Function to submit a suspicious profile report
 export const submitReport = async (reportData: ReportSubmission): Promise<{ success: boolean; reportId?: string }> => {
   try {
+    console.log("Submitting report:", reportData);
+    
     const response = await fetch(`${API_URL}/api/report`, {
       method: 'POST',
       headers: {

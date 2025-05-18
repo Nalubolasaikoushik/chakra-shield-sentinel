@@ -143,19 +143,18 @@ export const verifyImageBase64 = async (base64Image: string, filename?: string):
   }
 };
 
-// Completely rewritten function to generate PDF report with proper error handling and response processing
+// Fixed function to generate PDF report with proper error handling and response processing
 export const generateProfileReport = async (analysisData: AnalysisResult): Promise<Blob> => {
   try {
     console.log('Generating profile report with data:', JSON.stringify(analysisData));
-    console.log('Using API URL:', API_URL);
     
     const response = await fetch(`${API_URL}/api/generate-report`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/pdf',
       },
       body: JSON.stringify(analysisData),
-      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -165,9 +164,6 @@ export const generateProfileReport = async (analysisData: AnalysisResult): Promi
       throw new Error(`Failed to generate report: ${response.statusText}`);
     }
 
-    const contentType = response.headers.get('Content-Type');
-    console.log('Response content type:', contentType);
-    
     const blob = await response.blob();
     console.log('Received blob size:', blob.size, 'type:', blob.type);
     
@@ -175,7 +171,6 @@ export const generateProfileReport = async (analysisData: AnalysisResult): Promi
       throw new Error('Server returned an empty PDF');
     }
     
-    // Always ensure we have the correct PDF MIME type
     return new Blob([blob], { type: 'application/pdf' });
   } catch (error) {
     console.error('Error generating profile report:', error);
@@ -243,6 +238,7 @@ export const generateImageReport = async (verificationResult: ImageVerificationR
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/pdf',
       },
       body: JSON.stringify(reportData),
     });
@@ -254,24 +250,18 @@ export const generateImageReport = async (verificationResult: ImageVerificationR
       throw new Error(`Failed to generate image report: ${response.statusText}`);
     }
 
-    // Verify the content type is PDF
-    const contentType = response.headers.get('Content-Type');
-    console.log('Response content type:', contentType);
-    
     // Get the blob with the correct MIME type
     const blob = await response.blob();
     console.log('Received blob size:', blob.size, 'type:', blob.type);
     
-    // Create a new blob with explicit PDF MIME type if it's not set correctly
-    const pdfBlob = new Blob([blob], { type: 'application/pdf' });
-    return pdfBlob;
+    return new Blob([blob], { type: 'application/pdf' });
   } catch (error) {
     console.error('Error generating image report:', error);
     throw error;
   }
 };
 
-// Improved helper function for downloading reports with better error handling
+// Improved helper function for downloading reports
 export const downloadPdfReport = (blob: Blob, filename: string): void => {
   console.log('Downloading PDF report:', filename, 'size:', blob.size, 'type:', blob.type);
   
@@ -281,27 +271,24 @@ export const downloadPdfReport = (blob: Blob, filename: string): void => {
   }
   
   try {
-    // Create a blob URL with explicit PDF MIME type
-    const url = window.URL.createObjectURL(
-      new Blob([blob], { type: 'application/pdf' })
-    );
-    
+    // Create a blob URL
+    const url = URL.createObjectURL(blob);
     console.log('Created blob URL for download:', url);
     
     // Create a temporary link element to trigger download
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', filename);
+    link.download = filename;
     
     // Append to body, click and remove to trigger download
     document.body.appendChild(link);
     link.click();
     
-    // Clean up after a longer delay to ensure download starts
+    // Clean up
     setTimeout(() => {
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      console.log('Download link removed and URL revoked');
+      URL.revokeObjectURL(url);
+      console.log('Download cleanup complete');
     }, 2000);
   } catch (error) {
     console.error('Download failed:', error);

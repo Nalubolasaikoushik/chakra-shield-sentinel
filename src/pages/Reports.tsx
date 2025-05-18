@@ -1,11 +1,14 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ReportForm from "@/components/reports/ReportForm";
+import { useToast } from "@/hooks/use-toast";
 
 const Reports = () => {
+  const { toast } = useToast();
+  
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
