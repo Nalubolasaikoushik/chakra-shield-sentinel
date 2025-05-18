@@ -1,272 +1,254 @@
 
 import React, { useState, useEffect } from 'react';
-import { Shield, Menu, Globe, X, MapPin, AlertTriangle, FileText, Wrench, Users, Lock } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-} from "@/components/ui/dropdown-menu";
-import { Link, useLocation } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Menu, X, Shield, ChevronDown, ChevronUp } from 'lucide-react';
 import AshokChakra from './AshokChakra';
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSelector from './LanguageSelector';
+import ThemeToggle from './ThemeToggle';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
-  const { currentLanguage, setLanguage, t } = useLanguage();
+  const [scrolled, setScrolled] = useState(false);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+  // Tracking scroll for header style changes
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  const showAuthButtons = !['/login', '/register'].includes(location.pathname);
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setIsToolsMenuOpen(false);
+  }, [location.pathname]);
 
-  const handleLanguageChange = (language: 'English' | 'हिंदी') => {
-    setLanguage(language);
-    
-    toast({
-      title: "Language Changed",
-      description: t('languageChanged'),
-      duration: 3000,
-    });
-    
-    console.log(`Language changed to: ${language}`);
-  };
+  const navItems = [
+    { name: 'home', path: '/' },
+    { name: 'scan', path: '/scan' },
+    { name: 'dashboard', path: '/dashboard' },
+    { name: 'blockchain', path: '/blockchain' },
+    { name: 'reports', path: '/reports' },
+    { name: 'alerts', path: '/alerts' },
+    { 
+      name: 'tools', 
+      path: '/tools',
+      hasDropdown: true,
+      dropdownItems: [
+        { name: 'securityAssessment', path: '/tools/security-assessment' },
+        { name: 'threatIntelligence', path: '/tools/threat-intelligence' },
+        { name: 'behaviorAnalysis', path: '/tools/behavior-analysis' },
+        { name: 'deepfakeDetection', path: '/tools/deepfake-detection' },
+        { name: 'networkMapping', path: '/tools/network-mapping' },
+        { name: 'alertSystem', path: '/tools/alert-system' },
+      ]
+    },
+    { name: 'about', path: '/about' },
+    { name: 'contact', path: '/contact' },
+  ];
 
   return (
-    <header className="w-full bg-india-navyBlue text-white shadow-lg">
-      <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center">
-          <Link to="/" className="flex items-center">
-            <div className="mr-3 relative group">
-              <div className="absolute inset-0 bg-india-saffron rounded-full opacity-20 group-hover:opacity-40 transition-opacity"></div>
-              <Shield className="h-8 w-8 md:h-9 md:w-9 text-india-saffron relative z-10 group-hover:scale-110 transition-transform" />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center">
-                <h1 className="text-lg md:text-2xl font-bold mr-1 md:mr-2 bg-gradient-to-r from-india-saffron to-white bg-clip-text text-transparent">
-                  ChakraShield
-                </h1>
-                <AshokChakra size="sm" spinning={true} />
+    <header 
+      className={`sticky top-0 z-50 w-full transition-all duration-200 ${
+        scrolled 
+          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-md' 
+          : 'bg-white dark:bg-gray-900'
+      }`}
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo and brand */}
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center" aria-label="ChakraShield Home">
+              <div className="relative flex items-center">
+                <Shield className="h-6 w-6 md:h-8 md:w-8 text-india-navyBlue" />
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <AshokChakra size="sm" color="#FF8C00" />
+                </span>
               </div>
-              <p className="text-xs md:text-sm font-devanagari text-white/90">
-                {t('headerTitle')}
-              </p>
+              <span className="ml-2 text-lg md:text-xl font-bold bg-gradient-to-r from-india-navyBlue to-india-accent3 bg-clip-text text-transparent">
+                ChakraShield
+              </span>
+            </Link>
+          </div>
+
+          {/* Desktop navigation */}
+          <nav className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => 
+              item.hasDropdown ? (
+                <div className="relative group" key={item.name}>
+                  <button
+                    onClick={() => setIsToolsMenuOpen(!isToolsMenuOpen)}
+                    className={`px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition flex items-center ${
+                      location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)
+                        ? 'text-india-navyBlue dark:text-india-saffron'
+                        : 'text-gray-700 dark:text-gray-300'
+                    }`}
+                    aria-expanded={isToolsMenuOpen}
+                  >
+                    {t(item.name)}
+                    {isToolsMenuOpen ? 
+                      <ChevronUp className="ml-1 h-4 w-4" /> : 
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    }
+                  </button>
+                  <div 
+                    className={`absolute left-0 mt-1 w-48 rounded-md shadow-lg bg-white dark:bg-gray-900 ring-1 ring-black ring-opacity-5 transition-all duration-150 ease-in-out origin-top-left 
+                    ${isToolsMenuOpen ? 'transform scale-100 opacity-100' : 'transform scale-95 opacity-0 invisible'}`}
+                  >
+                    <div className="py-1">
+                      {item.dropdownItems?.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.path}
+                          className={`block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                            location.pathname === subItem.path
+                              ? 'text-india-navyBlue dark:text-india-saffron'
+                              : 'text-gray-700 dark:text-gray-300'
+                          }`}
+                        >
+                          {t(subItem.name)}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition ${
+                    location.pathname === item.path
+                      ? 'text-india-navyBlue dark:text-india-saffron'
+                      : 'text-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  {t(item.name)}
+                </Link>
+              )
+            )}
+            <div className="ml-2 flex items-center space-x-2">
+              <ThemeToggle />
+              <LanguageSelector variant="compact" />
             </div>
-          </Link>
+          </nav>
+          
+          {/* Login/Register buttons or username on desktop */}
+          <div className="hidden md:flex items-center">
+            <Link to="/login">
+              <Button variant="outline" size="sm" className="mr-2">
+                {t('login')}
+              </Button>
+            </Link>
+            <Link to="/register">
+              <Button className="bg-india-navyBlue hover:bg-india-navyBlue/90" size="sm">
+                {t('register')}
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="flex items-center space-x-2 md:hidden">
+            <ThemeToggle />
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              aria-label={isMenuOpen ? 'Close menu' : t('mobileMenu')}
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? (
+                <X className="block h-6 w-6" />
+              ) : (
+                <Menu className="block h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
+      </div>
 
-        <div className="flex items-center space-x-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="bg-transparent border-white/20 text-white hover:bg-white/10">
-                <Globe className="mr-1 h-4 w-4" />
-                <span className="hidden sm:inline">{currentLanguage}</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white z-50">
-              <DropdownMenuItem onClick={() => handleLanguageChange("English")}>English</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleLanguageChange("हिंदी")} className="font-devanagari">हिंदी</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="bg-transparent border-white/20 text-white hover:bg-white/10 hidden md:flex">
-                <FileText className="mr-1 h-4 w-4" />
-                <span>{t('resources')}</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white w-56 z-50">
-              <DropdownMenuLabel>{t('resources')}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Link to="/resources" className="flex items-center w-full">
-                    <FileText className="mr-2 h-4 w-4" />
-                    <span>{t('documentation')}</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/resources?tab=guidelines" className="flex items-center w-full">
-                    <AlertTriangle className="mr-2 h-4 w-4" />
-                    <span>Guidelines</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/resources?tab=api" className="flex items-center w-full">
-                    <Wrench className="mr-2 h-4 w-4" />
-                    <span>API Reference</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/resources?tab=community" className="flex items-center w-full">
-                    <Users className="mr-2 h-4 w-4" />
-                    <span>Community</span>
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {showAuthButtons && (
-            <>
+      {/* Mobile menu */}
+      <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
+        <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800">
+          <div className="flex justify-between items-center py-2">
+            <LanguageSelector variant="header" />
+            <div className="flex space-x-2">
               <Link to="/login">
-                <Button variant="ghost" className="text-white hidden md:flex hover:bg-white/10">
+                <Button variant="outline" size="sm" className="text-xs px-2.5">
                   {t('login')}
                 </Button>
               </Link>
               <Link to="/register">
-                <Button className="bg-india-saffron hover:bg-india-saffron/90 text-white hidden md:flex">
+                <Button className="bg-india-navyBlue hover:bg-india-navyBlue/90 text-xs px-2.5" size="sm">
                   {t('register')}
                 </Button>
               </Link>
-            </>
-          )}
-          <Button variant="ghost" className="md:hidden p-2 hover:bg-white/10" onClick={toggleMobileMenu}>
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
-        </div>
-      </div>
-
-      {/* Center aligned navigation menu with security features dropdown */}
-      <div className="relative bg-white/10 text-white overflow-x-auto scrollbar-none before:absolute before:top-0 before:left-0 before:w-full before:h-0.5 before:bg-india-saffron after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-india-green">
-        <nav className="container mx-auto flex justify-center">
-          <Link to="/" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('home')}</Link>
-          <Link to="/scan" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('scan')}</Link>
-          <Link to="/dashboard" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('dashboard')}</Link>
-          <Link to="/blockchain" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('blockchain')}</Link>
-          <Link to="/reports" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('reports')}</Link>
-          <Link to="/alerts" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('alerts')}</Link>
-          
-          {/* Security Features Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors flex items-center">
-              {t('features')}
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-india-navyBlue text-white border-india-navyBlue">
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/security-assessment" className="w-full">{t('securityAssessment')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/threat-intelligence" className="w-full">{t('threatIntelligence')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/deepfake-detection" className="w-full">{t('deepfakeDetection')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/behavior-analysis" className="w-full">{t('behaviorAnalysis')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/network-mapping" className="w-full">{t('networkMapping')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/alert-system" className="w-full">{t('alertSystem')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/admin-dashboard" className="w-full">{t('adminDashboard')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/cross-platform-monitor" className="w-full">{t('crossPlatformMonitor')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 focus:text-white">
-                <Link to="/features/multilingual-engine" className="w-full">{t('multilingualEngine')}</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
-          <Link to="/tools" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('tools')}</Link>
-          <Link to="/translation" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('translation')}</Link>
-          <Link to="/resources" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('resources')}</Link>
-          <Link to="/about" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('about')}</Link>
-          <Link to="/contact" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('contact')}</Link>
-          <Link to="/#disclaimer" className="px-3 py-2 hover:bg-white/20 font-medium text-xs md:text-sm whitespace-nowrap transition-colors">{t('disclaimer')}</Link>
-        </nav>
-      </div>
-
-      {/* Mobile menu - centered content with security features */}
-      {mobileMenuOpen && isMobile && (
-        <div className="md:hidden fixed inset-0 z-50 bg-india-navyBlue bg-opacity-98 flex flex-col">
-          <div className="flex justify-between items-center p-4">
-            <div className="flex items-center">
-              <Shield className="h-8 w-8 text-india-saffron mr-2" />
-              <span className="text-xl font-bold">ChakraShield</span>
             </div>
-            <Button variant="ghost" onClick={toggleMobileMenu} className="text-white hover:bg-white/10">
-              <X className="h-6 w-6" />
-            </Button>
           </div>
-          <div className="flex flex-col items-center justify-center py-6 space-y-5 max-h-[80vh] overflow-y-auto">
-            <Link to="/" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('home')}</Link>
-            <Link to="/scan" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('scan')}</Link>
-            <Link to="/dashboard" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('dashboard')}</Link>
-            <Link to="/blockchain" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('blockchain')}</Link>
-            <Link to="/reports" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('reports')}</Link>
-            <Link to="/alerts" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('alerts')}</Link>
-            
-            {/* Security Features Section in Mobile Menu */}
-            <div className="border-t border-white/10 w-3/4 my-2"></div>
-            <div className="text-white text-lg font-medium text-india-saffron">{t('features')}</div>
-            <div className="flex flex-col items-center space-y-4 text-sm text-white w-full px-8">
-              <Link to="/features/security-assessment" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('securityAssessment')}</Link>
-              <Link to="/features/threat-intelligence" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('threatIntelligence')}</Link>
-              <Link to="/features/deepfake-detection" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('deepfakeDetection')}</Link>
-              <Link to="/features/behavior-analysis" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('behaviorAnalysis')}</Link>
-              <Link to="/features/network-mapping" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('networkMapping')}</Link>
-              <Link to="/features/alert-system" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('alertSystem')}</Link>
-              <Link to="/features/admin-dashboard" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('adminDashboard')}</Link>
-              <Link to="/features/cross-platform-monitor" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('crossPlatformMonitor')}</Link>
-              <Link to="/features/multilingual-engine" className="text-white text-md hover:text-india-saffron transition-colors text-center" onClick={toggleMobileMenu}>{t('multilingualEngine')}</Link>
-            </div>
-            
-            {/* Additional mobile menu items */}
-            
-            <div className="border-t border-white/10 w-3/4 my-2"></div>
-            
-            <Link to="/tools" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('tools')}</Link>
-            <Link to="/translation" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('translation')}</Link>
-            <Link to="/resources" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('resources')}</Link>
-            <Link to="/about" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('about')}</Link>
-            <Link to="/contact" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('contact')}</Link>
-            <Link to="/#disclaimer" className="text-white text-lg font-medium hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('disclaimer')}</Link>
-            
-            <div className="border-t border-white/10 w-3/4 my-2"></div>
-            
-            <div className="text-white text-lg font-medium text-india-saffron transition-colors">
-              {t('resources')}
-            </div>
-            <div className="flex flex-col items-center space-y-4 text-sm text-white/80">
-              <Link to="/resources" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>{t('documentation')}</Link>
-              <Link to="/resources?tab=guidelines" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Guidelines</Link>
-              <Link to="/resources?tab=api" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>API Reference</Link>
-              <Link to="/resources?tab=community" className="hover:text-india-saffron transition-colors" onClick={toggleMobileMenu}>Community</Link>
-            </div>
-            
-            {showAuthButtons && (
-              <div className="pt-6 flex flex-col space-y-3">
-                <Link to="/login" onClick={toggleMobileMenu}>
-                  <Button variant="outline" className="w-40 border-white/20 text-white hover:bg-white/10">{t('login')}</Button>
+          
+          <div className="pt-2 pb-4 space-y-1">
+            {navItems.map((item) => 
+              item.hasDropdown ? (
+                <div key={item.name}>
+                  <button
+                    onClick={() => setIsToolsMenuOpen(!isToolsMenuOpen)}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium ${
+                      location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)
+                        ? 'bg-india-navyBlue/10 text-india-navyBlue dark:text-india-saffron'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <span>{t(item.name)}</span>
+                    {isToolsMenuOpen ? 
+                      <ChevronUp className="h-4 w-4" /> : 
+                      <ChevronDown className="h-4 w-4" />
+                    }
+                  </button>
+                  
+                  {isToolsMenuOpen && (
+                    <div className="pl-4 mt-1 space-y-1">
+                      {item.dropdownItems?.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.path}
+                          className={`block px-3 py-2 rounded-md text-sm font-medium ${
+                            location.pathname === subItem.path
+                              ? 'bg-india-navyBlue/10 text-india-navyBlue dark:text-india-saffron'
+                              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          }`}
+                        >
+                          {t(subItem.name)}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`block px-3 py-2 rounded-md text-sm font-medium ${
+                    location.pathname === item.path
+                      ? 'bg-india-navyBlue/10 text-india-navyBlue dark:text-india-saffron'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {t(item.name)}
                 </Link>
-                <Link to="/register" onClick={toggleMobileMenu}>
-                  <Button className="bg-india-saffron hover:bg-india-saffron/90 text-white w-40">{t('register')}</Button>
-                </Link>
-              </div>
+              )
             )}
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 };

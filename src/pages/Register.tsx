@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,12 +9,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Shield, UserPlus, Lock, FileCheck } from 'lucide-react';
+import { 
+  Shield, 
+  UserPlus, 
+  Lock, 
+  FileCheck, 
+  Eye, 
+  EyeOff, 
+  Mail, 
+  User, 
+  Building, 
+  Hash,
+  Loader2
+} from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import AshokChakra from '@/components/AshokChakra';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const formSchema = z.object({
   fullName: z.string().min(3, { message: "Full name must be at least 3 characters" }),
@@ -33,6 +46,12 @@ const formSchema = z.object({
 
 const Register = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,52 +66,73 @@ const Register = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    toast({
-      title: "Registration successful",
-      description: "Your account has been created",
-    });
-    // In a real app, this would register the user
+    setIsLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      console.log(values);
+      toast({
+        title: t('success'),
+        description: "Your account has been created",
+      });
+      setIsLoading(false);
+      
+      // Redirect to login page
+      navigate('/login');
+    }, 1500);
   };
 
   return (
     <>
       <Header />
-      <div className="flex min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-xl space-y-8 mx-auto">
-          <Card className="border-2 border-gray-200 shadow-lg">
-            <CardHeader className="space-y-2 text-center">
+          <Card className="border-2 border-gray-200 dark:border-gray-700 shadow-lg bg-white dark:bg-gray-900 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-india-navyBlue/5 via-transparent to-india-saffron/5 pointer-events-none"></div>
+            <CardHeader className="space-y-2 text-center relative">
               <div className="flex justify-center mb-2">
-                <div className="bg-india-navyBlue/10 p-3 rounded-full">
-                  <UserPlus className="h-8 w-8 text-india-saffron" />
+                <div className="bg-gradient-to-br from-india-navyBlue to-india-navyBlue/70 text-white p-3 rounded-full">
+                  <UserPlus className="h-8 w-8" />
                 </div>
               </div>
               <div className="flex items-center justify-center">
-                <CardTitle className="text-2xl font-bold text-india-navyBlue">Agency Registration</CardTitle>
+                <CardTitle className="text-2xl font-bold bg-gradient-to-r from-india-navyBlue to-india-accent3 bg-clip-text text-transparent">
+                  {t('register')}
+                </CardTitle>
                 <AshokChakra size="sm" className="ml-2" />
               </div>
-              <CardDescription className="text-gray-600">
-                Create your secure ChakraShield account
+              <CardDescription className="text-gray-600 dark:text-gray-400">
+                {t('headerTitle')}
               </CardDescription>
               <div className="flex justify-center">
-                <span className="flex items-center px-3 py-1 text-xs font-semibold text-india-navyBlue bg-india-navyBlue/10 rounded-full">
+                <span className="flex items-center px-3 py-1 text-xs font-semibold text-india-navyBlue dark:text-india-saffron bg-india-navyBlue/10 dark:bg-india-saffron/10 rounded-full">
                   <Lock className="mr-1 h-3 w-3" />
-                  Secure Registration
+                  {t('securityToolsLink')}
                 </span>
               </div>
             </CardHeader>
             <CardContent>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" data-testid="register-form">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <FormField
                       control={form.control}
                       name="fullName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name</FormLabel>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">
+                            {t('fullName')}
+                          </FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your full name" {...field} className="border-india-navyBlue/20" />
+                            <div className="relative">
+                              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 h-4 w-4" />
+                              <Input 
+                                placeholder={t('fullName')} 
+                                {...field} 
+                                className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-india-navyBlue focus:border-india-navyBlue dark:focus:ring-india-saffron dark:focus:border-india-saffron" 
+                                data-testid="fullname-input"
+                              />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -103,9 +143,19 @@ const Register = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Official Email</FormLabel>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">
+                            {t('email')}
+                          </FormLabel>
                           <FormControl>
-                            <Input placeholder="you@department.gov.in" {...field} className="border-india-navyBlue/20" />
+                            <div className="relative">
+                              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 h-4 w-4" />
+                              <Input 
+                                placeholder="you@department.gov.in" 
+                                {...field} 
+                                className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-india-navyBlue focus:border-india-navyBlue dark:focus:ring-india-saffron dark:focus:border-india-saffron" 
+                                data-testid="email-input"
+                              />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -116,9 +166,19 @@ const Register = () => {
                       name="department"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Department</FormLabel>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">
+                            {t('department')}
+                          </FormLabel>
                           <FormControl>
-                            <Input placeholder="Your department/ministry" {...field} className="border-india-navyBlue/20" />
+                            <div className="relative">
+                              <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 h-4 w-4" />
+                              <Input 
+                                placeholder={t('department')} 
+                                {...field} 
+                                className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-india-navyBlue focus:border-india-navyBlue dark:focus:ring-india-saffron dark:focus:border-india-saffron" 
+                                data-testid="department-input"
+                              />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -129,9 +189,19 @@ const Register = () => {
                       name="agencyId"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Agency ID</FormLabel>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">
+                            {t('agencyId')}
+                          </FormLabel>
                           <FormControl>
-                            <Input placeholder="Your agency ID" {...field} className="border-india-navyBlue/20" />
+                            <div className="relative">
+                              <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 h-4 w-4" />
+                              <Input 
+                                placeholder={t('agencyId')} 
+                                {...field} 
+                                className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-india-navyBlue focus:border-india-navyBlue dark:focus:ring-india-saffron dark:focus:border-india-saffron" 
+                                data-testid="agencyid-input"
+                              />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -142,12 +212,31 @@ const Register = () => {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">
+                            {t('password')}
+                          </FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="••••••••" {...field} className="border-india-navyBlue/20" />
+                            <div className="relative">
+                              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 h-4 w-4" />
+                              <Input 
+                                type={showPassword ? "text" : "password"}
+                                placeholder="••••••••" 
+                                {...field} 
+                                className="pl-10 pr-10 bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-india-navyBlue focus:border-india-navyBlue dark:focus:ring-india-saffron dark:focus:border-india-saffron" 
+                                data-testid="password-input"
+                              />
+                              <button 
+                                type="button"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                                onClick={() => setShowPassword(!showPassword)}
+                                aria-label={showPassword ? t('hidePassword') : t('showPassword')}
+                              >
+                                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                              </button>
+                            </div>
                           </FormControl>
                           <FormDescription className="text-xs">
-                            At least 8 characters with numbers and symbols
+                            {t('passwordRequirements')}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -158,9 +247,28 @@ const Register = () => {
                       name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Confirm Password</FormLabel>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">
+                            {t('confirmPassword')}
+                          </FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="••••••••" {...field} className="border-india-navyBlue/20" />
+                            <div className="relative">
+                              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 h-4 w-4" />
+                              <Input 
+                                type={showConfirmPassword ? "text" : "password"}
+                                placeholder="••••••••" 
+                                {...field} 
+                                className="pl-10 pr-10 bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-india-navyBlue focus:border-india-navyBlue dark:focus:ring-india-saffron dark:focus:border-india-saffron" 
+                                data-testid="confirm-password-input"
+                              />
+                              <button 
+                                type="button"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                aria-label={showConfirmPassword ? t('hidePassword') : t('showPassword')}
+                              >
+                                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                              </button>
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -168,7 +276,7 @@ const Register = () => {
                     />
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4 mt-4">
+                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
                     <FormField
                       control={form.control}
                       name="termsAndConditions"
@@ -178,11 +286,12 @@ const Register = () => {
                             <Checkbox
                               checked={field.value}
                               onCheckedChange={field.onChange}
+                              data-testid="terms-checkbox"
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">
-                            <FormLabel>
-                              I accept the <Link to="/terms" className="text-india-saffron hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-india-saffron hover:underline">Privacy Policy</Link>
+                            <FormLabel className="text-sm text-gray-700 dark:text-gray-300">
+                              {t('acceptTerms')} <Link to="/terms" className="text-india-saffron hover:underline">{t('terms')}</Link> {t('and')} <Link to="/privacy" className="text-india-saffron hover:underline">{t('privacy')}</Link>
                             </FormLabel>
                           </div>
                         </FormItem>
@@ -190,8 +299,21 @@ const Register = () => {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full bg-india-navyBlue hover:bg-india-navyBlue/90">
-                    <FileCheck className="mr-2 h-4 w-4" /> Register Account
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-india-navyBlue to-india-accent3 hover:from-india-accent3 hover:to-india-navyBlue text-white shadow-md hover:shadow-lg transition-all duration-300"
+                    disabled={isLoading}
+                    data-testid="register-button"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t('loading')}
+                      </>
+                    ) : (
+                      <>
+                        <FileCheck className="mr-2 h-4 w-4" /> {t('registerButton')}
+                      </>
+                    )}
                   </Button>
                 </form>
               </Form>
@@ -199,34 +321,39 @@ const Register = () => {
             <CardFooter className="flex flex-col space-y-4">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-gray-300" />
+                  <span className="w-full border-t border-gray-300 dark:border-gray-600" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-gray-500">or</span>
+                  <span className="bg-white dark:bg-gray-900 px-2 text-gray-500 dark:text-gray-400">or</span>
                 </div>
               </div>
               <div className="text-center text-sm">
-                <p>Already have an account?{" "}
-                  <Link to="/login" className="font-semibold text-india-saffron hover:underline">
-                    Login
+                <p className="text-gray-600 dark:text-gray-400">
+                  {t('alreadyHaveAccount')}{" "}
+                  <Link 
+                    to="/login" 
+                    className="font-semibold text-india-saffron hover:text-india-saffron/80 dark:text-india-saffron dark:hover:text-india-saffron/90 hover:underline"
+                    data-testid="login-link"
+                  >
+                    {t('loginButton')}
                   </Link>
                 </p>
               </div>
 
-              <div className="w-full pt-4 border-t border-gray-200">
+              <div className="w-full pt-4 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex flex-col items-center justify-center space-y-2">
                   <div className="flex items-center">
                     <img 
-                      src="https://i.postimg.cc/jL7gtYHc/digital-india-logo.png"
+                      src="/lovable-uploads/c2ab8b88-6190-49fe-af92-35a0a53524b0.png"
                       alt="Digital India Initiative" 
                       className="h-6 mr-2"
                     />
-                    <p className="text-xs text-gray-500">
-                      A Digital India Initiative
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {t('digitalIndia')}
                     </p>
                   </div>
-                  <p className="text-xs text-gray-500 text-center max-w-sm">
-                    ChakraShield is protected by advanced security protocols. All data is encrypted and secured as per government standards.
+                  <p className="text-xs text-gray-500 dark:text-gray-400 text-center max-w-sm">
+                    {t('securityMessage')}
                   </p>
                 </div>
               </div>

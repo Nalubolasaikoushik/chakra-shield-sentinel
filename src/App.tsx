@@ -1,5 +1,5 @@
 
-import React from 'react'; // Explicit React import
+import React, { useEffect } from 'react'; // Explicit React import
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -33,10 +33,25 @@ import AlertSystemPage from "./pages/features/AlertSystemPage";
 import AdminDashboardPage from "./pages/features/AdminDashboardPage";
 import CrossPlatformMonitorPage from "./pages/features/CrossPlatformMonitorPage";
 import MultilingualEnginePage from "./pages/features/MultilingualEnginePage";
+import ReportFakeAccountButton from "./components/ReportFakeAccountButton";
+import { useLanguage } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient();
 
 function App() {
+  const { isRTL } = useLanguage();
+  
+  // Apply RTL direction to the app based on language context
+  useEffect(() => {
+    if (isRTL) {
+      document.documentElement.dir = 'rtl';
+      document.documentElement.classList.add('rtl');
+    } else {
+      document.documentElement.dir = 'ltr';
+      document.documentElement.classList.remove('rtl');
+    }
+  }, [isRTL]);
+  
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -70,6 +85,7 @@ function App() {
           <Route path="/tools/cross-platform-monitor" element={<CrossPlatformMonitorPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ReportFakeAccountButton />
       </TooltipProvider>
     </QueryClientProvider>
   );
