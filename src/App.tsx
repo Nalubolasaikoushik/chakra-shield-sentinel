@@ -1,3 +1,4 @@
+
 import React from 'react'; // Explicit React import
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -20,6 +21,7 @@ import Contact from "./pages/Contact";
 import Tools from "./pages/Tools";
 import Translation from "./pages/Translation";
 import Resources from "./pages/Resources";
+import DisclaimerPage from "./pages/Disclaimer"; // Import the DisclaimerPage component
 import { BrowserRouter } from "react-router-dom";
 
 // Feature pages
@@ -57,7 +59,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/policies" element={<Policies />} />
             <Route path="/translation" element={<Translation />} />
-            <Route path="/disclaimer" element={<Disclaimer />} /> {/* Add the new route */}
+            <Route path="/disclaimer" element={<DisclaimerPage />} /> {/* Updated to use imported component */}
             <Route path="/tools" element={<Tools />} />
             <Route path="/tools/alert-system" element={<AlertSystemPage />} />
             <Route path="/tools/network-mapping" element={<NetworkMappingPage />} />
