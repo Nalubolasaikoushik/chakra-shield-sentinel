@@ -10,6 +10,7 @@ interface LanguageOption {
   label: string;
   nativeLabel: string;
   flagEmoji?: string;
+  dir?: 'ltr' | 'rtl';
 }
 
 const languageOptions: LanguageOption[] = [
@@ -20,7 +21,7 @@ const languageOptions: LanguageOption[] = [
   { value: 'বাংলা', label: 'Bengali', nativeLabel: 'বাংলা', flagEmoji: '🇮🇳' },
   { value: 'ಕನ್ನಡ', label: 'Kannada', nativeLabel: 'ಕನ್ನಡ', flagEmoji: '🇮🇳' },
   { value: 'മലയാളം', label: 'Malayalam', nativeLabel: 'മലയാളം', flagEmoji: '🇮🇳' },
-  { value: 'اردو', label: 'Urdu', nativeLabel: 'اردو', flagEmoji: '🇮🇳' },
+  { value: 'اردو', label: 'Urdu', nativeLabel: 'اردو', flagEmoji: '🇮🇳', dir: 'rtl' },
   { value: 'ગુજરાતી', label: 'Gujarati', nativeLabel: 'ગુજરાતી', flagEmoji: '🇮🇳' },
 ];
 
@@ -75,6 +76,7 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
           aria-label={t('languageSelector')}
           aria-expanded={isOpen}
           aria-haspopup="listbox"
+          data-testid="language-selector-compact"
         >
           <Globe className="h-4 w-4" />
         </button>
@@ -88,6 +90,8 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
                 className={`w-full text-left px-3 py-2 text-sm flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-800 ${
                   currentLanguage === option.value ? 'bg-gray-100 dark:bg-gray-800' : ''
                 }`}
+                dir={option.dir || 'ltr'}
+                data-testid={`language-option-${option.value}`}
               >
                 <span className="w-6">{option.flagEmoji}</span>
                 <span className="flex-grow">{option.nativeLabel}</span>
@@ -111,6 +115,7 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
         aria-label={t('languageSelector')}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        data-testid="language-selector"
       >
         <div className="flex items-center space-x-2">
           {currentOption.flagEmoji && <span className="text-base">{currentOption.flagEmoji}</span>}
@@ -133,6 +138,8 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
               className={`w-full text-left px-3 py-2 text-sm flex items-center hover:bg-gray-100 dark:hover:bg-gray-800 ${
                 currentLanguage === option.value ? 'bg-gray-100 dark:bg-gray-800' : ''
               }`}
+              dir={option.dir || 'ltr'}
+              data-testid={`language-option-${option.value}`}
             >
               <div className="flex items-center space-x-2 flex-1">
                 {option.flagEmoji && <span className="text-base">{option.flagEmoji}</span>}

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,14 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
+  // Focus first input on page load
+  useEffect(() => {
+    const emailInput = document.querySelector('input[name="email"]');
+    if (emailInput) {
+      (emailInput as HTMLInputElement).focus();
+    }
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -100,7 +108,7 @@ const Login = () => {
                           <div className="relative">
                             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 h-4 w-4" />
                             <Input 
-                              placeholder="your.email@gov.in" 
+                              placeholder="your.email@domain.com" 
                               {...field} 
                               className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-india-navyBlue focus:border-india-navyBlue dark:focus:ring-india-saffron dark:focus:border-india-saffron" 
                               data-testid="email-input"
@@ -233,19 +241,6 @@ const Login = () => {
                     {t('registerButton')}
                   </Link>
                 </p>
-              </div>
-
-              <div className="w-full pt-4 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex items-center justify-center">
-                  <img 
-                    src="/lovable-uploads/c2ab8b88-6190-49fe-af92-35a0a53524b0.png" 
-                    alt="Digital India Initiative" 
-                    className="h-6 mr-2"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {t('digitalIndia')}
-                  </p>
-                </div>
               </div>
             </CardFooter>
           </Card>

@@ -7,7 +7,7 @@ const ThemeToggle = () => {
   const [darkMode, setDarkMode] = useState(false);
   const { t } = useLanguage();
 
-  // Initialize theme from localStorage or default to light mode
+  // Initialize theme from localStorage or default to system preference
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -33,8 +33,9 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+      className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       aria-label={darkMode ? t('lightMode') : t('darkMode')}
+      data-testid="theme-toggle"
     >
       {darkMode ? (
         <Sun className="h-5 w-5 text-yellow-500" />

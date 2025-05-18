@@ -21,7 +21,7 @@ import Contact from "./pages/Contact";
 import Tools from "./pages/Tools";
 import Translation from "./pages/Translation";
 import Resources from "./pages/Resources";
-import DisclaimerPage from "./pages/Disclaimer"; // Import the DisclaimerPage component
+import DisclaimerPage from "./pages/Disclaimer";
 
 // Feature pages
 import SecurityAssessmentPage from "./pages/features/SecurityAssessmentPage";
