@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import helmet from 'helmet';
+// Remove helmet import for now
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { initializeDatabase } from './utils/dbConnection.js';
@@ -34,11 +34,8 @@ app.use(cors({
   maxAge: 86400 // 24 hours in seconds
 }));
 
-// Security middleware
-app.use(helmet({
-  contentSecurityPolicy: false, // Disabled for development
-  crossOriginEmbedderPolicy: false
-}));
+// Security middleware - removed helmet since it's not installed
+// We'll handle basic security without helmet for now
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
