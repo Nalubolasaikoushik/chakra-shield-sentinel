@@ -1,4 +1,3 @@
-
 import React from 'react'; // Explicit React import
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -21,6 +20,7 @@ import Contact from "./pages/Contact";
 import Tools from "./pages/Tools";
 import Translation from "./pages/Translation";
 import Resources from "./pages/Resources";
+import { BrowserRouter } from "react-router-dom";
 
 // Feature pages
 import SecurityAssessmentPage from "./pages/features/SecurityAssessmentPage";
@@ -35,46 +35,45 @@ import MultilingualEnginePage from "./pages/features/MultilingualEnginePage";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/scan" element={<Scan />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/blockchain" element={<Blockchain />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/alerts" element={<Alerts />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/terms" element={<Policies />} />
-        <Route path="/privacy" element={<Policies />} />
-        <Route path="/security" element={<Policies />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/tools" element={<Tools />} />
-        <Route path="/translation" element={<Translation />} />
-        <Route path="/resources" element={<Resources />} />
-        
-        {/* Security Feature Pages */}
-        <Route path="/features/security-assessment" element={<SecurityAssessmentPage />} />
-        <Route path="/features/threat-intelligence" element={<ThreatIntelligencePage />} />
-        <Route path="/features/deepfake-detection" element={<DeepfakeDetectionPage />} />
-        <Route path="/features/behavior-analysis" element={<BehaviorAnalysisPage />} />
-        <Route path="/features/network-mapping" element={<NetworkMappingPage />} />
-        <Route path="/features/alert-system" element={<AlertSystemPage />} />
-        <Route path="/features/admin-dashboard" element={<AdminDashboardPage />} />
-        <Route path="/features/cross-platform-monitor" element={<CrossPlatformMonitorPage />} />
-        <Route path="/features/multilingual-engine" element={<MultilingualEnginePage />} />
-        
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/scan" element={<Scan />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/alerts" element={<Alerts />} />
+            <Route path="/blockchain" element={<Blockchain />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/policies" element={<Policies />} />
+            <Route path="/translation" element={<Translation />} />
+            <Route path="/disclaimer" element={<Disclaimer />} /> {/* Add the new route */}
+            <Route path="/tools" element={<Tools />} />
+            <Route path="/tools/alert-system" element={<AlertSystemPage />} />
+            <Route path="/tools/network-mapping" element={<NetworkMappingPage />} />
+            <Route path="/tools/threat-intelligence" element={<ThreatIntelligencePage />} />
+            <Route path="/tools/behavior-analysis" element={<BehaviorAnalysisPage />} />
+            <Route path="/tools/deepfake-detection" element={<DeepfakeDetectionPage />} />
+            <Route path="/tools/security-assessment" element={<SecurityAssessmentPage />} />
+            <Route path="/tools/admin-dashboard" element={<AdminDashboardPage />} />
+            <Route path="/tools/multilingual-engine" element={<MultilingualEnginePage />} />
+            <Route path="/tools/cross-platform-monitor" element={<CrossPlatformMonitorPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  );
+}
 
 export default App;
