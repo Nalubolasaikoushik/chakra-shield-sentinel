@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/Header";
@@ -7,9 +6,135 @@ import ReportForm from "@/components/reports/ReportForm";
 import { useToast } from "@/hooks/use-toast";
 import { AlertCircle, Info } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AnalysisResult, generateProfileReport } from "@/services/profileAnalysisService";
 
 const Reports = () => {
   const { toast } = useToast();
+  
+  // Example function to generate a summary report (adding proper type properties)
+  const handleGenerateSummaryReport = async () => {
+    try {
+      // Create analysis result with all required properties
+      const summaryReportData: AnalysisResult = {
+        username: "summary_report",
+        platform: "all",
+        analysisDate: new Date().toISOString(),
+        profileMetadata: {
+          displayName: "Summary Report",
+          followers: 0,
+          following: 0,
+          creationDate: new Date().toISOString(),
+          bio: "Summary of platform activity",
+          location: "N/A",
+          reportType: "summary",
+          accountsAnalyzed: 150,
+          reportId: "sum-" + Date.now(),
+          generatedDate: new Date().toLocaleDateString()
+        },
+        scores: {
+          riskScore: 35,
+          authenticityScore: 82,
+          networkScore: 45,
+          behaviorScore: 68,
+          temporalScore: 72,
+          contentScore: 65,
+          languageScore: 75
+        },
+        alertLevel: "low",
+        patterns: [
+          {
+            type: "Platform Activity",
+            description: "Summary of detected patterns across platforms",
+            score: 45,
+            insights: "Based on analysis of 150 accounts"
+          }
+        ]
+      };
+      
+      const pdfBlob = await generateProfileReport(summaryReportData);
+      // Here you would typically handle the PDF blob, e.g., download it or display it.
+      // For example, to trigger a download:
+      const url = window.URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `summary-report-${Date.now()}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to generate summary report:", error);
+      toast({
+        title: "Report Generation Failed",
+        description: "Unable to generate the summary report. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+  
+  // Example function to generate an aggregated report (adding proper type properties)
+  const handleGenerateAggregatedReport = async () => {
+    try {
+      // Create analysis result with all required properties
+      const aggregatedReportData: AnalysisResult = {
+        username: "aggregated_data",
+        platform: "multi-platform",
+        analysisDate: new Date().toISOString(),
+        profileMetadata: {
+          displayName: "Aggregated Report",
+          followers: 0,
+          following: 0,
+          creationDate: new Date().toISOString(),
+          bio: "Cross-platform activity summary",
+          location: "Global",
+          reportCount: 75,
+          platformsCovered: "Twitter, Facebook, Instagram",
+          generatedDate: new Date().toLocaleDateString(),
+          reportPeriod: "Last 30 days"
+        },
+        scores: {
+          overallRiskScore: 42,
+          averageAuthenticityScore: 68,
+          networkComplexityScore: 53,
+          temporalAnomalyScore: 37,
+          crossPlatformConsistency: 61,
+          behaviorScore: 55,
+          contentScore: 59,
+          languageScore: 72,
+          networkScore: 53,
+          temporalScore: 37
+        },
+        alertLevel: "medium",
+        patterns: [
+          {
+            type: "Cross-Platform Analysis",
+            description: "Aggregated insights across multiple platforms",
+            score: 52,
+            insights: "Based on 75 reports across 3 major platforms"
+          }
+        ]
+      };
+      
+      const pdfBlob = await generateProfileReport(aggregatedReportData);
+      // Here you would typically handle the PDF blob, e.g., download it or display it.
+      // For example, to trigger a download:
+      const url = window.URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `aggregated-report-${Date.now()}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to generate aggregated report:", error);
+      toast({
+        title: "Report Generation Failed",
+        description: "Unable to generate the aggregated report. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
   
   return (
     <div className="flex flex-col min-h-screen">
