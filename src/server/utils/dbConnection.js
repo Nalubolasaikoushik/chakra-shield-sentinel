@@ -91,6 +91,20 @@ export async function initializeDatabase() {
       console.log('Text analysis collection and indexes created');
     }
     
+    // Create platformNotifications collection if it doesn't exist
+    if (!(await db.listCollections({ name: 'platformNotifications' }).toArray()).length) {
+      await db.createCollection('platformNotifications');
+      
+      // Create indexes for better query performance
+      const notificationsCollection = db.collection('platformNotifications');
+      await notificationsCollection.createIndex({ timestamp: -1 });
+      await notificationsCollection.createIndex({ platform: 1 });
+      await notificationsCollection.createIndex({ status: 1 });
+      await notificationsCollection.createIndex({ username: 1 });
+      
+      console.log('Platform notifications collection and indexes created');
+    }
+    
     return true;
   } catch (error) {
     console.error('Failed to initialize database:', error);
