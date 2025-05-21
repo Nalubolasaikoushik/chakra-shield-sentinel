@@ -63,18 +63,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Enhanced Indian flag inspired colors
+				// Enhanced Indian flag inspired colors with more professional tones
 				india: {
-					saffron: '#FF8C00', // More vibrant saffron
+					saffron: '#E67E22', // More professional saffron
 					white: '#FFFFFF',
-					green: '#008F39', // Richer green
-					navyBlue: '#0C2461', // Deeper navy blue
-					ashoka: '#1E3799', // Deeper blue for Ashoka chakra
-					accent1: '#FFA000', // Accent colors for UI elements
-					accent2: '#1A237E',
+					green: '#27AE60', // More professional green
+					navyBlue: '#2C3E50', // Deeper navy blue for better contrast
+					ashoka: '#2980B9', // Professional blue for Ashoka chakra
+					accent1: '#F39C12', // Softer accent colors
+					accent2: '#34495E',
 					accent3: '#2C3E50',
-					lightBg: '#F8FAFC', // Light background
-					darkBg: '#1A202C'  // Dark background
+					lightBg: '#F8FAFC',
+					darkBg: '#1A202C'
 				}
 			},
 			borderRadius: {
