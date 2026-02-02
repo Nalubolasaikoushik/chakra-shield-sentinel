@@ -1,5 +1,5 @@
 
-import mongoose from 'mongoose';
+import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -8,49 +8,48 @@ dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const DB_NAME = process.env.MONGODB_DB_NAME || 'profilealerts';
 
-// Connection state
-let isConnected = false;
+// Connection cache
+let cachedClient = null;
+let cachedDb = null;
 
-/**
- * Connect to MongoDB using Mongoose
- */
 export async function connectToDatabase() {
-  if (isConnected) {
-    console.log('Using existing database connection');
-    return;
+  // If we already have a connection, use it
+  if (cachedClient && cachedDb) {
+    return { client: cachedClient, db: cachedDb };
   }
 
   try {
-    // Connect to MongoDB with Mongoose
-    await mongoose.connect(`${MONGODB_URI}/${DB_NAME}`, {
-      maxPoolSize: 10
+    // Connect to MongoDB
+    const client = await MongoClient.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      maxPoolSize: 10,
     });
 
-    isConnected = true;
+    const db = client.db(DB_NAME);
+
+    // Cache the connection
+    cachedClient = client;
+    cachedDb = db;
+
     console.log('Connected to MongoDB successfully');
+    return { client, db };
   } catch (error) {
     console.error('MongoDB connection error:', error);
     throw error;
   }
 }
 
-/**
- * Legacy method for backward compatibility with non-mongoose code
- */
+// Helper function to get collection
 export async function getCollection(collectionName) {
-  await connectToDatabase();
-  return mongoose.connection.db.collection(collectionName);
+  const { db } = await connectToDatabase();
+  return db.collection(collectionName);
 }
 
-/**
- * Initialize database with required collections and indexes
- */
+// Initialize database with required collections and indexes if needed
 export async function initializeDatabase() {
   try {
-    await connectToDatabase();
-    
-    // Get references to collections
-    const db = mongoose.connection.db;
+    const { db } = await connectToDatabase();
     
     // Create alerts collection if it doesn't exist
     if (!(await db.listCollections({ name: 'alerts' }).toArray()).length) {
@@ -76,33 +75,6 @@ export async function initializeDatabase() {
       await reportsCollection.createIndex({ status: 1 });
       
       console.log('Reports collection and indexes created');
-    }
-
-    // Create textAnalysis collection if it doesn't exist
-    if (!(await db.listCollections({ name: 'textanalyses' }).toArray()).length) {
-      await db.createCollection('textanalyses');
-      
-      // Create indexes for better query performance
-      const textAnalysisCollection = db.collection('textanalyses');
-      await textAnalysisCollection.createIndex({ createdAt: -1 });
-      await textAnalysisCollection.createIndex({ sentiment: 1 });
-      await textAnalysisCollection.createIndex({ toxicityScore: 1 });
-      
-      console.log('Text analysis collection and indexes created');
-    }
-    
-    // Create platformNotifications collection if it doesn't exist
-    if (!(await db.listCollections({ name: 'platformNotifications' }).toArray()).length) {
-      await db.createCollection('platformNotifications');
-      
-      // Create indexes for better query performance
-      const notificationsCollection = db.collection('platformNotifications');
-      await notificationsCollection.createIndex({ timestamp: -1 });
-      await notificationsCollection.createIndex({ platform: 1 });
-      await notificationsCollection.createIndex({ status: 1 });
-      await notificationsCollection.createIndex({ username: 1 });
-      
-      console.log('Platform notifications collection and indexes created');
     }
     
     return true;

@@ -8,32 +8,31 @@ import {
   CarouselNext
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Lock, Code, Brain } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const LogoCarousel = () => {
   const isMobile = useIsMobile();
   
-  const features = [
+  const logos = [
     {
-      icon: <Shield className="h-8 w-8 md:h-10 md:w-10 text-india-saffron" />,
-      title: "Advanced Security",
-      description: "Enterprise-grade protection"
+      src: "/lovable-uploads/b302e954-2187-4340-a76d-2a1dec5c6e7c.png",
+      alt: "Azadi Ka Amrit Mahotsav",
+      width: isMobile ? 80 : 150
     },
     {
-      icon: <Lock className="h-8 w-8 md:h-10 md:w-10 text-india-navyBlue" />,
-      title: "Privacy Focused",
-      description: "User data protection"
+      src: "/lovable-uploads/2db89e9f-7fb9-422c-9f7b-a34686434e81.png",
+      alt: "Digital India",
+      width: isMobile ? 70 : 130
     },
     {
-      icon: <Brain className="h-8 w-8 md:h-10 md:w-10 text-india-green" />,
-      title: "AI Powered",
-      description: "Smart detection algorithms"
+      src: "/lovable-uploads/63d01b46-8b5d-4111-824e-1d86b18ea2fd.png",
+      alt: "Make in India",
+      width: isMobile ? 80 : 150
     },
     {
-      icon: <Code className="h-8 w-8 md:h-10 md:w-10 text-india-accent2" />,
-      title: "Open Source",
-      description: "Community-driven development"
+      src: "/lovable-uploads/649152e9-e5a2-4753-ba75-2a5501993ce0.png",
+      alt: "G20 India",
+      width: isMobile ? 70 : 130
     }
   ];
 
@@ -41,8 +40,8 @@ const LogoCarousel = () => {
     <div className="py-4 md:py-10 bg-white border-t border-gray-100">
       <div className="container mx-auto px-3 md:px-4">
         <div className="text-center mb-3 md:mb-8">
-          <h3 className="text-lg md:text-xl font-semibold text-india-navyBlue">Core Features & Principles</h3>
-          <p className="text-sm md:text-base text-gray-600 mt-1 md:mt-2">ChakraShield's commitment to security and innovation</p>
+          <h3 className="text-lg md:text-xl font-semibold text-india-navyBlue">Aligned with India's Digital Initiatives</h3>
+          <p className="text-sm md:text-base text-gray-600 mt-1 md:mt-2">ChakraShield supports the vision of a secure digital India</p>
         </div>
         
         <Carousel
@@ -53,16 +52,17 @@ const LogoCarousel = () => {
           className="w-full max-w-[98%] sm:max-w-2xl md:max-w-4xl mx-auto"
         >
           <CarouselContent>
-            {features.map((feature, index) => (
-              <CarouselItem key={index} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 flex justify-center">
-                <div className="p-1 h-full w-full">
-                  <Card className="border shadow-sm hover:shadow-md transition-all duration-300 h-full">
-                    <CardContent className="flex flex-col items-center justify-center p-4 md:p-6 h-full text-center">
-                      <div className="bg-gray-50 p-3 md:p-4 rounded-full mb-3 md:mb-4">
-                        {feature.icon}
-                      </div>
-                      <h4 className="font-medium text-base md:text-lg mb-1">{feature.title}</h4>
-                      <p className="text-gray-500 text-xs md:text-sm">{feature.description}</p>
+            {logos.map((logo, index) => (
+              <CarouselItem key={index} className="basis-1/2 sm:basis-1/3 md:basis-1/4 flex justify-center">
+                <div className="p-1 h-full">
+                  <Card className="border-none shadow-none">
+                    <CardContent className="flex items-center justify-center p-1 md:p-4 h-full">
+                      <img 
+                        src={logo.src} 
+                        alt={logo.alt} 
+                        style={{ width: logo.width }} 
+                        className="object-contain h-auto transition-all hover:scale-105"
+                      />
                     </CardContent>
                   </Card>
                 </div>

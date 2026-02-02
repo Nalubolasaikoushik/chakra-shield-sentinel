@@ -63,18 +63,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Enhanced Indian flag inspired colors with more professional tones
+				// Enhanced Indian flag inspired colors
 				india: {
-					saffron: '#FF9933', // More vibrant saffron
+					saffron: '#FF8C00', // More vibrant saffron
 					white: '#FFFFFF',
-					green: '#138808', // More vibrant green
-					navyBlue: '#0D1B33', // Darker navy blue for better contrast
-					ashoka: '#0066CC', // More vibrant blue for Ashoka chakra
-					accent1: '#F39C12', // Softer accent colors
-					accent2: '#2C3E50',
-					accent3: '#1E3799',
-					lightBg: '#F8FAFC',
-					darkBg: '#121212'
+					green: '#008F39', // Richer green
+					navyBlue: '#0C2461', // Deeper navy blue
+					ashoka: '#1E3799', // Deeper blue for Ashoka chakra
+					accent1: '#FFA000', // Accent colors for UI elements
+					accent2: '#1A237E',
+					accent3: '#2C3E50',
+					lightBg: '#F8FAFC', // Light background
+					darkBg: '#1A202C'  // Dark background
 				}
 			},
 			borderRadius: {
@@ -130,8 +130,8 @@ export default {
 				devanagari: ['Noto Sans Devanagari', 'sans-serif']
 			},
 			backgroundImage: {
-				'india-gradient': 'linear-gradient(to bottom, #FF9933 33%, #FFFFFF 33%, #FFFFFF 66%, #138808 66%)',
-				'hero-pattern': 'radial-gradient(circle at 30% 107%, #0A1929 5%, #1E3799 45%, #273c75 60%, #0A1929 90%)'
+				'india-gradient': 'linear-gradient(to bottom, #FF8C00 33%, #FFFFFF 33%, #FFFFFF 66%, #008F39 66%)',
+				'hero-pattern': 'radial-gradient(circle at 30% 107%, #0C2461 5%, #1E3799 45%, #273c75 60%, #0c2461 90%)'
 			}
 		}
 	},
