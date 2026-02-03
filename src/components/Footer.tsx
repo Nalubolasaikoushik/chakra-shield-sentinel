@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, ExternalLink, Mail, Phone, HelpCircle, Code, Github, Linkedin } from 'lucide-react';
+import { Shield, Mail, Phone } from 'lucide-react';
 import { MapPin } from 'lucide-react';
 import { Link } from "react-router-dom";
 import AshokChakra from './AshokChakra';
@@ -43,7 +43,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Links Section - Improved for mobile */}
+        {/* Links Section */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
           <div className="slide-in-left" style={{ animationDelay: "0.1s" }}>
             <h4 className="font-semibold mb-2 md:mb-3 text-sm md:text-base text-india-saffron">{t('platform')}</h4>
@@ -61,9 +61,7 @@ const Footer = () => {
             <h4 className="font-semibold mb-2 md:mb-3 text-sm md:text-base text-india-saffron">{t('resources')}</h4>
             <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
               <li><Link to="/documentation" className="hover:text-india-saffron transition-colors">{t('documentation')}</Link></li>
-              <li><Link to="/agencies" className="hover:text-india-saffron transition-colors">{t('forAgencies')}</Link></li>
               <li><Link to="/api" className="hover:text-india-saffron transition-colors">{t('apiIntegration')}</Link></li>
-              <li><Link to="/research" className="hover:text-india-saffron transition-colors">{t('researchPapers')}</Link></li>
               <li><Link to="/contact" className="hover:text-india-saffron transition-colors">{t('contactUs')}</Link></li>
             </ul>
           </div>
@@ -83,46 +81,17 @@ const Footer = () => {
             <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
               <li className="flex items-center">
                 <Mail className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 text-gray-400" />
-                <span>support@chakrashield.in</span>
+                <span>support@chakrashield.com</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 text-gray-400" />
-                <span>Helpline: 1800-333-9999</span>
-              </li>
-              <li className="flex items-start">
-                <MapPin className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 text-gray-400 mt-0.5" />
-                <span className="text-xs md:text-sm">Digital Complex for Cyber Systems, Hanamakonda, Telangana 506001, Bharat India</span>
+                <span>Contact Support</span>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Digital India Initiatives Section - Mobile optimized */}
-        <div className="py-4 md:py-6 my-4 md:my-6 border-t border-b border-white/10">
-          <h3 className="text-base md:text-xl font-bold mb-3 md:mb-4 text-center text-india-saffron">{t('digitalIndia')}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 text-xs md:text-sm">
-            <div className="bg-white/5 p-3 md:p-4 rounded-lg hover:bg-white/10 transition-colors">
-              <h4 className="font-semibold mb-1 md:mb-2 text-white">{t('cyberSurakshaProgram')}</h4>
-              <p className="text-gray-300 text-xs">A comprehensive cybersecurity awareness initiative to educate citizens about online safety practices and protection against cyber threats.</p>
-            </div>
-            <div className="bg-white/5 p-3 md:p-4 rounded-lg hover:bg-white/10 transition-colors">
-              <h4 className="font-semibold mb-1 md:mb-2 text-white">{t('digiLocker')}</h4>
-              <p className="text-gray-300 text-xs">Platform for issuance and verification of documents & certificates digitally, eliminating the need for physical documents.</p>
-            </div>
-            <div className="bg-white/5 p-3 md:p-4 rounded-lg hover:bg-white/10 transition-colors">
-              <h4 className="font-semibold mb-1 md:mb-2 text-white">{t('umangApp')}</h4>
-              <p className="text-gray-300 text-xs">Unified Mobile Application for New-age Governance providing access to various government services through a single platform.</p>
-            </div>
-          </div>
-          <div className="text-center mt-3 md:mt-5">
-            <Link to="/digital-india" className="inline-flex items-center text-india-saffron hover:underline text-xs md:text-sm">
-              {t('learnDigitalIndia')}
-              <ExternalLink className="h-2.5 w-2.5 md:h-3 md:w-3 ml-1" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Footer Bottom - Mobile optimized */}
+        {/* Footer Bottom */}
         <div className="pt-4 md:pt-6 border-t border-white/10 text-xs md:text-sm text-center md:flex md:justify-between md:items-center">
           <p>© 2025 ChakraShield - {t('allRightsReserved')}</p>
           <div className="mt-3 md:mt-0 flex flex-wrap justify-center md:justify-end gap-3 md:gap-4">

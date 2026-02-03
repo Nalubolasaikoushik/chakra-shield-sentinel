@@ -7,16 +7,11 @@ import {
   Search, 
   AlertTriangle, 
   Globe, 
-  Key, 
   Lock,
   Zap,
-  Brain,
   Network,
   Bot,
-  Cpu,
   LineChart,
-  Code,
-  Github,
   ArrowRight
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -27,14 +22,14 @@ const Features = () => {
   const features = [
     {
       icon: <Search className="h-10 w-10 text-india-saffron" />,
-      title: "AI Profile Scanner",
-      description: "Upload or link profiles for deep image & text analysis to generate fake account risk scores with 99.7% accuracy",
+      title: "Profile Scanner",
+      description: "Upload or link profiles for deep image & text analysis to generate fake account risk scores with high accuracy",
       link: "/scan"
     },
     {
-      icon: <Brain className="h-10 w-10 text-india-saffron" />,
-      title: "Deep Learning Models",
-      description: "Custom-trained neural networks analyze behavioral patterns, linguistic markers, and network connections to identify inauthentic accounts",
+      icon: <Network className="h-10 w-10 text-india-saffron" />,
+      title: "Behavior Analysis",
+      description: "Analyze behavioral patterns, linguistic markers, and network connections to identify inauthentic accounts",
       link: "/features/behavior-analysis"
     },
     {
@@ -50,7 +45,7 @@ const Features = () => {
       link: "/features/behavior-analysis"
     },
     {
-      icon: <Network className="h-10 w-10 text-india-saffron" />,
+      icon: <AlertTriangle className="h-10 w-10 text-india-saffron" />,
       title: "Network Analysis",
       description: "Graphical mapping of connections between accounts to identify organized inauthentic behavior and influence operations",
       link: "/features/network-mapping"
@@ -58,22 +53,22 @@ const Features = () => {
     {
       icon: <Globe className="h-10 w-10 text-india-saffron" />,
       title: "Multilingual Processing",
-      description: "NLP technology that identifies malicious content across all 22 official Indian languages with local dialect understanding",
+      description: "Technology that identifies malicious content across multiple languages with local dialect understanding",
       link: "/features/multilingual-engine"
     },
   ];
 
   const advancedFeatures = [
     {
-      icon: <Cpu className="h-6 w-6" />,
+      icon: <Zap className="h-6 w-6" />,
       title: "Real-time Processing",
-      description: "Edge computing technology enables processing of millions of social media posts per second with minimal latency",
+      description: "Edge computing technology enables processing of social media posts with minimal latency",
       link: "/features/cross-platform-monitor"
     },
     {
-      icon: <Zap className="h-6 w-6" />,
-      title: "Quantum-resistant Security",
-      description: "Future-proof encryption algorithms that can withstand attacks from quantum computers",
+      icon: <Lock className="h-6 w-6" />,
+      title: "Secure Infrastructure",
+      description: "Future-proof encryption algorithms that protect your data with the highest security standards",
       link: "/features/security-assessment"
     },
     {
@@ -88,10 +83,10 @@ const Features = () => {
     <div className="py-16 px-4 bg-india-lightBg">
       <div className="container mx-auto">
         <div className="text-center mb-12 max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-india-accent2 mb-4">Cutting-Edge AI Security Features</h2>
+          <h2 className="text-3xl font-bold text-india-accent2 mb-4">Security Features</h2>
           <p className="text-gray-600">
-            ChakraShield leverages the latest in artificial intelligence and blockchain technology to provide comprehensive protection against 
-            fake social media accounts and coordinated inauthentic behavior that threatens national security and social harmony.
+            ChakraShield provides comprehensive protection against fake social media accounts and coordinated 
+            inauthentic behavior that threatens online security and social harmony.
           </p>
         </div>
 
@@ -118,7 +113,7 @@ const Features = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-india-saffron/20 via-transparent to-india-green/20 opacity-50 rounded-xl"></div>
           <div className="relative bg-white p-8 rounded-xl shadow-lg border border-gray-200">
             <h3 className="text-2xl font-bold text-india-accent2 mb-6 text-center">
-              Next-Generation AI Capabilities
+              Advanced Capabilities
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {advancedFeatures.map((feature, index) => (
@@ -154,20 +149,14 @@ const Features = () => {
                 <div className="w-24 h-24 flex items-center justify-center bg-white/10 rounded-full">
                   <Lock className="h-12 w-12 text-white" />
                 </div>
-                <div className="absolute -top-2 -right-2 bg-india-saffron text-white p-1 rounded-full">
-                  <Key className="h-4 w-4" />
-                </div>
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-bold mb-2">Government-Grade Security Infrastructure</h3>
+              <h3 className="text-xl font-bold mb-2">Enterprise-Grade Security</h3>
               <p className="mb-4 text-white/80">
-                ChakraShield is specifically designed for Indian government cybersecurity agencies, with secure access controls and data protection measures that exceed international standards.
+                ChakraShield is designed with enterprise-level security standards, featuring secure access controls and data protection measures that meet international standards.
               </p>
               <div className="flex flex-wrap items-center gap-4 text-sm">
-                <div className="flex items-center px-3 py-1 bg-white/10 rounded-full">
-                  <span className="font-medium">CERT-In Compliant</span>
-                </div>
                 <div className="flex items-center px-3 py-1 bg-white/10 rounded-full">
                   <span className="font-medium">End-to-End Encrypted</span>
                 </div>
@@ -175,22 +164,10 @@ const Features = () => {
                   <span className="font-medium">Audit Logged</span>
                 </div>
                 <div className="flex items-center px-3 py-1 bg-white/10 rounded-full">
-                  <span className="font-medium">ISO 27001 Certified</span>
+                  <span className="font-medium">Secure by Design</span>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div className="text-center mt-6">
-            <a 
-              href="https://github.com/saikoushiknalubola" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="inline-flex items-center bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-sm transition-colors"
-            >
-              <Github className="h-4 w-4 mr-2" /> 
-              Check out more projects on GitHub
-            </a>
           </div>
         </div>
       </div>

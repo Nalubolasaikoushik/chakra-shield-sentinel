@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import { Search, Shield, Database, FileText, BellRing, Cpu, Brain, Volume2, Mic } from 'lucide-react';
+import { Search, Shield, Database, FileText, BellRing, Volume2, Mic } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import AshokChakra from '../AshokChakra';
@@ -12,7 +12,6 @@ const Hero = () => {
   const [isListening, setIsListening] = useState(false);
   const speechSynthesisRef = useRef<SpeechSynthesisUtterance | null>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const chakraInfoRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -100,21 +99,6 @@ const Hero = () => {
     };
   }, [isSpeaking, isListening]);
 
-  const getChakraInfoText = () => {
-    return `
-      The Ashoka Chakra, a 24-spoked wheel, is a symbol of the eternal law of dharma. 
-      Featured prominently in India's national flag, it represents motion, progress, and the dynamism of a peaceful change.
-      
-      Like the Ashoka Chakra which symbolizes protection and righteous governance in ancient India, ChakraShield 
-      embodies the modern digital protection for our nation. The 24 spokes represent our 24/7 vigilance in the 
-      cyber realm, constantly spinning to detect threats across social media platforms.
-      
-      Just as Emperor Ashoka used this symbol to spread his message of peace and harmony across his empire, 
-      ChakraShield spreads digital safety and security across India's vast online landscape, protecting citizens 
-      from the modern threats of fake accounts, misinformation, and digital fraud.
-    `;
-  };
-
   return (
     <div className="min-h-[90vh] relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100">
       <div className="absolute inset-0 overflow-hidden">
@@ -128,12 +112,12 @@ const Hero = () => {
           <div className="flex items-center mb-8">
             <div className="h-14 w-4 bg-india-saffron mr-5"></div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-india-navyBlue slide-in-left">
-              AI-Powered Detection of Fake Social Media Accounts
+              Detect Fake Social Media Accounts
             </h1>
           </div>
           
           <p className="text-xl md:text-2xl mb-10 text-gray-700 slide-in-left" style={{ animationDelay: "0.2s" }}>
-            ChakraShield uses advanced artificial intelligence to protect digital India from fraudulent social media activities. Government-grade security for our nation's online integrity.
+            ChakraShield helps identify and verify suspicious social media profiles with advanced detection technology. Protect your online presence from fraudulent accounts.
           </p>
           
           <div className="flex flex-wrap gap-5 slide-in-left" style={{ animationDelay: "0.3s" }}>
@@ -151,7 +135,7 @@ const Hero = () => {
             <Button 
               variant="outline" 
               className="border-india-green text-india-green hover:bg-india-green/10 text-base px-6 py-6"
-              onClick={() => speakText("ChakraShield uses advanced artificial intelligence to protect digital India from fraudulent social media activities. Government-grade security for our nation's online integrity.")}
+              onClick={() => speakText("ChakraShield helps identify and verify suspicious social media profiles with advanced detection technology. Protect your online presence from fraudulent accounts.")}
             >
               {isSpeaking ? 
                 <Volume2 className="mr-2 h-5 w-5 animate-pulse" /> : 
@@ -175,7 +159,7 @@ const Hero = () => {
           <div className="mt-10 flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8 text-base slide-in-left" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center">
               <Shield className="h-6 w-6 mr-3 text-india-navyBlue" />
-              <span>Govt. Secured</span>
+              <span>Secure Platform</span>
             </div>
             <div className="flex items-center">
               <Database className="h-6 w-6 mr-3 text-india-navyBlue" />
@@ -183,7 +167,7 @@ const Hero = () => {
             </div>
             <div className="flex items-center">
               <FileText className="h-6 w-6 mr-3 text-india-navyBlue" />
-              <span>Legal Reports</span>
+              <span>Detailed Reports</span>
             </div>
           </div>
         </div>
@@ -228,149 +212,12 @@ const Hero = () => {
               <Search className="h-6 w-6 text-blue-500" />
             </div>
             <div className="text-sm">
-              <p className="font-semibold">AI Scanner</p>
+              <p className="font-semibold">Profile Scanner</p>
               <p className="text-xs text-gray-500">Advanced detection</p>
             </div>
           </div>
         </div>
       </div>
-      
-      <div className="bg-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <AshokChakra size="md" className="mr-4" color="#1E3799" />
-              <h2 className="text-2xl md:text-3xl font-bold text-india-navyBlue">The Significance of Chakra</h2>
-            </div>
-            <p className="text-gray-600 max-w-4xl mx-auto slide-in-up">
-              Named after the Ashoka Chakra, a powerful symbol in Indian heritage, 
-              ChakraShield represents the union of ancient wisdom and cutting-edge technology.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="glass-card p-6 border-l-4 border-india-saffron" ref={chakraInfoRef}>
-              <h3 className="text-xl font-semibold mb-4 text-india-navyBlue">Historical Significance</h3>
-              <p className="text-gray-700 mb-4">
-                The Ashoka Chakra, adorning the center of India's national flag, dates back to the 3rd century BCE during Emperor Ashoka's reign. Originally part of the Lion Capital of Ashoka, this 24-spoked wheel symbolizes the wheel of dharma (righteousness) and the cycle of time.
-              </p>
-              <p className="text-gray-700 mb-4">
-                Each spoke represents important principles like love, courage, patience, and truthfulness—values that should guide every citizen's conduct in both personal and public life.
-              </p>
-              <div className="flex justify-end">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="border-india-navyBlue text-india-navyBlue hover:bg-india-navyBlue/10"
-                  onClick={() => speakText(getChakraInfoText())}
-                >
-                  {isSpeaking ? 
-                    <Volume2 className="mr-2 h-4 w-4 animate-pulse" /> : 
-                    <Volume2 className="mr-2 h-4 w-4" />
-                  }
-                  Read History
-                </Button>
-              </div>
-            </div>
-            
-            <div className="glass-card p-6 border-l-4 border-india-green">
-              <h3 className="text-xl font-semibold mb-4 text-india-navyBlue">Chakra in Cybersecurity</h3>
-              <p className="text-gray-700 mb-4">
-                Just as the Chakra stands as a symbol of protection and righteous governance, ChakraShield defends India's digital landscape with unwavering vigilance:
-              </p>
-              <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
-                <li>The 24 spokes represent our 24/7 continuous monitoring across digital platforms</li>
-                <li>The rotating motion symbolizes our active scanning and detection capabilities</li>
-                <li>The center hub represents our core AI analytics engine</li>
-                <li>The outer wheel signifies our protective shield around India's digital citizens</li>
-              </ul>
-              <p className="text-gray-700">
-                By invoking the Chakra in our name, we honor India's heritage while building technology that safeguards its future.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div className="bg-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-india-navyBlue flex items-center justify-center slide-in-up">
-              <span>Digital India Initiatives</span>
-            </h2>
-            <p className="text-gray-600 mt-3 max-w-2xl mx-auto slide-in-up" style={{ animationDelay: "0.1s" }}>
-              Empowering citizens through technology and making India a digitally empowered society
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="glass-card p-6 slide-in-up" style={{ animationDelay: "0.2s" }}>
-              <Shield className="h-10 w-10 text-india-saffron mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Cyber Suraksha</h3>
-              <p className="text-gray-600 text-sm">
-                Protecting citizens from online fraud and cyber threats through advanced AI systems and nationwide cybersecurity infrastructure.
-              </p>
-            </div>
-            
-            <div className="glass-card p-6 slide-in-up" style={{ animationDelay: "0.3s" }}>
-              <Database className="h-10 w-10 text-india-green mb-4" />
-              <h3 className="text-lg font-semibold mb-2">DigiLocker</h3>
-              <p className="text-gray-600 text-sm">
-                Secure cloud-based platform for document storage, sharing and verification, reducing paperwork and enabling easy access to official documents.
-              </p>
-            </div>
-            
-            <div className="glass-card p-6 slide-in-up" style={{ animationDelay: "0.4s" }}>
-              <BellRing className="h-10 w-10 text-india-navyBlue mb-4" />
-              <h3 className="text-lg font-semibold mb-2">UMANG</h3>
-              <p className="text-gray-600 text-sm">
-                Unified Mobile Application for New-age Governance providing multiple government services in multiple languages for citizens across India.
-              </p>
-            </div>
-          </div>
-          
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="glass-card border-l-4 border-india-saffron slide-in-left" style={{ animationDelay: "0.5s" }}>
-              <div className="flex flex-col md:flex-row items-start p-6">
-                <Brain className="h-10 w-10 text-india-saffron mr-4 flex-shrink-0 mb-4 md:mb-0" />
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">AI-Powered Governance</h3>
-                  <p className="text-gray-600">
-                    ChakraShield represents the next generation of AI applications in governance, using cutting-edge machine learning algorithms to identify patterns in social media data that indicate fake or malicious accounts. This technology allows for:
-                  </p>
-                  <ul className="mt-3 space-y-1 list-disc list-inside text-gray-600">
-                    <li>Real-time threat detection across multiple platforms</li>
-                    <li>Behavioral analysis to identify coordinated inauthentic behavior</li>
-                    <li>Predictive intelligence to stop emerging threats</li>
-                    <li>Reduced manual verification workload for security agencies</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            
-            <div className="glass-card border-l-4 border-india-green slide-in-right" style={{ animationDelay: "0.5s" }}>
-              <div className="flex flex-col md:flex-row items-start p-6">
-                <Cpu className="h-10 w-10 text-india-green mr-4 flex-shrink-0 mb-4 md:mb-0" />
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Technological Impact</h3>
-                  <p className="text-gray-600">
-                    The implementation of ChakraShield has significant positive impacts on India's digital ecosystem:
-                  </p>
-                  <ul className="mt-3 space-y-1 list-disc list-inside text-gray-600">
-                    <li>Reduced spread of misinformation by up to 67%</li>
-                    <li>Enhanced public trust in digital platforms</li>
-                    <li>Protection of citizens from scams and phishing attempts</li>
-                    <li>Creation of a safer online environment for all Indians</li>
-                    <li>Blockchain-verified evidence for legal proceedings</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-india-saffron via-white to-india-green"></div>
     </div>
   );
 };

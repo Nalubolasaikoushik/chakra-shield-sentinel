@@ -9,7 +9,7 @@ const About = () => {
   const features = [
     {
       icon: <Shield className="h-8 w-8 text-india-saffron" />,
-      title: "Advanced AI Detection",
+      title: "Advanced Detection",
       description: "State-of-the-art algorithms that identify fake accounts with high accuracy"
     },
     {
@@ -34,7 +34,7 @@ const About = () => {
     },
     {
       icon: <Lock className="h-8 w-8 text-india-saffron" />,
-      title: "Government-grade Security",
+      title: "Enterprise Security",
       description: "End-to-end encryption and stringent access controls for sensitive data"
     }
   ];
@@ -54,18 +54,18 @@ const About = () => {
                   ChakraShield
                   <AshokChakra size="md" className="ml-2" />
                 </h1>
-                <p className="text-xl font-devanagari">साइबर सुरक्षा प्रणाली</p>
+                <p className="text-xl">Security Platform</p>
               </div>
             </div>
             <h2 className="text-2xl md:text-3xl font-bold mb-6 max-w-3xl">
-              Defending India's Digital Sovereignty Through AI-Powered Cybersecurity
+              Protecting Your Digital Identity Through Advanced Security
             </h2>
             <p className="text-lg md:text-xl mb-8 max-w-3xl opacity-90">
-              ChakraShield is a cutting-edge cybersecurity platform designed to protect India's digital ecosystem from fake social media accounts and coordinated inauthentic behavior.
+              ChakraShield is a security platform designed to protect your digital ecosystem from fake social media accounts and coordinated inauthentic behavior.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium">Digital India Initiative</span>
-              <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium">AI-Powered Security</span>
+              <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium">Profile Verification</span>
+              <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium">Security Analysis</span>
               <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium">Blockchain Verification</span>
               <span className="px-4 py-2 bg-white/10 rounded-full text-sm font-medium">Multi-Platform Protection</span>
             </div>
@@ -79,7 +79,7 @@ const About = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-india-navyBlue mb-4">Our Mission</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              To safeguard India's digital space by leveraging advanced technology to identify and neutralize fake social media accounts that pose threats to national security and social harmony.
+              To safeguard digital spaces by leveraging advanced technology to identify and neutralize fake social media accounts that pose threats to online security and social harmony.
             </p>
           </div>
 
@@ -107,7 +107,7 @@ const About = () => {
                   <ChartIcon className="h-8 w-8 text-india-navyBlue" />
                 </div>
                 <p className="text-gray-600">
-                  Process data through AI models to verify authenticity and assess threat levels with precision
+                  Process data through advanced models to verify authenticity and assess threat levels with precision
                 </p>
               </CardContent>
             </Card>
@@ -121,7 +121,7 @@ const About = () => {
                   <ShieldCheckIcon className="h-8 w-8 text-india-navyBlue" />
                 </div>
                 <p className="text-gray-600">
-                  Take decisive action to neutralize threats and protect India's digital ecosystem and citizens
+                  Take decisive action to neutralize threats and protect digital ecosystems and users
                 </p>
               </CardContent>
             </Card>
@@ -138,7 +138,7 @@ const About = () => {
             </div>
             <h2 className="text-3xl font-bold text-india-navyBlue mb-4">Platform Capabilities</h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
-              ChakraShield combines cutting-edge AI technologies with blockchain verification to provide a comprehensive defense against fake social media accounts.
+              ChakraShield combines cutting-edge technologies with blockchain verification to provide a comprehensive defense against fake social media accounts.
             </p>
           </div>
 
@@ -152,43 +152,6 @@ const About = () => {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Digital India Section */}
-      <div className="py-16 px-4 bg-white">
-        <div className="container mx-auto max-w-5xl">
-          <div className="bg-india-navyBlue rounded-lg overflow-hidden shadow-lg">
-            <div className="p-8 text-white">
-              <div className="flex flex-col md:flex-row items-center">
-                <div className="mb-6 md:mb-0 md:mr-8">
-                  <img
-                    src="https://i.postimg.cc/jL7gtYHc/digital-india-logo.png"
-                    alt="Digital India Initiative"
-                    className="h-24"
-                  />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">A Digital India Initiative</h2>
-                  <p className="text-lg opacity-90 mb-4">
-                    ChakraShield is proudly part of the Digital India initiative, contributing to the vision of transforming India into a digitally empowered society and knowledge economy.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="inline-flex items-center px-3 py-1 bg-white/10 rounded-full text-sm">
-                      <CheckCircle className="mr-1 h-3 w-3" /> Digital Empowerment
-                    </span>
-                    <span className="inline-flex items-center px-3 py-1 bg-white/10 rounded-full text-sm">
-                      <CheckCircle className="mr-1 h-3 w-3" /> Cybersecurity Excellence
-                    </span>
-                    <span className="inline-flex items-center px-3 py-1 bg-white/10 rounded-full text-sm">
-                      <CheckCircle className="mr-1 h-3 w-3" /> Technology Innovation
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="h-3 w-full bg-gradient-to-r from-india-saffron via-white to-india-green"></div>
           </div>
         </div>
       </div>
