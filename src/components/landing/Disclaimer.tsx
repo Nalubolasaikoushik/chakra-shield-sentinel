@@ -29,19 +29,15 @@ const Disclaimer = () => {
             <AlertTitle className="text-india-navyBlue font-semibold text-base md:text-lg">Disclaimer</AlertTitle>
             <AlertDescription className="text-gray-600 mt-2 text-xs md:text-sm">
               <p className="mb-3">
-                ChakraShield is an open-source project and initiative not affiliated with or endorsed by the Government of India or any of its agencies. 
-                The logos and symbols displayed are used for demonstration purposes only under fair use provisions.
+                ChakraShield is an open-source project created for educational, research, and demonstration purposes. 
+                It is not affiliated with or endorsed by any government agency.
               </p>
               <p className="mb-3">
-                The use of governmental symbols, logos, and representations is solely for illustrative purposes to demonstrate 
-                how this platform could potentially integrate with existing national digital initiatives.
-              </p>
-              <p className="mb-3">
-                This project is protected under Constitutional right to freedom of speech and expression, academic and creative freedom, 
+                This project is protected under freedom of speech and expression, academic and creative freedom, 
                 and fair use doctrine for educational and demonstrative purposes.
               </p>
               <p className="mb-3">
-                The AI models and algorithms used in ChakraShield are designed for educational and research purposes. They are not intended
+                The detection algorithms used in ChakraShield are designed for educational and research purposes. They are not intended
                 to be used for surveillance or to infringe on the privacy rights of individuals.
               </p>
               <p>
@@ -73,7 +69,7 @@ const Disclaimer = () => {
                 <CardContent>
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1">
-                      <AccordionTrigger className="text-left font-medium">Legal Status & Non-Affiliation</AccordionTrigger>
+                      <AccordionTrigger className="text-left font-medium">Legal Status & Independence</AccordionTrigger>
                       <AccordionContent className="text-gray-600">
                         <p className="mb-3">
                           ChakraShield is an independent, open-source cybersecurity project created for educational, research, and 
@@ -81,17 +77,16 @@ const Disclaimer = () => {
                         </p>
                         <ul className="list-disc pl-5 space-y-2 mb-3">
                           <li>
-                            <span className="font-medium">Non-Governmental Entity:</span> ChakraShield is not affiliated with, endorsed by, 
-                            funded by, or representative of the Government of India, its ministries, departments, or agencies. Any resemblance 
-                            to governmental initiatives is coincidental or for illustrative purposes only.
+                            <span className="font-medium">Independent Project:</span> ChakraShield is not affiliated with, endorsed by, 
+                            funded by, or representative of any government entity or organization.
                           </li>
                           <li>
-                            <span className="font-medium">Constitutional Protection:</span> This project operates under Article 19(1)(a) of 
-                            the Constitution of India, which guarantees the freedom of speech and expression, including academic and creative freedom.
+                            <span className="font-medium">Constitutional Protection:</span> This project operates under freedom of speech 
+                            and expression, including academic and creative freedom.
                           </li>
                           <li>
-                            <span className="font-medium">Fair Use Doctrine:</span> The use of any governmental symbols, logos, names, or representations 
-                            falls under the fair use provisions for educational, research, and demonstrative purposes.
+                            <span className="font-medium">Fair Use Doctrine:</span> The project falls under fair use provisions for 
+                            educational, research, and demonstrative purposes.
                           </li>
                         </ul>
                         <p>
@@ -105,25 +100,24 @@ const Disclaimer = () => {
                       <AccordionTrigger className="text-left font-medium">Representation Limitations</AccordionTrigger>
                       <AccordionContent className="text-gray-600">
                         <p className="mb-3">
-                          The ChakraShield project includes visual elements, terminology, and conceptual frameworks that may resemble governmental 
-                          or official initiatives. Users should be aware of the following limitations:
+                          Users should be aware of the following limitations:
                         </p>
                         <ul className="list-disc pl-5 space-y-2">
                           <li>
-                            <span className="font-medium">Illustrative Purpose:</span> Any governmental symbols, terminology, or frameworks are used 
-                            solely to illustrate how such a cybersecurity system might conceptually integrate with existing national digital infrastructure.
+                            <span className="font-medium">Illustrative Purpose:</span> Features are used 
+                            solely to illustrate how such a cybersecurity system might conceptually work.
                           </li>
                           <li>
                             <span className="font-medium">No Official Status:</span> Nothing displayed, stated, or implied within ChakraShield 
-                            should be considered official government policy, statement, or position.
+                            should be considered official policy, statement, or position.
                           </li>
                           <li>
                             <span className="font-medium">No Authorization Claims:</span> ChakraShield does not claim any official authorization, 
-                            certification, or approval from governmental authorities.
+                            certification, or approval from any authorities.
                           </li>
                           <li>
-                            <span className="font-medium">Conceptual Framework:</span> The platform represents a conceptual framework for how AI 
-                            could potentially be leveraged for cybersecurity purposes in alignment with digital governance objectives.
+                            <span className="font-medium">Conceptual Framework:</span> The platform represents a conceptual framework for how 
+                            technology could potentially be leveraged for cybersecurity purposes.
                           </li>
                         </ul>
                       </AccordionContent>
@@ -138,7 +132,7 @@ const Disclaimer = () => {
                     <Lock className="mr-2 h-5 w-5 text-india-saffron" />
                     Data Privacy & Ethical Commitments
                   </CardTitle>
-                  <CardDescription>Our approach to data handling and ethical AI usage</CardDescription>
+                  <CardDescription>Our approach to data handling and ethical usage</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Accordion type="single" collapsible className="w-full">
@@ -178,14 +172,14 @@ const Disclaimer = () => {
                     </AccordionItem>
                     
                     <AccordionItem value="item-2">
-                      <AccordionTrigger className="text-left font-medium">Ethical AI Usage Framework</AccordionTrigger>
+                      <AccordionTrigger className="text-left font-medium">Ethical Usage Framework</AccordionTrigger>
                       <AccordionContent className="text-gray-600">
                         <p className="mb-3">
-                          ChakraShield adheres to an ethical AI framework based on the following principles:
+                          ChakraShield adheres to an ethical framework based on the following principles:
                         </p>
                         <ul className="list-disc pl-5 space-y-2">
                           <li>
-                            <span className="font-medium">Human Rights:</span> All AI operations respect and uphold fundamental human rights, 
+                            <span className="font-medium">Human Rights:</span> All operations respect and uphold fundamental human rights, 
                             including privacy, freedom of expression, and non-discrimination.
                           </li>
                           <li>
@@ -193,15 +187,15 @@ const Disclaimer = () => {
                             auditing and testing to identify and mitigate unintended biases.
                           </li>
                           <li>
-                            <span className="font-medium">Transparency:</span> The functioning of AI systems is documented and explained in 
-                            accessible terms, avoiding "black box" decision-making.
+                            <span className="font-medium">Transparency:</span> The functioning of systems is documented and explained in 
+                            accessible terms, avoiding opaque decision-making.
                           </li>
                           <li>
                             <span className="font-medium">Accountability:</span> Clear lines of responsibility and accountability are established 
-                            for all AI operations within the platform.
+                            for all operations within the platform.
                           </li>
                           <li>
-                            <span className="font-medium">Educational Purpose:</span> The primary purpose of ChakraShield's AI capabilities is 
+                            <span className="font-medium">Educational Purpose:</span> The primary purpose of ChakraShield's capabilities is 
                             educational and demonstrative, focusing on showing how such technologies could potentially be used responsibly.
                           </li>
                           <li>
@@ -233,8 +227,8 @@ const Disclaimer = () => {
                         </p>
                         <ul className="list-disc pl-5 space-y-2">
                           <li>
-                            <span className="font-medium">Educational Demonstration:</span> To demonstrate the potential applications of AI in 
-                            cybersecurity within the context of digital governance.
+                            <span className="font-medium">Educational Demonstration:</span> To demonstrate the potential applications of technology in 
+                            cybersecurity.
                           </li>
                           <li>
                             <span className="font-medium">Research Platform:</span> To serve as a research platform for exploring ethical and 
@@ -242,11 +236,11 @@ const Disclaimer = () => {
                           </li>
                           <li>
                             <span className="font-medium">Concept Visualization:</span> To visualize how integrated cybersecurity systems could 
-                            potentially function in alignment with digital governance objectives.
+                            potentially function.
                           </li>
                           <li>
                             <span className="font-medium">Awareness Creation:</span> To raise awareness about the challenges of fake social media 
-                            accounts and the potential for AI-based solutions.
+                            accounts and the potential for technology-based solutions.
                           </li>
                         </ul>
                       </AccordionContent>
@@ -289,28 +283,29 @@ const Disclaimer = () => {
                     </AccordionItem>
                     
                     <AccordionItem value="item-3">
-                      <AccordionTrigger className="text-left font-medium">Contact Information</AccordionTrigger>
+                      <AccordionTrigger className="text-left font-medium">Open Source License</AccordionTrigger>
                       <AccordionContent className="text-gray-600">
                         <p className="mb-3">
-                          For inquiries, clarifications, or concerns regarding ChakraShield, please contact:
+                          ChakraShield is released as open-source software. The codebase is available for educational and research purposes:
                         </p>
                         <ul className="list-disc pl-5 space-y-2">
                           <li>
-                            <span className="font-medium">Developer Contact:</span> For technical inquiries or to contribute to the project, 
-                            please visit the developer's GitHub profile at <a href="https://github.com/saikoushiknalubola" className="text-india-navyBlue hover:underline" target="_blank" rel="noopener noreferrer">https://github.com/saikoushiknalubola</a>
+                            <span className="font-medium">License Type:</span> The project is released under an open-source license that permits use, 
+                            modification, and distribution for non-commercial purposes.
                           </li>
                           <li>
-                            <span className="font-medium">Disclaimer Inquiries:</span> For specific questions regarding this disclaimer or legal 
-                            aspects of the project, please indicate "ChakraShield Legal Inquiry" in your communication.
+                            <span className="font-medium">Attribution:</span> Any use of ChakraShield code or concepts requires appropriate attribution 
+                            to the original creators.
                           </li>
                           <li>
-                            <span className="font-medium">Usage Questions:</span> For questions about appropriate usage of ChakraShield or its 
-                            features, please indicate "ChakraShield Usage Inquiry" in your communication.
+                            <span className="font-medium">No Commercial Use:</span> Commercial use of ChakraShield or its components requires explicit 
+                            written permission from the creators.
+                          </li>
+                          <li>
+                            <span className="font-medium">Contribution Guidelines:</span> Contributors to the project agree to abide by the project's 
+                            code of conduct and contribution guidelines.
                           </li>
                         </ul>
-                        <p className="mt-3">
-                          All communications will be addressed within a reasonable timeframe, subject to availability of resources.
-                        </p>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
@@ -319,36 +314,10 @@ const Disclaimer = () => {
             </div>
           )}
           
-          <div className="mt-4 md:mt-6 p-3 md:p-5 bg-white rounded-lg border border-gray-200">
-            <h3 className="text-base md:text-lg font-semibold text-india-navyBlue flex items-center mb-2 md:mb-3">
-              <Info className="mr-2 h-4 w-4 md:h-5 md:w-5 text-india-accent2" />
-              Additional Information
-            </h3>
-            <div className="space-y-2 md:space-y-3 text-xs md:text-sm text-gray-600">
-              <p>
-                <span className="font-medium">Project Purpose:</span> ChakraShield is a conceptual cybersecurity platform designed 
-                to demonstrate how AI can be leveraged to detect and prevent fake social media accounts and disinformation.
-              </p>
-              <p>
-                <span className="font-medium">Open Source:</span> This project is open source and intended for educational, 
-                research, and demonstration purposes only.
-              </p>
-              <p>
-                <span className="font-medium">Data Privacy:</span> In a production environment, ChakraShield would be designed to 
-                comply with all applicable Indian data protection laws and regulations.
-              </p>
-              <p>
-                <span className="font-medium">Ethical Framework:</span> All AI operations within ChakraShield are guided by a robust 
-                ethical framework that prioritizes transparency, fairness, and respect for privacy.
-              </p>
-              <p>
-                <span className="font-medium">Continuous Research:</span> The technology behind ChakraShield is constantly evolving through 
-                collaborative research with cybersecurity experts and academic institutions.
-              </p>
-              <p>
-                <span className="font-medium">Contact:</span> For inquiries, collaboration opportunities, or concerns, please 
-                contact through the provided GitHub profile.
-              </p>
+          <div className="mt-8 flex justify-center">
+            <div className="flex items-center space-x-2 text-gray-500 text-sm">
+              <Shield className="h-4 w-4" />
+              <span>ChakraShield - Open Source Security Project</span>
             </div>
           </div>
         </div>

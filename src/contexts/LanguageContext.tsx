@@ -2,7 +2,7 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 // Define available languages
-export type Language = 'English' | 'हिंदी'; // We'll start with English and Hindi
+export type Language = 'English' | 'हिंदी';
 export type TranslationKey = string;
 
 // Define the shape of our translations
@@ -50,13 +50,11 @@ const englishTranslations: Translations = {
   
   // Common phrases
   'languageChanged': 'Language has been set to English',
-  'headerTitle': 'Cyber Security System',
-  'digitalIndia': 'A Digital India Initiative',
+  'headerTitle': 'Security Platform',
   'securityToolsLink': 'Security Tools',
   'ourMission': 'Our mission is to protect digital infrastructure',
   'legal': 'Legal',
   'help': 'Help',
-  'supportingDigitalBharat': 'Supporting Digital Bharat',
   
   // Footer
   'allRightsReserved': 'All rights reserved',
@@ -66,12 +64,12 @@ const englishTranslations: Translations = {
   'accessibility': 'Accessibility',
   'platform': 'Platform',
   'profileScanner': 'Profile Scanner',
-  'agencyDashboard': 'Agency Dashboard',
+  'agencyDashboard': 'Dashboard',
   'blockchainRegistry': 'Blockchain Registry',
   'alertsPage': 'Alerts',
   'securityTools': 'Security Tools',
   'documentation': 'Documentation',
-  'forAgencies': 'For Agencies',
+  'forAgencies': 'For Organizations',
   'apiIntegration': 'API Integration',
   'researchPapers': 'Research Papers',
   'contactUs': 'Contact Us',
@@ -79,14 +77,10 @@ const englishTranslations: Translations = {
   'privacyPolicy': 'Privacy Policy',
   'support': 'Support',
   'helpline': 'Helpline',
-  'cyberSurakshaProgram': 'Cyber Suraksha Program',
-  'digiLocker': 'DigiLocker',
-  'umangApp': 'UMANG App',
-  'learnDigitalIndia': 'Learn more about Digital India initiatives',
   
   // Hero Section
-  'heroTitle': 'Protecting Digital India with Advanced Cyber Security',
-  'heroSubtitle': 'AI-powered threat detection and prevention system',
+  'heroTitle': 'Protecting Your Digital Identity with Advanced Security',
+  'heroSubtitle': 'Threat detection and prevention system',
   'getStarted': 'Get Started',
   'learnMore': 'Learn More',
   
@@ -105,10 +99,10 @@ const englishTranslations: Translations = {
   
   // Translation Page
   'translationTitle': 'ChakraShield Translation Service',
-  'translationSubtitle': 'Break language barriers with our AI-powered translation and speech services',
+  'translationSubtitle': 'Break language barriers with our translation and speech services',
   'readAloud': 'Read this aloud',
   'universalTranslation': 'Universal Translation',
-  'translateText': 'Translate text between multiple Indian languages and English',
+  'translateText': 'Translate text between multiple languages',
   'sourceLanguage': 'Source Language',
   'targetLanguage': 'Target Language',
   'enterTextToTranslate': 'Enter text to translate...',
@@ -139,13 +133,11 @@ const hindiTranslations: Translations = {
   
   // Common phrases
   'languageChanged': 'भाषा हिंदी पर सेट की गई है',
-  'headerTitle': 'साइबर सुरक्षा प्रणाली',
-  'digitalIndia': 'एक डिजिटल इंडिया पहल',
+  'headerTitle': 'सुरक्षा प्लेटफॉर्म',
   'securityToolsLink': 'सुरक्षा उपकरण',
   'ourMission': 'हमारा मिशन डिजिटल इंफ्रास्ट्रक्चर की रक्षा करना है',
   'legal': 'कानूनी',
   'help': 'सहायता',
-  'supportingDigitalBharat': 'डिजिटल भारत का समर्थन करना',
   
   // Footer
   'allRightsReserved': 'सर्वाधिकार सुरक्षित',
@@ -155,12 +147,12 @@ const hindiTranslations: Translations = {
   'accessibility': 'पहुंच',
   'platform': 'प्लेटफॉर्म',
   'profileScanner': 'प्रोफाइल स्कैनर',
-  'agencyDashboard': 'एजेंसी डैशबोर्ड',
+  'agencyDashboard': 'डैशबोर्ड',
   'blockchainRegistry': 'ब्लॉकचेन रजिस्ट्री',
   'alertsPage': 'अलर्ट',
   'securityTools': 'सुरक्षा उपकरण',
   'documentation': 'दस्तावेज़ीकरण',
-  'forAgencies': 'एजेंसियों के लिए',
+  'forAgencies': 'संगठनों के लिए',
   'apiIntegration': 'एपीआई एकीकरण',
   'researchPapers': 'शोध पत्र',
   'contactUs': 'संपर्क करें',
@@ -168,14 +160,10 @@ const hindiTranslations: Translations = {
   'privacyPolicy': 'गोपनीयता नीति',
   'support': 'सहायता',
   'helpline': 'हेल्पलाइन',
-  'cyberSurakshaProgram': 'साइबर सुरक्षा कार्यक्रम',
-  'digiLocker': 'डिजिलॉकर',
-  'umangApp': 'उमंग ऐप',
-  'learnDigitalIndia': 'डिजिटल इंडिया पहल के बारे में अधिक जानें',
   
   // Hero Section
-  'heroTitle': 'उन्नत साइबर सुरक्षा के साथ डिजिटल इंडिया की रक्षा',
-  'heroSubtitle': 'AI-संचालित खतरा पहचान और रोकथाम प्रणाली',
+  'heroTitle': 'उन्नत सुरक्षा के साथ आपकी डिजिटल पहचान की रक्षा',
+  'heroSubtitle': 'खतरा पहचान और रोकथाम प्रणाली',
   'getStarted': 'शुरू करें',
   'learnMore': 'और जानें',
   
@@ -194,10 +182,10 @@ const hindiTranslations: Translations = {
   
   // Translation Page
   'translationTitle': 'चक्रशील्ड अनुवाद सेवा',
-  'translationSubtitle': 'हमारी AI-संचालित अनुवाद और भाषण सेवाओं के साथ भाषा बाधाओं को तोड़ें',
+  'translationSubtitle': 'हमारी अनुवाद और भाषण सेवाओं के साथ भाषा बाधाओं को तोड़ें',
   'readAloud': 'जोर से पढ़ें',
   'universalTranslation': 'सार्वभौमिक अनुवाद',
-  'translateText': 'कई भारतीय भाषाओं और अंग्रेजी के बीच पाठ का अनुवाद करें',
+  'translateText': 'कई भाषाओं के बीच पाठ का अनुवाद करें',
   'sourceLanguage': 'स्रोत भाषा',
   'targetLanguage': 'लक्ष्य भाषा',
   'enterTextToTranslate': 'अनुवाद करने के लिए पाठ दर्ज करें...',
